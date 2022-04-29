@@ -1,0 +1,199 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:5263930361897727211",
+      "lastPropertyId": "31:5366111589490474485",
+      "name": "Food",
+      "properties": [
+        {
+          "id": "1:5301365717599655232",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7377346063538664229",
+          "name": "userId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:6179608065616682971",
+          "relationTarget": "User"
+        },
+        {
+          "id": "3:3330081752668938617",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "4:5080397115424411192",
+          "name": "foodTypes",
+          "type": 30
+        },
+        {
+          "id": "5:4685671319494554155",
+          "name": "duration",
+          "type": 6
+        },
+        {
+          "id": "6:1642526519936246487",
+          "name": "serving",
+          "type": 6
+        },
+        {
+          "id": "7:4158206764988908672",
+          "name": "difficulty",
+          "type": 9
+        },
+        {
+          "id": "8:3521214037965269206",
+          "name": "tags",
+          "type": 9
+        },
+        {
+          "id": "9:3820146398678149029",
+          "name": "water",
+          "type": 8
+        },
+        {
+          "id": "10:2504016805899006015",
+          "name": "energy",
+          "type": 8
+        },
+        {
+          "id": "11:7190789844084708690",
+          "name": "protein",
+          "type": 8
+        },
+        {
+          "id": "12:4332760521111508542",
+          "name": "fat",
+          "type": 8
+        },
+        {
+          "id": "13:7535668432303297987",
+          "name": "carbohydrate",
+          "type": 8
+        },
+        {
+          "id": "14:869466929543253006",
+          "name": "fiber",
+          "type": 8
+        },
+        {
+          "id": "15:3741146930999361171",
+          "name": "calcium",
+          "type": 8
+        },
+        {
+          "id": "16:683449714729504126",
+          "name": "iron",
+          "type": 8
+        },
+        {
+          "id": "17:3725140886269777045",
+          "name": "phosphor",
+          "type": 8
+        },
+        {
+          "id": "18:5532428137260382052",
+          "name": "potassium",
+          "type": 8
+        },
+        {
+          "id": "19:2301573935661923239",
+          "name": "sodium",
+          "type": 8
+        },
+        {
+          "id": "20:14498855817561280",
+          "name": "zinc",
+          "type": 8
+        },
+        {
+          "id": "21:6164108965771071196",
+          "name": "copper",
+          "type": 8
+        },
+        {
+          "id": "22:2610613380420148766",
+          "name": "vitaminC",
+          "type": 8
+        },
+        {
+          "id": "23:8520671450635556048",
+          "name": "vitaminB1",
+          "type": 8
+        },
+        {
+          "id": "24:6465474963942018882",
+          "name": "vitaminB2",
+          "type": 8
+        },
+        {
+          "id": "25:8500847979050416180",
+          "name": "vitaminB3",
+          "type": 8
+        },
+        {
+          "id": "26:3420103133910105705",
+          "name": "retinol",
+          "type": 8
+        },
+        {
+          "id": "27:2214761450242455632",
+          "name": "foodId",
+          "type": 6
+        },
+        {
+          "id": "28:5227375609840779980",
+          "name": "session",
+          "type": 9
+        },
+        {
+          "id": "29:5677312023459543818",
+          "name": "date",
+          "type": 9
+        },
+        {
+          "id": "30:5460371108322994448",
+          "name": "instruction",
+          "type": 30
+        },
+        {
+          "id": "31:5366111589490474485",
+          "name": "imageFileName",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:937332134421631514",
+      "lastPropertyId": "1:2916353400714214596",
+      "name": "User",
+      "properties": [
+        {
+          "id": "1:2916353400714214596",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:937332134421631514",
+  "lastIndexId": "1:6179608065616682971",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
