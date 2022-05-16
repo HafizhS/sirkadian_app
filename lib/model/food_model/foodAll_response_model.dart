@@ -105,7 +105,7 @@ class DataFoodAllResponse {
         foodInstructionInfo!.add(new FoodInstructionInfo.fromJson(v));
       });
     }
-    imageFilename = json['imageFilename'];
+    imageFilename = json['imageFilename'] != null ? json['imageFilename'] : '';
     duration = json['duration'];
     serving = json['serving'];
     difficulty = json['difficulty'];
@@ -142,6 +142,9 @@ class DataFoodAllResponse {
     if (this.foodInstructionInfo != null) {
       data['foodInstructionInfo'] =
           this.foodInstructionInfo!.map((v) => v.toJson()).toList();
+    }
+    if (this.imageFilename != null) {
+      data['imageFilename'] = this.imageFilename;
     }
     data['imageFilename'] = this.imageFilename;
     data['duration'] = this.duration;

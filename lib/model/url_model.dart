@@ -28,9 +28,12 @@ final String necessityGetUrl = '$rootUserFood/necessity';
 // final String foodPostUrl = '$root/food/history';
 // final String foodHistoryGetUrl = '$root/food/history?';
 
-
-//sport
-// final String sportRecomGetUrl = '$root/sport/all';
+//exercise
+final String rootExercise = '$root/sport';
+final String rootUserExercise = '$root/user_sport';
+final String exerciseAllGetUrl = '$rootExercise/all';
+final String exerciseHistoryPostUrl = '$rootUserExercise/history';
+final String exerciseHistoryGetUrl = '$rootUserExercise/history?';
 
 //health
 // final String alergiGetUrl = '$root/allergy/all';

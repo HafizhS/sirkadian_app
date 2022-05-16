@@ -24,6 +24,7 @@ class SubscriptionController extends GetxController {
             SubscriptionAllResponse.fromJson(_res.body as Map<String, dynamic>);
 
         if (_subcriptionAllResponse.statusCode == 200) {
+          print('aman');
           listSubscription.value = _subcriptionAllResponse.data!;
         }
       }

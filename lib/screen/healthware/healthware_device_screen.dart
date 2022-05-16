@@ -2,7 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sirkadian_app/controller/food_controller.dart';
+import 'package:sirkadian_app/controller/healthware_controller.dart';
 
 import '../../constant/color.dart';
 
@@ -15,8 +15,14 @@ class HealthwareDeviceScreen extends StatefulWidget {
 
 class _HealthwareDeviceScreenState extends State<HealthwareDeviceScreen> {
   final color = Get.find<ColorConstantController>();
-  final foodController = Get.find<FoodController>();
+  final healthwareController = Get.find<HealthwareController>();
   bool isMeasure = true;
+
+  @override
+  void initState() {
+    healthwareController.getDateTime();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -286,7 +292,7 @@ class _HealthwareDeviceScreenState extends State<HealthwareDeviceScreen> {
                                   ),
                                   title: RichText(
                                     text: TextSpan(
-                                      text: foodController.dateNoww,
+                                      text: healthwareController.dateNoww,
                                       style: GoogleFonts.inter(
                                           textStyle: TextStyle(
                                         color: color.primaryTextColor,
@@ -346,7 +352,7 @@ class _HealthwareDeviceScreenState extends State<HealthwareDeviceScreen> {
                                   ),
                                   title: RichText(
                                     text: TextSpan(
-                                      text: foodController.dateNoww,
+                                      text: healthwareController.dateNoww,
                                       style: GoogleFonts.inter(
                                           textStyle: TextStyle(
                                         color: color.primaryTextColor,

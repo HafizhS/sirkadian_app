@@ -10,7 +10,8 @@ class ExerciseGauge extends StatelessWidget {
     required this.size,
     required this.value,
     required this.day,
-    required this.date,
+    required this.stringValue,
+    required this.textColor,
   }) : super(key: key);
 
   final Color backgroundColor;
@@ -18,19 +19,18 @@ class ExerciseGauge extends StatelessWidget {
   final Size size;
   final double value;
   final String day;
-  final String date;
+  final String stringValue;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          date,
+          stringValue,
           style: GoogleFonts.poppins(
             textStyle: TextStyle(
-                color: HexColor.fromHex('#4E5749'),
-                fontSize: 12,
-                fontWeight: FontWeight.normal),
+                color: textColor, fontSize: 12, fontWeight: FontWeight.normal),
           ),
         ),
         SizedBox(height: size.height * 0.02),
@@ -59,9 +59,7 @@ class ExerciseGauge extends StatelessWidget {
           day,
           style: GoogleFonts.poppins(
             textStyle: TextStyle(
-                color: HexColor.fromHex('#4E5749'),
-                fontSize: 14,
-                fontWeight: FontWeight.w600),
+                color: textColor, fontSize: 14, fontWeight: FontWeight.w600),
           ),
         ),
       ],

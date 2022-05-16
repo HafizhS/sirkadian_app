@@ -3,7 +3,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import '../../constant/color.dart';
 import '../../constant/hex_color.dart';
 import '../../controller/food_controller.dart';
-import '../../model/food_model/objectbox_model/food_model.dart';
+import '../../model/obejctbox_model.dart/food_model.dart';
 import 'necessity_gauge.dart';
 
 class NecessityDisplayWidget extends StatefulWidget {
@@ -55,8 +55,10 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
               foregroundColor: HexColor.fromHex('#5B9423'),
               value: widget.foodController.energy /
-                  widget.foodController.necessity.energy!,
-              size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+                  (widget.foodController.necessity.value.energy!.breakfast! +
+                      widget.foodController.necessity.value.energy!.lunch! +
+                      widget.foodController.necessity.value.energy!.dinner!),
+              size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
             ),
             NecessityGauge(
               color: widget.color,
@@ -64,8 +66,13 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
               foregroundColor: HexColor.fromHex('#895DD1'),
               value: widget.foodController.carbohydrate /
-                  widget.foodController.necessity.carbohydrate!,
-              size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+                  (widget.foodController.necessity.value.macro!.breakfast!
+                          .carbohydrate! +
+                      widget.foodController.necessity.value.macro!.lunch!
+                          .carbohydrate! +
+                      widget.foodController.necessity.value.macro!.dinner!
+                          .carbohydrate!),
+              size: Size(widget.size.width * 0.3, widget.size.height * 0.15),
             ),
             NecessityGauge(
               color: widget.color,
@@ -73,8 +80,13 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
               foregroundColor: HexColor.fromHex('#94223D'),
               value: widget.foodController.protein /
-                  widget.foodController.necessity.protein!,
-              size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+                  (widget.foodController.necessity.value.macro!.breakfast!
+                          .protein! +
+                      widget.foodController.necessity.value.macro!.lunch!
+                          .protein! +
+                      widget.foodController.necessity.value.macro!.dinner!
+                          .protein!),
+              size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
             ),
             NecessityGauge(
               color: widget.color,
@@ -82,8 +94,12 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
               foregroundColor: HexColor.fromHex('#D3AA19'),
               value: widget.foodController.fat /
-                  widget.foodController.necessity.fat!,
-              size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+                  (widget.foodController.necessity.value.macro!.breakfast!
+                          .fat! +
+                      widget.foodController.necessity.value.macro!.lunch!.fat! +
+                      widget
+                          .foodController.necessity.value.macro!.dinner!.fat!),
+              size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
             ),
             NecessityGauge(
               color: widget.color,
@@ -91,8 +107,13 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
               foregroundColor: HexColor.fromHex('#4E5749'),
               value: widget.foodController.fiber /
-                  widget.foodController.necessity.fiber!,
-              size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+                  (widget.foodController.necessity.value.macro!.breakfast!
+                          .fiber! +
+                      widget
+                          .foodController.necessity.value.macro!.lunch!.fiber! +
+                      widget.foodController.necessity.value.macro!.dinner!
+                          .fiber!),
+              size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
             ),
 
             NecessityGauge(
@@ -101,8 +122,8 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
               foregroundColor: HexColor.fromHex('#238094'),
               value: widget.foodController.water /
-                  widget.foodController.necessity.water!,
-              size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+                  widget.foodController.necessity.value.water!,
+              size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
             ),
             // NecessityGauge(
             //   color: widget.color,

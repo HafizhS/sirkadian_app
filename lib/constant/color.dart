@@ -12,6 +12,7 @@ class ColorConstantController extends GetxController {
   final yellowColor = HexColor.fromHex('#FFC529');
   final redColor = HexColor.fromHex('#94223D');
   final blueColor = HexColor.fromHex('#238094');
+  final greenColor = HexColor.fromHex('5B9423');
   final purpleColor = HexColor.fromHex('#895DD1');
 
   final primaryTextColor = HexColor.fromHex('#2E4638');

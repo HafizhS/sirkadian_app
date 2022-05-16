@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../constant/color.dart';
 import '../../../../controller/food_controller.dart';
-import '../../../../model/food_model/objectbox_model/food_model.dart';
+import '../../../../model/obejctbox_model.dart/food_model.dart';
 import '../../../../widget/food_widget/necessity_display.dart';
 import 'food_future_mealPlan_screen.dart';
 import 'food_mealplan_screen.dart';
@@ -78,20 +78,11 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                 Container(
                   margin: EdgeInsets.only(right: 10),
                   child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FutureMealPlanScreen(
-                                    listMealNecessity: widget.listMealNecessity,
-                                    hasBeenInitialized:
-                                        widget.hasBeenInitialized,
-                                  )));
-                    },
+                    onTap: () {},
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: FaIcon(
-                        FontAwesomeIcons.calendarAlt,
+                        FontAwesomeIcons.history,
                         size: 20,
                         color: color.secondaryTextColor,
                       ),
@@ -282,47 +273,56 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                                     size,
                                     'Kalsium',
                                     foodController.calcium /
-                                        foodController.necessity.calcium!),
+                                        foodController
+                                            .necessity.value.micro!.calcium!),
                                 bottomSheetNecesityChild(
                                     size,
                                     'Zat Besi',
                                     foodController.iron /
-                                        foodController.necessity.iron!),
+                                        foodController
+                                            .necessity.value.micro!.iron!),
                                 bottomSheetNecesityChild(
                                     size,
                                     'zinc',
                                     foodController.zinc /
-                                        foodController.necessity.zinc!),
+                                        foodController
+                                            .necessity.value.micro!.zinc!),
                                 bottomSheetNecesityChild(
                                     size,
                                     'Copper',
                                     foodController.copper /
-                                        foodController.necessity.copper!),
+                                        foodController
+                                            .necessity.value.micro!.copper!),
                                 bottomSheetNecesityChild(
                                     size,
                                     'Vitamin C',
                                     foodController.vitaminC /
-                                        foodController.necessity.vitaminC!),
+                                        foodController
+                                            .necessity.value.micro!.vitaminC!),
                                 bottomSheetNecesityChild(
                                     size,
                                     'Vitamin B1',
                                     foodController.vitaminB1 /
-                                        foodController.necessity.vitaminB1!),
+                                        foodController
+                                            .necessity.value.micro!.vitaminB1!),
                                 bottomSheetNecesityChild(
                                     size,
                                     'Vitamin B2',
                                     foodController.vitaminB2 /
-                                        foodController.necessity.vitaminB2!),
+                                        foodController
+                                            .necessity.value.micro!.vitaminB2!),
                                 bottomSheetNecesityChild(
                                     size,
                                     'Vitamin B3',
                                     foodController.vitaminB3 /
-                                        foodController.necessity.vitaminB3!),
+                                        foodController
+                                            .necessity.value.micro!.vitaminB3!),
                                 bottomSheetNecesityChild(
                                     size,
                                     'Retinol',
                                     foodController.retinol /
-                                        foodController.necessity.retinol!),
+                                        foodController
+                                            .necessity.value.micro!.retinol!),
                               ],
                             ),
                           ),
@@ -357,19 +357,24 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
     return Container(
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-              bottomLeft: Radius.zero,
-              bottomRight: Radius.zero),
-          child: Image.network(
-            imageFilename,
-            height: size.height * 0.12,
-            width: double.infinity,
-            alignment: Alignment.topRight,
-            fit: BoxFit.cover,
+        Container(
+          height: size.height * 0.1,
+          alignment: Alignment.bottomCenter,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomLeft: Radius.zero,
+                bottomRight: Radius.zero),
           ),
+          child: imageFilename == ''
+              ? Icon(Icons.image_not_supported_rounded)
+              : Image.network(
+                  imageFilename,
+                  width: double.infinity,
+                  alignment: Alignment.topRight,
+                  fit: BoxFit.cover,
+                ),
         ),
         Text(
           foodController.sessions[index],
