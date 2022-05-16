@@ -36,7 +36,7 @@ class _ProgramScreenState extends State<ProgramScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Obx(
-      () => subscriptionController.isLoadingSubscriptionAll == true
+      () => subscriptionController.listSubscription.isEmpty
           ? Scaffold(
               body: Center(
                 child: CircularProgressIndicator(

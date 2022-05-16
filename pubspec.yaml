@@ -39,8 +39,8 @@ dependencies:
   get: ^4.6.1
   get_storage: ^2.0.3
   web_socket_channel: ^2.1.0
-  objectbox: ^1.1.1
-  objectbox_flutter_libs: ^1.4.1
+  objectbox: ^1.4.1
+  objectbox_flutter_libs: any
   jwt_decoder: ^2.0.1
   font_awesome_flutter: ^9.2.0
   flutter_swiper_null_safety: ^1.0.2

@@ -13,8 +13,9 @@ import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import '../../../constant/color.dart';
 import '../../../controller/auth_controller.dart';
 import '../../../controller/food_controller.dart';
-import '../../../model/food_model/objectbox_model/food_model.dart';
+import '../../../model/obejctbox_model.dart/food_model.dart';
 import '../../../objectbox.g.dart';
+import 'food_screen/food_future_mealPlan_screen.dart';
 
 class NutritionScreen extends StatefulWidget {
   const NutritionScreen({Key? key}) : super(key: key);
@@ -41,11 +42,12 @@ class _NutritionScreenState extends State<NutritionScreen> {
   @override
   void initState() {
     super.initState();
-    getNecessity();
-
+    foodController.getNecessity();
+    foodController.getDateTime();
     getApplicationDocumentsDirectory().then((dir) {
       foodController.foodStore = Store(getObjectBoxModel(),
-          directory: join(dir.path, 'foodObjectBox'));
+          // directory: join(dir.path, 'foodObjectBox')
+          directory: '${dir.path}/food');
     }).then((value) => setState(() {
           _necessityStream = foodController.foodStore
               .box<Food>()
@@ -92,24 +94,25 @@ class _NutritionScreenState extends State<NutritionScreen> {
     super.dispose();
   }
 
-  Future<void> getNecessity() async {
-    await foodController.getNecessity();
-  }
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: color.backgroundColor,
       body: SafeArea(
-        child: Obx(() => foodController.isLoadingNecessity == true
+        child: Obx(() => foodController.necessity.value.water == null
             ? Center(
                 child: CircularProgressIndicator(
                   color: color.secondaryColor,
                 ),
               )
             : !hasBeenInitialized
-                ? Container()
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: color.secondaryColor,
+                    ),
+                  )
                 : StreamBuilder5<List<Food>, List<Food>, List<Food>, List<Food>,
                         List<Food>>(
                     streams: Tuple5(_necessityStream, _sarapanStream,
@@ -190,7 +193,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                           ),
                         ),
                         Text(
-                          'SirkaDiet',
+                          isFood ? 'SirkaDiet' : 'SirkaFluid',
                           style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 color: color.primaryTextColor,
@@ -201,7 +204,25 @@ class _NutritionScreenState extends State<NutritionScreen> {
                         Container(
                           margin: EdgeInsets.only(right: 20),
                           child: NeumorphicButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          FutureMealPlanScreen(
+                                            listMealNecessity:
+                                                snapshotNecessity.data!,
+                                            hasBeenInitialized:
+                                                hasBeenInitialized,
+                                          ))).then((_) {
+                                foodController.selectedDay = DateTime.utc(
+                                    DateTime.now().year,
+                                    DateTime.now().month,
+                                    DateTime.now().day);
+
+                                print(foodController.selectedDay);
+                              });
+                            },
                             style: NeumorphicStyle(
                               shape: NeumorphicShape.flat,
                               boxShape: NeumorphicBoxShape.circle(),
@@ -209,7 +230,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                             ),
                             padding: const EdgeInsets.all(16.0),
                             child: FaIcon(
-                              FontAwesomeIcons.history,
+                              FontAwesomeIcons.calendarAlt,
                               size: 16,
                               color: color.secondaryTextColor,
                             ),

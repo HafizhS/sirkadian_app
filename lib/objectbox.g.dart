@@ -13,193 +13,310 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import 'model/food_model/objectbox_model/food_model.dart';
+import 'model/obejctbox_model.dart/food_model.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 5263930361897727211),
-      name: 'Food',
-      lastPropertyId: const IdUid(31, 5366111589490474485),
+      id: const IdUid(1, 3008231103323831688),
+      name: 'Exercise',
+      lastPropertyId: const IdUid(9, 5785605612801335971),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 5301365717599655232),
+            id: const IdUid(1, 3615653338782105055),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 7377346063538664229),
-            name: 'userId',
-            type: 11,
-            flags: 520,
-            indexId: const IdUid(1, 6179608065616682971),
-            relationTarget: 'User'),
+            id: const IdUid(2, 1812126622084556210),
+            name: 'sportId',
+            type: 6,
+            flags: 0),
         ModelProperty(
-            id: const IdUid(3, 3330081752668938617),
+            id: const IdUid(3, 7864110207407699350),
             name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 5080397115424411192),
-            name: 'foodTypes',
-            type: 30,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 4685671319494554155),
-            name: 'duration',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(6, 1642526519936246487),
-            name: 'serving',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(7, 4158206764988908672),
-            name: 'difficulty',
+            id: const IdUid(4, 582277406779960890),
+            name: 'desc',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(8, 3521214037965269206),
-            name: 'tags',
+            id: const IdUid(5, 2999228664004424380),
+            name: 'mets',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 2867189625285625297),
+            name: 'imageFilename',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(9, 3820146398678149029),
-            name: 'water',
-            type: 8,
-            flags: 0),
+            id: const IdUid(7, 274337251598326168),
+            name: 'userId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(1, 48849009873946689),
+            relationTarget: 'User'),
         ModelProperty(
-            id: const IdUid(10, 2504016805899006015),
-            name: 'energy',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(11, 7190789844084708690),
-            name: 'protein',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(12, 4332760521111508542),
-            name: 'fat',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(13, 7535668432303297987),
-            name: 'carbohydrate',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(14, 869466929543253006),
-            name: 'fiber',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(15, 3741146930999361171),
-            name: 'calcium',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(16, 683449714729504126),
-            name: 'iron',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(17, 3725140886269777045),
-            name: 'phosphor',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(18, 5532428137260382052),
-            name: 'potassium',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(19, 2301573935661923239),
-            name: 'sodium',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(20, 14498855817561280),
-            name: 'zinc',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(21, 6164108965771071196),
-            name: 'copper',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(22, 2610613380420148766),
-            name: 'vitaminC',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(23, 8520671450635556048),
-            name: 'vitaminB1',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(24, 6465474963942018882),
-            name: 'vitaminB2',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(25, 8500847979050416180),
-            name: 'vitaminB3',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(26, 3420103133910105705),
-            name: 'retinol',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(27, 2214761450242455632),
-            name: 'foodId',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(28, 5227375609840779980),
-            name: 'session',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(29, 5677312023459543818),
+            id: const IdUid(8, 1567179705838215984),
             name: 'date',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(30, 5460371108322994448),
-            name: 'instruction',
-            type: 30,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(31, 5366111589490474485),
-            name: 'imageFileName',
-            type: 9,
+            id: const IdUid(9, 5785605612801335971),
+            name: 'isChecked',
+            type: 1,
             flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(2, 937332134421631514),
-      name: 'User',
-      lastPropertyId: const IdUid(1, 2916353400714214596),
+      id: const IdUid(2, 1537447124247363090),
+      name: 'Food',
+      lastPropertyId: const IdUid(31, 3534973823171917606),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 2916353400714214596),
+            id: const IdUid(1, 1827803256389649423),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 8266201449706535739),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 212255939708086216),
+            name: 'foodTypes',
+            type: 30,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 1651283957346611691),
+            name: 'duration',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 6766339525834140782),
+            name: 'serving',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 7172396799859426036),
+            name: 'session',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 3401850130613586118),
+            name: 'date',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 7997541492252149572),
+            name: 'difficulty',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 5361553243045867856),
+            name: 'tags',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(10, 2942761977035440198),
+            name: 'water',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(11, 742429649812164597),
+            name: 'energy',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(12, 3468394470166265548),
+            name: 'protein',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(13, 6786427632652934830),
+            name: 'fat',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(14, 181047063025413438),
+            name: 'carbohydrate',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(15, 1191615290116359505),
+            name: 'fiber',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(16, 2934399922158885364),
+            name: 'calcium',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(17, 2891129737123689418),
+            name: 'iron',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(18, 2645815561105167672),
+            name: 'phosphor',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(19, 4921141469057489333),
+            name: 'potassium',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(20, 3172267514076120666),
+            name: 'sodium',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(21, 3534344241356221884),
+            name: 'zinc',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(22, 7683524786197295127),
+            name: 'copper',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(23, 3403812029689781462),
+            name: 'vitaminC',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(24, 2431716558378395180),
+            name: 'vitaminB1',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(25, 7040609714595649194),
+            name: 'vitaminB2',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(26, 8002174984704190355),
+            name: 'vitaminB3',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(27, 8910209046546154968),
+            name: 'retinol',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(28, 8237221542813592976),
+            name: 'foodId',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(29, 533869178784666820),
+            name: 'instruction',
+            type: 30,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(30, 3672133806436929419),
+            name: 'imageFileName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(31, 3534973823171917606),
+            name: 'userId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(2, 4707290468638542427),
+            relationTarget: 'User')
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(3, 7510490782568328100),
+      name: 'User',
+      lastPropertyId: const IdUid(1, 3060100015683794578),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 3060100015683794578),
             name: 'id',
             type: 6,
             flags: 1)
       ],
-      relations: <ModelRelation>[],
+      relations: <ModelRelation>[
+        ModelRelation(
+            id: const IdUid(1, 2793138410119953805),
+            name: 'exercises',
+            targetId: const IdUid(1, 3008231103323831688))
+      ],
       backlinks: <ModelBacklink>[
         ModelBacklink(name: 'foods', srcEntity: 'Food', srcField: '')
-      ])
+      ]),
+  ModelEntity(
+      id: const IdUid(4, 8973082184935809639),
+      name: 'Variations',
+      lastPropertyId: const IdUid(12, 2893357313142973546),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 7920547170551620558),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 1683529787628143452),
+            name: 'sportId',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 6557456373294508945),
+            name: 'sportVariationsId',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 7423941731417593974),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 5533496727351254392),
+            name: 'desc',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 533139905566367718),
+            name: 'mets',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 4530687362846416579),
+            name: 'imageFilename',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 98058746785667943),
+            name: 'userId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(3, 6506144417513643134),
+            relationTarget: 'Exercise'),
+        ModelProperty(
+            id: const IdUid(12, 2893357313142973546),
+            name: 'subVariations',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[])
 ];
 
 /// Open an ObjectBox store with the model declared in this file.
@@ -222,21 +339,81 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(2, 937332134421631514),
-      lastIndexId: const IdUid(1, 6179608065616682971),
-      lastRelationId: const IdUid(0, 0),
+      lastEntityId: const IdUid(4, 8973082184935809639),
+      lastIndexId: const IdUid(3, 6506144417513643134),
+      lastRelationId: const IdUid(1, 2793138410119953805),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [
+        1429937487993746113,
+        7226356010622220216,
+        5683875273788991992
+      ],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
       version: 1);
 
   final bindings = <Type, EntityDefinition>{
-    Food: EntityDefinition<Food>(
+    Exercise: EntityDefinition<Exercise>(
         model: _entities[0],
+        toOneRelations: (Exercise object) => [object.user],
+        toManyRelations: (Exercise object) => {},
+        getId: (Exercise object) => object.id,
+        setId: (Exercise object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Exercise object, fb.Builder fbb) {
+          final nameOffset =
+              object.name == null ? null : fbb.writeString(object.name!);
+          final descOffset =
+              object.desc == null ? null : fbb.writeString(object.desc!);
+          final imageFilenameOffset = object.imageFilename == null
+              ? null
+              : fbb.writeString(object.imageFilename!);
+          final dateOffset =
+              object.date == null ? null : fbb.writeString(object.date!);
+          fbb.startTable(10);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(1, object.sportId);
+          fbb.addOffset(2, nameOffset);
+          fbb.addOffset(3, descOffset);
+          fbb.addFloat64(4, object.mets);
+          fbb.addOffset(5, imageFilenameOffset);
+          fbb.addInt64(6, object.user.targetId);
+          fbb.addOffset(7, dateOffset);
+          fbb.addBool(8, object.isChecked);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Exercise(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              name: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8),
+              desc: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 10),
+              imageFilename: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 14),
+              mets: const fb.Float64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 12),
+              sportId: const fb.Int64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 6),
+              date: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 18),
+              isChecked: const fb.BoolReader()
+                  .vTableGetNullable(buffer, rootOffset, 20));
+          object.user.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
+          object.user.attach(store);
+          return object;
+        }),
+    Food: EntityDefinition<Food>(
+        model: _entities[1],
         toOneRelations: (Food object) => [object.user],
         toManyRelations: (Food object) => {},
         getId: (Food object) => object.id,
@@ -251,13 +428,13 @@ ModelDefinition getObjectBoxModel() {
               : fbb.writeList(object.foodTypes!
                   .map(fbb.writeString)
                   .toList(growable: false));
+          final sessionOffset = fbb.writeString(object.session);
+          final dateOffset = fbb.writeString(object.date);
           final difficultyOffset = object.difficulty == null
               ? null
               : fbb.writeString(object.difficulty!);
           final tagsOffset =
               object.tags == null ? null : fbb.writeString(object.tags!);
-          final sessionOffset = fbb.writeString(object.session);
-          final dateOffset = fbb.writeString(object.date);
           final instructionOffset = object.instruction == null
               ? null
               : fbb.writeList(object.instruction!
@@ -268,36 +445,36 @@ ModelDefinition getObjectBoxModel() {
               : fbb.writeString(object.imageFileName!);
           fbb.startTable(32);
           fbb.addInt64(0, object.id);
-          fbb.addInt64(1, object.user.targetId);
-          fbb.addOffset(2, nameOffset);
-          fbb.addOffset(3, foodTypesOffset);
-          fbb.addInt64(4, object.duration);
-          fbb.addInt64(5, object.serving);
-          fbb.addOffset(6, difficultyOffset);
-          fbb.addOffset(7, tagsOffset);
-          fbb.addFloat64(8, object.water);
-          fbb.addFloat64(9, object.energy);
-          fbb.addFloat64(10, object.protein);
-          fbb.addFloat64(11, object.fat);
-          fbb.addFloat64(12, object.carbohydrate);
-          fbb.addFloat64(13, object.fiber);
-          fbb.addFloat64(14, object.calcium);
-          fbb.addFloat64(15, object.iron);
-          fbb.addFloat64(16, object.phosphor);
-          fbb.addFloat64(17, object.potassium);
-          fbb.addFloat64(18, object.sodium);
-          fbb.addFloat64(19, object.zinc);
-          fbb.addFloat64(20, object.copper);
-          fbb.addFloat64(21, object.vitaminC);
-          fbb.addFloat64(22, object.vitaminB1);
-          fbb.addFloat64(23, object.vitaminB2);
-          fbb.addFloat64(24, object.vitaminB3);
-          fbb.addFloat64(25, object.retinol);
-          fbb.addInt64(26, object.foodId);
-          fbb.addOffset(27, sessionOffset);
-          fbb.addOffset(28, dateOffset);
-          fbb.addOffset(29, instructionOffset);
-          fbb.addOffset(30, imageFileNameOffset);
+          fbb.addOffset(1, nameOffset);
+          fbb.addOffset(2, foodTypesOffset);
+          fbb.addInt64(3, object.duration);
+          fbb.addInt64(4, object.serving);
+          fbb.addOffset(5, sessionOffset);
+          fbb.addOffset(6, dateOffset);
+          fbb.addOffset(7, difficultyOffset);
+          fbb.addOffset(8, tagsOffset);
+          fbb.addFloat64(9, object.water);
+          fbb.addFloat64(10, object.energy);
+          fbb.addFloat64(11, object.protein);
+          fbb.addFloat64(12, object.fat);
+          fbb.addFloat64(13, object.carbohydrate);
+          fbb.addFloat64(14, object.fiber);
+          fbb.addFloat64(15, object.calcium);
+          fbb.addFloat64(16, object.iron);
+          fbb.addFloat64(17, object.phosphor);
+          fbb.addFloat64(18, object.potassium);
+          fbb.addFloat64(19, object.sodium);
+          fbb.addFloat64(20, object.zinc);
+          fbb.addFloat64(21, object.copper);
+          fbb.addFloat64(22, object.vitaminC);
+          fbb.addFloat64(23, object.vitaminB1);
+          fbb.addFloat64(24, object.vitaminB2);
+          fbb.addFloat64(25, object.vitaminB3);
+          fbb.addFloat64(26, object.retinol);
+          fbb.addInt64(27, object.foodId);
+          fbb.addOffset(28, instructionOffset);
+          fbb.addOffset(29, imageFileNameOffset);
+          fbb.addInt64(30, object.user.targetId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -308,53 +485,54 @@ ModelDefinition getObjectBoxModel() {
           final object = Food(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               name: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 8),
+                  .vTableGetNullable(buffer, rootOffset, 6),
               foodTypes:
                   const fb.ListReader<String>(fb.StringReader(asciiOptimization: true), lazy: false)
-                      .vTableGetNullable(buffer, rootOffset, 10),
+                      .vTableGetNullable(buffer, rootOffset, 8),
               duration: const fb.Int64Reader()
-                  .vTableGetNullable(buffer, rootOffset, 12),
+                  .vTableGetNullable(buffer, rootOffset, 10),
               serving: const fb.Int64Reader()
-                  .vTableGetNullable(buffer, rootOffset, 14),
+                  .vTableGetNullable(buffer, rootOffset, 12),
               date: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 60, ''),
+                  .vTableGet(buffer, rootOffset, 16, ''),
               session: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 58, ''),
+                  .vTableGet(buffer, rootOffset, 14, ''),
               difficulty: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 16),
-              tags: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 18),
-              water: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 20),
-              energy: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 22),
-              protein: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 24),
-              fat: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 26),
-              carbohydrate: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 28),
-              fiber: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 30),
-              calcium: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 32),
-              iron: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 34),
-              phosphor: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 36),
-              potassium: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 38),
-              sodium: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 40),
-              zinc: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 42),
-              copper: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 44),
-              vitaminC: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 46),
-              vitaminB1: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 48),
-              vitaminB2: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 50),
-              vitaminB3: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 52),
-              retinol: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 54),
-              foodId: const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 56),
-              instruction: const fb.ListReader<String>(fb.StringReader(asciiOptimization: true), lazy: false).vTableGetNullable(buffer, rootOffset, 62),
-              imageFileName: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 64));
+                  .vTableGetNullable(buffer, rootOffset, 18),
+              tags: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 20),
+              water: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 22),
+              energy: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 24),
+              protein: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 26),
+              fat: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 28),
+              carbohydrate: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 30),
+              fiber: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 32),
+              calcium: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 34),
+              iron: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 36),
+              phosphor: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 38),
+              potassium: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 40),
+              sodium: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 42),
+              zinc: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 44),
+              copper: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 46),
+              vitaminC: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 48),
+              vitaminB1: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 50),
+              vitaminB2: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 52),
+              vitaminB3: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 54),
+              retinol: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 56),
+              foodId: const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 58),
+              instruction: const fb.ListReader<String>(fb.StringReader(asciiOptimization: true), lazy: false).vTableGetNullable(buffer, rootOffset, 60),
+              imageFileName: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 62));
           object.user.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 64, 0);
           object.user.attach(store);
           return object;
         }),
     User: EntityDefinition<User>(
-        model: _entities[1],
+        model: _entities[2],
         toOneRelations: (User object) => [],
         toManyRelations: (User object) => {
+              RelInfo<User>.toMany(1, object.id): object.exercises,
               RelInfo<Food>.toOneBacklink(
-                      2, object.id, (Food srcObject) => srcObject.user):
+                      31, object.id, (Food srcObject) => srcObject.user):
                   object.foods
             },
         getId: (User object) => object.id,
@@ -373,12 +551,71 @@ ModelDefinition getObjectBoxModel() {
 
           final object = User(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
+          InternalToManyAccess.setRelInfo(object.exercises, store,
+              RelInfo<User>.toMany(1, object.id), store.box<User>());
           InternalToManyAccess.setRelInfo(
               object.foods,
               store,
               RelInfo<Food>.toOneBacklink(
-                  2, object.id, (Food srcObject) => srcObject.user),
+                  31, object.id, (Food srcObject) => srcObject.user),
               store.box<User>());
+          return object;
+        }),
+    Variations: EntityDefinition<Variations>(
+        model: _entities[3],
+        toOneRelations: (Variations object) => [object.user],
+        toManyRelations: (Variations object) => {},
+        getId: (Variations object) => object.id,
+        setId: (Variations object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Variations object, fb.Builder fbb) {
+          final nameOffset =
+              object.name == null ? null : fbb.writeString(object.name!);
+          final descOffset =
+              object.desc == null ? null : fbb.writeString(object.desc!);
+          final imageFilenameOffset = object.imageFilename == null
+              ? null
+              : fbb.writeString(object.imageFilename!);
+          final subVariationsOffset = object.subVariations == null
+              ? null
+              : fbb.writeString(object.subVariations!);
+          fbb.startTable(13);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(1, object.sportId);
+          fbb.addInt64(2, object.sportVariationsId);
+          fbb.addOffset(3, nameOffset);
+          fbb.addOffset(4, descOffset);
+          fbb.addFloat64(5, object.mets);
+          fbb.addOffset(7, imageFilenameOffset);
+          fbb.addInt64(8, object.user.targetId);
+          fbb.addOffset(11, subVariationsOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Variations(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              name: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 10),
+              desc: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 12),
+              imageFilename: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 18),
+              mets: const fb.Float64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 14),
+              sportId: const fb.Int64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 6),
+              subVariations: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 26),
+              sportVariationsId: const fb.Int64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 8));
+          object.user.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
+          object.user.attach(store);
           return object;
         })
   };
@@ -386,117 +623,194 @@ ModelDefinition getObjectBoxModel() {
   return ModelDefinition(model, bindings);
 }
 
+/// [Exercise] entity fields to define ObjectBox queries.
+class Exercise_ {
+  /// see [Exercise.id]
+  static final id = QueryIntegerProperty<Exercise>(_entities[0].properties[0]);
+
+  /// see [Exercise.sportId]
+  static final sportId =
+      QueryIntegerProperty<Exercise>(_entities[0].properties[1]);
+
+  /// see [Exercise.name]
+  static final name = QueryStringProperty<Exercise>(_entities[0].properties[2]);
+
+  /// see [Exercise.desc]
+  static final desc = QueryStringProperty<Exercise>(_entities[0].properties[3]);
+
+  /// see [Exercise.mets]
+  static final mets = QueryDoubleProperty<Exercise>(_entities[0].properties[4]);
+
+  /// see [Exercise.imageFilename]
+  static final imageFilename =
+      QueryStringProperty<Exercise>(_entities[0].properties[5]);
+
+  /// see [Exercise.user]
+  static final user =
+      QueryRelationToOne<Exercise, User>(_entities[0].properties[6]);
+
+  /// see [Exercise.date]
+  static final date = QueryStringProperty<Exercise>(_entities[0].properties[7]);
+
+  /// see [Exercise.isChecked]
+  static final isChecked =
+      QueryBooleanProperty<Exercise>(_entities[0].properties[8]);
+}
+
 /// [Food] entity fields to define ObjectBox queries.
 class Food_ {
   /// see [Food.id]
-  static final id = QueryIntegerProperty<Food>(_entities[0].properties[0]);
-
-  /// see [Food.user]
-  static final user =
-      QueryRelationToOne<Food, User>(_entities[0].properties[1]);
+  static final id = QueryIntegerProperty<Food>(_entities[1].properties[0]);
 
   /// see [Food.name]
-  static final name = QueryStringProperty<Food>(_entities[0].properties[2]);
+  static final name = QueryStringProperty<Food>(_entities[1].properties[1]);
 
   /// see [Food.foodTypes]
   static final foodTypes =
-      QueryStringVectorProperty<Food>(_entities[0].properties[3]);
+      QueryStringVectorProperty<Food>(_entities[1].properties[2]);
 
   /// see [Food.duration]
   static final duration =
-      QueryIntegerProperty<Food>(_entities[0].properties[4]);
+      QueryIntegerProperty<Food>(_entities[1].properties[3]);
 
   /// see [Food.serving]
-  static final serving = QueryIntegerProperty<Food>(_entities[0].properties[5]);
+  static final serving = QueryIntegerProperty<Food>(_entities[1].properties[4]);
+
+  /// see [Food.session]
+  static final session = QueryStringProperty<Food>(_entities[1].properties[5]);
+
+  /// see [Food.date]
+  static final date = QueryStringProperty<Food>(_entities[1].properties[6]);
 
   /// see [Food.difficulty]
   static final difficulty =
-      QueryStringProperty<Food>(_entities[0].properties[6]);
+      QueryStringProperty<Food>(_entities[1].properties[7]);
 
   /// see [Food.tags]
-  static final tags = QueryStringProperty<Food>(_entities[0].properties[7]);
+  static final tags = QueryStringProperty<Food>(_entities[1].properties[8]);
 
   /// see [Food.water]
-  static final water = QueryDoubleProperty<Food>(_entities[0].properties[8]);
+  static final water = QueryDoubleProperty<Food>(_entities[1].properties[9]);
 
   /// see [Food.energy]
-  static final energy = QueryDoubleProperty<Food>(_entities[0].properties[9]);
+  static final energy = QueryDoubleProperty<Food>(_entities[1].properties[10]);
 
   /// see [Food.protein]
-  static final protein = QueryDoubleProperty<Food>(_entities[0].properties[10]);
+  static final protein = QueryDoubleProperty<Food>(_entities[1].properties[11]);
 
   /// see [Food.fat]
-  static final fat = QueryDoubleProperty<Food>(_entities[0].properties[11]);
+  static final fat = QueryDoubleProperty<Food>(_entities[1].properties[12]);
 
   /// see [Food.carbohydrate]
   static final carbohydrate =
-      QueryDoubleProperty<Food>(_entities[0].properties[12]);
+      QueryDoubleProperty<Food>(_entities[1].properties[13]);
 
   /// see [Food.fiber]
-  static final fiber = QueryDoubleProperty<Food>(_entities[0].properties[13]);
+  static final fiber = QueryDoubleProperty<Food>(_entities[1].properties[14]);
 
   /// see [Food.calcium]
-  static final calcium = QueryDoubleProperty<Food>(_entities[0].properties[14]);
+  static final calcium = QueryDoubleProperty<Food>(_entities[1].properties[15]);
 
   /// see [Food.iron]
-  static final iron = QueryDoubleProperty<Food>(_entities[0].properties[15]);
+  static final iron = QueryDoubleProperty<Food>(_entities[1].properties[16]);
 
   /// see [Food.phosphor]
   static final phosphor =
-      QueryDoubleProperty<Food>(_entities[0].properties[16]);
+      QueryDoubleProperty<Food>(_entities[1].properties[17]);
 
   /// see [Food.potassium]
   static final potassium =
-      QueryDoubleProperty<Food>(_entities[0].properties[17]);
+      QueryDoubleProperty<Food>(_entities[1].properties[18]);
 
   /// see [Food.sodium]
-  static final sodium = QueryDoubleProperty<Food>(_entities[0].properties[18]);
+  static final sodium = QueryDoubleProperty<Food>(_entities[1].properties[19]);
 
   /// see [Food.zinc]
-  static final zinc = QueryDoubleProperty<Food>(_entities[0].properties[19]);
+  static final zinc = QueryDoubleProperty<Food>(_entities[1].properties[20]);
 
   /// see [Food.copper]
-  static final copper = QueryDoubleProperty<Food>(_entities[0].properties[20]);
+  static final copper = QueryDoubleProperty<Food>(_entities[1].properties[21]);
 
   /// see [Food.vitaminC]
   static final vitaminC =
-      QueryDoubleProperty<Food>(_entities[0].properties[21]);
+      QueryDoubleProperty<Food>(_entities[1].properties[22]);
 
   /// see [Food.vitaminB1]
   static final vitaminB1 =
-      QueryDoubleProperty<Food>(_entities[0].properties[22]);
+      QueryDoubleProperty<Food>(_entities[1].properties[23]);
 
   /// see [Food.vitaminB2]
   static final vitaminB2 =
-      QueryDoubleProperty<Food>(_entities[0].properties[23]);
+      QueryDoubleProperty<Food>(_entities[1].properties[24]);
 
   /// see [Food.vitaminB3]
   static final vitaminB3 =
-      QueryDoubleProperty<Food>(_entities[0].properties[24]);
+      QueryDoubleProperty<Food>(_entities[1].properties[25]);
 
   /// see [Food.retinol]
-  static final retinol = QueryDoubleProperty<Food>(_entities[0].properties[25]);
+  static final retinol = QueryDoubleProperty<Food>(_entities[1].properties[26]);
 
   /// see [Food.foodId]
-  static final foodId = QueryIntegerProperty<Food>(_entities[0].properties[26]);
-
-  /// see [Food.session]
-  static final session = QueryStringProperty<Food>(_entities[0].properties[27]);
-
-  /// see [Food.date]
-  static final date = QueryStringProperty<Food>(_entities[0].properties[28]);
+  static final foodId = QueryIntegerProperty<Food>(_entities[1].properties[27]);
 
   /// see [Food.instruction]
   static final instruction =
-      QueryStringVectorProperty<Food>(_entities[0].properties[29]);
+      QueryStringVectorProperty<Food>(_entities[1].properties[28]);
 
   /// see [Food.imageFileName]
   static final imageFileName =
-      QueryStringProperty<Food>(_entities[0].properties[30]);
+      QueryStringProperty<Food>(_entities[1].properties[29]);
+
+  /// see [Food.user]
+  static final user =
+      QueryRelationToOne<Food, User>(_entities[1].properties[30]);
 }
 
 /// [User] entity fields to define ObjectBox queries.
 class User_ {
   /// see [User.id]
-  static final id = QueryIntegerProperty<User>(_entities[1].properties[0]);
+  static final id = QueryIntegerProperty<User>(_entities[2].properties[0]);
+
+  /// see [User.exercises]
+  static final exercises =
+      QueryRelationToMany<User, Exercise>(_entities[2].relations[0]);
+}
+
+/// [Variations] entity fields to define ObjectBox queries.
+class Variations_ {
+  /// see [Variations.id]
+  static final id =
+      QueryIntegerProperty<Variations>(_entities[3].properties[0]);
+
+  /// see [Variations.sportId]
+  static final sportId =
+      QueryIntegerProperty<Variations>(_entities[3].properties[1]);
+
+  /// see [Variations.sportVariationsId]
+  static final sportVariationsId =
+      QueryIntegerProperty<Variations>(_entities[3].properties[2]);
+
+  /// see [Variations.name]
+  static final name =
+      QueryStringProperty<Variations>(_entities[3].properties[3]);
+
+  /// see [Variations.desc]
+  static final desc =
+      QueryStringProperty<Variations>(_entities[3].properties[4]);
+
+  /// see [Variations.mets]
+  static final mets =
+      QueryDoubleProperty<Variations>(_entities[3].properties[5]);
+
+  /// see [Variations.imageFilename]
+  static final imageFilename =
+      QueryStringProperty<Variations>(_entities[3].properties[6]);
+
+  /// see [Variations.user]
+  static final user =
+      QueryRelationToOne<Variations, Exercise>(_entities[3].properties[7]);
+
+  /// see [Variations.subVariations]
+  static final subVariations =
+      QueryStringProperty<Variations>(_entities[3].properties[8]);
 }

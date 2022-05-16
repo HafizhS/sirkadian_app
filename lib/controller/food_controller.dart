@@ -8,7 +8,7 @@ import 'package:sirkadian_app/model/food_model/foodAll_response_model.dart';
 import 'package:sirkadian_app/model/food_model/necessity_response_model.dart';
 import 'package:sirkadian_app/provider/food_provider.dart';
 
-import '../model/food_model/objectbox_model/food_model.dart';
+import '../model/obejctbox_model.dart/food_model.dart';
 
 class FoodController extends GetxController {
   final data = GetStorage('myData');
@@ -25,7 +25,7 @@ class FoodController extends GetxController {
   final isOnFood = false.obs;
 
   //necessity material
-  late var necessity = DataNecessityResponse();
+  var necessity = DataNecessityResponse().obs;
 
   var listMealSarapan = <Food>[].obs;
   var listMealMakanSiang = <Food>[].obs;
@@ -116,12 +116,15 @@ class FoodController extends GetxController {
     try {
       String accessToken = data.read('dataUser')['accessToken'];
       var _res = await _provider.getNecessity(accessToken);
+      print(_res.statusCode);
       if (_res.statusCode == 200) {
+        print(_res.body);
         NecessityResponse _necessityResponse =
             NecessityResponse.fromJson(_res.body as Map<String, dynamic>);
 
         if (_necessityResponse.statusCode == 200) {
-          necessity = _necessityResponse.data!;
+          print(_necessityResponse.data);
+          necessity.value = _necessityResponse.data!;
         }
       }
 

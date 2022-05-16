@@ -8,7 +8,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../constant/color.dart';
 import '../../../../controller/food_controller.dart';
-import '../../../../model/food_model/objectbox_model/food_model.dart';
+import '../../../../model/obejctbox_model.dart/food_model.dart';
 import '../../../../objectbox.g.dart';
 import '../../../../widget/food_widget/necessity_display.dart';
 import 'food_mealplan_screen.dart';
@@ -233,7 +233,11 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                   }),
               //segment 3
               !hasBeenInitialized
-                  ? Container()
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: color.secondaryColor,
+                      ),
+                    )
                   : StreamBuilder<List<Food>>(
                       stream: _necessityStream,
                       builder: (context, snapshot) {
@@ -276,7 +280,6 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
           viewportFraction: 0.5,
           scale: 0.9,
           itemBuilder: (BuildContext context, int index) {
-            print(foodController.listMealSarapan.isNotEmpty);
             switch (index) {
               case 0:
                 return Container(
@@ -399,19 +402,24 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
     return Container(
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-              bottomLeft: Radius.zero,
-              bottomRight: Radius.zero),
-          child: Image.network(
-            imageFilename,
-            height: size.height * 0.12,
-            width: double.infinity,
-            alignment: Alignment.topRight,
-            fit: BoxFit.cover,
+        Container(
+          height: size.height * 0.1,
+          alignment: Alignment.bottomCenter,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomLeft: Radius.zero,
+                bottomRight: Radius.zero),
           ),
+          child: imageFilename == ''
+              ? Icon(Icons.image_not_supported_rounded)
+              : Image.network(
+                  imageFilename,
+                  width: double.infinity,
+                  alignment: Alignment.topRight,
+                  fit: BoxFit.cover,
+                ),
         ),
         Text(
           foodController.sessions[index],
@@ -506,50 +514,56 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                                         size,
                                         'Kalsium',
                                         foodController.calcium /
-                                            foodController.necessity.calcium!),
+                                            foodController.necessity.value
+                                                .micro!.calcium!),
                                     bottomSheetNecesityChild(
                                         size,
                                         'Zat Besi',
                                         foodController.iron /
-                                            foodController.necessity.iron!),
+                                            foodController
+                                                .necessity.value.micro!.iron!),
                                     bottomSheetNecesityChild(
                                         size,
                                         'zinc',
                                         foodController.zinc /
-                                            foodController.necessity.zinc!),
+                                            foodController
+                                                .necessity.value.micro!.zinc!),
                                     bottomSheetNecesityChild(
                                         size,
                                         'Copper',
                                         foodController.copper /
-                                            foodController.necessity.copper!),
+                                            foodController.necessity.value
+                                                .micro!.copper!),
                                     bottomSheetNecesityChild(
                                         size,
                                         'Vitamin C',
                                         foodController.vitaminC /
-                                            foodController.necessity.vitaminC!),
+                                            foodController.necessity.value
+                                                .micro!.vitaminC!),
                                     bottomSheetNecesityChild(
                                         size,
                                         'Vitamin B1',
                                         foodController.vitaminB1 /
-                                            foodController
-                                                .necessity.vitaminB1!),
+                                            foodController.necessity.value
+                                                .micro!.vitaminB1!),
                                     bottomSheetNecesityChild(
                                         size,
                                         'Vitamin B2',
                                         foodController.vitaminB2 /
-                                            foodController
-                                                .necessity.vitaminB2!),
+                                            foodController.necessity.value
+                                                .micro!.vitaminB2!),
                                     bottomSheetNecesityChild(
                                         size,
                                         'Vitamin B3',
                                         foodController.vitaminB3 /
-                                            foodController
-                                                .necessity.vitaminB3!),
+                                            foodController.necessity.value
+                                                .micro!.vitaminB3!),
                                     bottomSheetNecesityChild(
                                         size,
                                         'Retinol',
                                         foodController.retinol /
-                                            foodController.necessity.retinol!),
+                                            foodController.necessity.value
+                                                .micro!.retinol!),
                                   ],
                                 ),
                               ),
@@ -588,8 +602,13 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
             HeaderStyle(formatButtonVisible: false, titleCentered: true),
         onDaySelected: (_selectedDay, _focusedDay) {
           setState(() {
-            // print(focusedDay);
-            foodController.selectedDay = _selectedDay;
+            if (_selectedDay.day == DateTime.now().day) {
+              foodController.selectedDay = DateTime.utc(DateTime.now().year,
+                  DateTime.now().month, DateTime.now().day);
+            } else {
+              foodController.selectedDay = _selectedDay;
+            }
+
             foodController.focusedDay = _focusedDay;
             _necessityStream = foodController.foodStore
                 .box<Food>()

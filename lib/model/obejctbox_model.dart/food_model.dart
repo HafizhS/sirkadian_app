@@ -69,11 +69,64 @@ class Food {
 }
 
 @Entity()
+class Exercise {
+  int id;
+  int? sportId;
+  String? name;
+  String? desc;
+  double? mets;
+  // List<Variations>? variations;
+  String? date;
+  String? imageFilename;
+  bool? isChecked;
+
+  final user = ToOne<User>();
+  Exercise({
+    this.id = 0,
+    required this.name,
+    required this.desc,
+    required this.imageFilename,
+    required this.mets,
+    required this.sportId,
+    required this.date,
+    required this.isChecked,
+
+    // required this.variations,
+  });
+}
+
+@Entity()
+class Variations {
+  int id;
+  int? sportId;
+  int? sportVariationsId;
+  String? name;
+
+  String? desc;
+  double? mets;
+  String? subVariations;
+  String? imageFilename;
+
+  final user = ToOne<Exercise>();
+  Variations({
+    this.id = 0,
+    required this.name,
+    required this.desc,
+    required this.imageFilename,
+    required this.mets,
+    required this.sportId,
+    required this.subVariations,
+    required this.sportVariationsId,
+  });
+}
+
+@Entity()
 class User {
   int id;
 
   @Backlink()
   final foods = ToMany<Food>();
+  final exercises = ToMany<Exercise>();
 
   User({
     this.id = 0,

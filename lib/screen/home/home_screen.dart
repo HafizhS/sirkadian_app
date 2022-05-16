@@ -178,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   foregroundPainter: CircleProgressBarPainter(
-                                    foregroundColor: color.redColor,
+                                    foregroundColor: color.secondaryColor,
                                     backgroundColor: color.secondaryTextColor
                                         .withOpacity(0.3),
                                     percentage: 0.6,
@@ -220,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   foregroundPainter: CircleProgressBarPainter(
-                                    foregroundColor: color.yellowColor,
+                                    foregroundColor: color.secondaryColor,
                                     backgroundColor: color.secondaryTextColor
                                         .withOpacity(0.3),
                                     percentage: 0.3,
@@ -262,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   foregroundPainter: CircleProgressBarPainter(
-                                    foregroundColor: color.blueColor,
+                                    foregroundColor: color.secondaryColor,
                                     backgroundColor: color.secondaryTextColor
                                         .withOpacity(0.3),
                                     percentage: 0.4,

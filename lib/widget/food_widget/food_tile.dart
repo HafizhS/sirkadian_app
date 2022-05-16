@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +15,7 @@ class FoodTile extends StatelessWidget {
     required this.containerButton,
     required this.iconButton,
     required this.icon,
-    required this.imageFileName,
+    required this.imageFilename,
   }) : super(key: key);
 
   final ColorConstantController color;
@@ -25,7 +24,7 @@ class FoodTile extends StatelessWidget {
   final String serving;
   final Size size;
   final IconData icon;
-  final String imageFileName;
+  final String imageFilename;
   final Function() containerButton;
   final Function() iconButton;
 
@@ -45,20 +44,14 @@ class FoodTile extends StatelessWidget {
         Row(
           children: [
             Container(
-              decoration: BoxDecoration(
-                  color: color.backupPrimaryColor,
-                  borderRadius: BorderRadius.circular(20)),
-              child: CachedNetworkImage(
-                placeholder: (context, url) =>
-                    Icon(Icons.image_not_supported_rounded),
-                imageUrl: imageFileName == '' ? '' : imageFileName,
-                fit: BoxFit.cover,
                 height: size.height * 0.15,
                 width: size.width * 0.3,
-                errorWidget: (context, url, error) =>
-                    Icon(Icons.image_not_supported_rounded),
-              ),
-            ),
+                decoration: BoxDecoration(
+                    color: color.backupPrimaryColor,
+                    borderRadius: BorderRadius.circular(20)),
+                child: imageFilename == ''
+                    ? Icon(Icons.image_not_supported_rounded)
+                    : Image.network(imageFilename)),
             SizedBox(
               width: size.width * 0.02,
             ),

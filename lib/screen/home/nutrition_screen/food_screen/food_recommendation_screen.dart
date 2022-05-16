@@ -7,7 +7,7 @@ import '../../../../constant/color.dart';
 import '../../../../controller/auth_controller.dart';
 import '../../../../controller/food_controller.dart';
 
-import '../../../../model/food_model/objectbox_model/food_model.dart';
+import '../../../../model/obejctbox_model.dart/food_model.dart';
 import '../../../../widget/food_widget/food_tile.dart';
 import 'food_detail_screen.dart';
 
@@ -28,7 +28,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
   final authController = Get.find<AuthController>();
   final foodController = Get.find<FoodController>();
   final color = Get.find<ColorConstantController>();
-  TextEditingController searchTextController = TextEditingController();
+  TextEditingController _searchTextController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -48,7 +48,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
               child: Scaffold(
                   backgroundColor: color.primaryColor,
                   body: Obx(
-                    () => foodController.isLoadingFoodAll.value
+                    () => foodController.listFood.isEmpty
                         ? Center(
                             child: CircularProgressIndicator(
                               color: color.secondaryColor,
@@ -98,7 +98,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: 20),
                                             child: TextFormField(
-                                              controller: searchTextController,
+                                              controller: _searchTextController,
                                               decoration: InputDecoration(
                                                 icon: FaIcon(
                                                   FontAwesomeIcons.search,
@@ -120,7 +120,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                                 ),
                                                 suffixIcon: IconButton(
                                                   onPressed: () {
-                                                    searchTextController
+                                                    _searchTextController
                                                         .clear();
                                                     FocusScopeNode
                                                         currentFocus =
@@ -342,9 +342,14 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                                   icon: FontAwesomeIcons.plus,
                                                   size: size,
                                                   color: color,
-                                                  imageFileName: foodController
-                                                      .listFood[index]
-                                                      .imageFilename!,
+                                                  imageFilename: foodController
+                                                              .listFood[index]
+                                                              .imageFilename! ==
+                                                          ''
+                                                      ? ''
+                                                      : foodController
+                                                          .listFood[index]
+                                                          .imageFilename!,
                                                   name: foodController
                                                       .listFood[index]
                                                       .foodName!,

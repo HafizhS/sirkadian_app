@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,20 +34,14 @@ class FoodDetailScreen extends StatelessWidget {
                 children: [
                   Stack(children: [
                     Container(
-                      decoration: BoxDecoration(
-                          color: color.backupPrimaryColor,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: CachedNetworkImage(
-                        placeholder: (context, url) => FaIcon(Icons.image),
-                        imageUrl:
-                            food.imageFilename == '' ? '' : food.imageFilename!,
-                        fit: BoxFit.cover,
                         height: size.height * 0.3,
                         width: size.width,
-                        errorWidget: (context, url, error) =>
-                            FaIcon(FontAwesomeIcons.image),
-                      ),
-                    ),
+                        decoration: BoxDecoration(
+                            color: color.backupPrimaryColor,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: food.imageFilename == ''
+                            ? Icon(Icons.image_not_supported_rounded)
+                            : Image.network(food.imageFilename!)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -211,7 +204,12 @@ class FoodDetailScreen extends StatelessWidget {
                               backgroundColor:
                                   color.secondaryTextColor.withOpacity(0.3),
                               percentage: (food.energy! / food.serving!) /
-                                  foodController.necessity.energy!,
+                                  (foodController
+                                          .necessity.value.energy!.breakfast! +
+                                      foodController
+                                          .necessity.value.energy!.lunch! +
+                                      foodController
+                                          .necessity.value.energy!.dinner!),
                               sizeContainer:
                                   Size(size.width * 0.2, size.width * 0.2),
                             ),
@@ -219,7 +217,7 @@ class FoodDetailScreen extends StatelessWidget {
                           Text(
                             (food.energy! / food.serving!).toStringAsFixed(0) +
                                 // 'kkal' +
-                                ' (${(((food.energy! / food.serving!) / foodController.necessity.energy!) * 100).round()}%)',
+                                ' (${(((food.energy! / food.serving!) / (foodController.necessity.value.energy!.breakfast! + foodController.necessity.value.energy!.lunch! + foodController.necessity.value.energy!.dinner!)) * 100).round()}%)',
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                   color: color.primaryTextColor,
@@ -250,7 +248,12 @@ class FoodDetailScreen extends StatelessWidget {
                               backgroundColor:
                                   color.secondaryTextColor.withOpacity(0.3),
                               percentage: (food.protein! / food.serving!) /
-                                  foodController.necessity.protein!,
+                                  (foodController.necessity.value.macro!
+                                          .breakfast!.protein! +
+                                      foodController.necessity.value.macro!
+                                          .lunch!.protein! +
+                                      foodController.necessity.value.macro!
+                                          .dinner!.protein!),
                               sizeContainer:
                                   Size(size.width * 0.2, size.width * 0.2),
                             ),
@@ -258,7 +261,7 @@ class FoodDetailScreen extends StatelessWidget {
                           Text(
                             (food.protein! / food.serving!).toStringAsFixed(0) +
                                 'g' +
-                                ' (${(((food.protein! / food.serving!) / foodController.necessity.protein!) * 100).round()}%)',
+                                ' (${(((food.protein! / food.serving!) / (foodController.necessity.value.macro!.breakfast!.protein! + foodController.necessity.value.macro!.lunch!.protein! + foodController.necessity.value.macro!.dinner!.protein!)) * 100).round()}%)',
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                   color: color.primaryTextColor,
@@ -289,7 +292,12 @@ class FoodDetailScreen extends StatelessWidget {
                               backgroundColor:
                                   color.secondaryTextColor.withOpacity(0.3),
                               percentage: (food.carbohydrate! / food.serving!) /
-                                  foodController.necessity.carbohydrate!,
+                                  (foodController.necessity.value.macro!
+                                          .breakfast!.carbohydrate! +
+                                      foodController.necessity.value.macro!
+                                          .lunch!.carbohydrate! +
+                                      foodController.necessity.value.macro!
+                                          .dinner!.carbohydrate!),
                               sizeContainer:
                                   Size(size.width * 0.2, size.width * 0.2),
                             ),
@@ -298,7 +306,7 @@ class FoodDetailScreen extends StatelessWidget {
                             (food.carbohydrate! / food.serving!)
                                     .toStringAsFixed(0) +
                                 'g' +
-                                ' (${(((food.carbohydrate! / food.serving!) / foodController.necessity.carbohydrate!) * 100).round()}%)',
+                                ' (${(((food.carbohydrate! / food.serving!) / (foodController.necessity.value.macro!.breakfast!.carbohydrate! + foodController.necessity.value.macro!.lunch!.carbohydrate! + foodController.necessity.value.macro!.dinner!.carbohydrate!)) * 100).round()}%)',
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                   color: color.primaryTextColor,
@@ -329,7 +337,12 @@ class FoodDetailScreen extends StatelessWidget {
                               backgroundColor:
                                   color.secondaryTextColor.withOpacity(0.3),
                               percentage: (food.fat! / food.serving!) /
-                                  foodController.necessity.fat!,
+                                  (foodController.necessity.value.macro!
+                                          .breakfast!.fat! +
+                                      foodController
+                                          .necessity.value.macro!.lunch!.fat! +
+                                      foodController
+                                          .necessity.value.macro!.dinner!.fat!),
                               sizeContainer:
                                   Size(size.width * 0.2, size.width * 0.2),
                             ),
@@ -337,7 +350,7 @@ class FoodDetailScreen extends StatelessWidget {
                           Text(
                             (food.fat! / food.serving!).toStringAsFixed(0) +
                                 'g' +
-                                ' (${(((food.fat! / food.serving!) / foodController.necessity.fat!) * 100).round()}%)',
+                                ' (${(((food.fat! / food.serving!) / (foodController.necessity.value.macro!.breakfast!.fat! + foodController.necessity.value.macro!.lunch!.fat! + foodController.necessity.value.macro!.dinner!.fat!)) * 100).round()}%)',
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                   color: color.primaryTextColor,

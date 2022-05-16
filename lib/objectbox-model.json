@@ -4,196 +4,320 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:5263930361897727211",
-      "lastPropertyId": "31:5366111589490474485",
-      "name": "Food",
+      "id": "1:3008231103323831688",
+      "lastPropertyId": "9:5785605612801335971",
+      "name": "Exercise",
       "properties": [
         {
-          "id": "1:5301365717599655232",
+          "id": "1:3615653338782105055",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:7377346063538664229",
-          "name": "userId",
-          "type": 11,
-          "flags": 520,
-          "indexId": "1:6179608065616682971",
-          "relationTarget": "User"
+          "id": "2:1812126622084556210",
+          "name": "sportId",
+          "type": 6
         },
         {
-          "id": "3:3330081752668938617",
+          "id": "3:7864110207407699350",
           "name": "name",
           "type": 9
         },
         {
-          "id": "4:5080397115424411192",
-          "name": "foodTypes",
-          "type": 30
-        },
-        {
-          "id": "5:4685671319494554155",
-          "name": "duration",
-          "type": 6
-        },
-        {
-          "id": "6:1642526519936246487",
-          "name": "serving",
-          "type": 6
-        },
-        {
-          "id": "7:4158206764988908672",
-          "name": "difficulty",
+          "id": "4:582277406779960890",
+          "name": "desc",
           "type": 9
         },
         {
-          "id": "8:3521214037965269206",
-          "name": "tags",
+          "id": "5:2999228664004424380",
+          "name": "mets",
+          "type": 8
+        },
+        {
+          "id": "6:2867189625285625297",
+          "name": "imageFilename",
           "type": 9
         },
         {
-          "id": "9:3820146398678149029",
-          "name": "water",
-          "type": 8
+          "id": "7:274337251598326168",
+          "name": "userId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:48849009873946689",
+          "relationTarget": "User"
         },
         {
-          "id": "10:2504016805899006015",
-          "name": "energy",
-          "type": 8
-        },
-        {
-          "id": "11:7190789844084708690",
-          "name": "protein",
-          "type": 8
-        },
-        {
-          "id": "12:4332760521111508542",
-          "name": "fat",
-          "type": 8
-        },
-        {
-          "id": "13:7535668432303297987",
-          "name": "carbohydrate",
-          "type": 8
-        },
-        {
-          "id": "14:869466929543253006",
-          "name": "fiber",
-          "type": 8
-        },
-        {
-          "id": "15:3741146930999361171",
-          "name": "calcium",
-          "type": 8
-        },
-        {
-          "id": "16:683449714729504126",
-          "name": "iron",
-          "type": 8
-        },
-        {
-          "id": "17:3725140886269777045",
-          "name": "phosphor",
-          "type": 8
-        },
-        {
-          "id": "18:5532428137260382052",
-          "name": "potassium",
-          "type": 8
-        },
-        {
-          "id": "19:2301573935661923239",
-          "name": "sodium",
-          "type": 8
-        },
-        {
-          "id": "20:14498855817561280",
-          "name": "zinc",
-          "type": 8
-        },
-        {
-          "id": "21:6164108965771071196",
-          "name": "copper",
-          "type": 8
-        },
-        {
-          "id": "22:2610613380420148766",
-          "name": "vitaminC",
-          "type": 8
-        },
-        {
-          "id": "23:8520671450635556048",
-          "name": "vitaminB1",
-          "type": 8
-        },
-        {
-          "id": "24:6465474963942018882",
-          "name": "vitaminB2",
-          "type": 8
-        },
-        {
-          "id": "25:8500847979050416180",
-          "name": "vitaminB3",
-          "type": 8
-        },
-        {
-          "id": "26:3420103133910105705",
-          "name": "retinol",
-          "type": 8
-        },
-        {
-          "id": "27:2214761450242455632",
-          "name": "foodId",
-          "type": 6
-        },
-        {
-          "id": "28:5227375609840779980",
-          "name": "session",
-          "type": 9
-        },
-        {
-          "id": "29:5677312023459543818",
+          "id": "8:1567179705838215984",
           "name": "date",
           "type": 9
         },
         {
-          "id": "30:5460371108322994448",
-          "name": "instruction",
-          "type": 30
-        },
-        {
-          "id": "31:5366111589490474485",
-          "name": "imageFileName",
-          "type": 9
+          "id": "9:5785605612801335971",
+          "name": "isChecked",
+          "type": 1
         }
       ],
       "relations": []
     },
     {
-      "id": "2:937332134421631514",
-      "lastPropertyId": "1:2916353400714214596",
+      "id": "2:1537447124247363090",
+      "lastPropertyId": "31:3534973823171917606",
+      "name": "Food",
+      "properties": [
+        {
+          "id": "1:1827803256389649423",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8266201449706535739",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:212255939708086216",
+          "name": "foodTypes",
+          "type": 30
+        },
+        {
+          "id": "4:1651283957346611691",
+          "name": "duration",
+          "type": 6
+        },
+        {
+          "id": "5:6766339525834140782",
+          "name": "serving",
+          "type": 6
+        },
+        {
+          "id": "6:7172396799859426036",
+          "name": "session",
+          "type": 9
+        },
+        {
+          "id": "7:3401850130613586118",
+          "name": "date",
+          "type": 9
+        },
+        {
+          "id": "8:7997541492252149572",
+          "name": "difficulty",
+          "type": 9
+        },
+        {
+          "id": "9:5361553243045867856",
+          "name": "tags",
+          "type": 9
+        },
+        {
+          "id": "10:2942761977035440198",
+          "name": "water",
+          "type": 8
+        },
+        {
+          "id": "11:742429649812164597",
+          "name": "energy",
+          "type": 8
+        },
+        {
+          "id": "12:3468394470166265548",
+          "name": "protein",
+          "type": 8
+        },
+        {
+          "id": "13:6786427632652934830",
+          "name": "fat",
+          "type": 8
+        },
+        {
+          "id": "14:181047063025413438",
+          "name": "carbohydrate",
+          "type": 8
+        },
+        {
+          "id": "15:1191615290116359505",
+          "name": "fiber",
+          "type": 8
+        },
+        {
+          "id": "16:2934399922158885364",
+          "name": "calcium",
+          "type": 8
+        },
+        {
+          "id": "17:2891129737123689418",
+          "name": "iron",
+          "type": 8
+        },
+        {
+          "id": "18:2645815561105167672",
+          "name": "phosphor",
+          "type": 8
+        },
+        {
+          "id": "19:4921141469057489333",
+          "name": "potassium",
+          "type": 8
+        },
+        {
+          "id": "20:3172267514076120666",
+          "name": "sodium",
+          "type": 8
+        },
+        {
+          "id": "21:3534344241356221884",
+          "name": "zinc",
+          "type": 8
+        },
+        {
+          "id": "22:7683524786197295127",
+          "name": "copper",
+          "type": 8
+        },
+        {
+          "id": "23:3403812029689781462",
+          "name": "vitaminC",
+          "type": 8
+        },
+        {
+          "id": "24:2431716558378395180",
+          "name": "vitaminB1",
+          "type": 8
+        },
+        {
+          "id": "25:7040609714595649194",
+          "name": "vitaminB2",
+          "type": 8
+        },
+        {
+          "id": "26:8002174984704190355",
+          "name": "vitaminB3",
+          "type": 8
+        },
+        {
+          "id": "27:8910209046546154968",
+          "name": "retinol",
+          "type": 8
+        },
+        {
+          "id": "28:8237221542813592976",
+          "name": "foodId",
+          "type": 6
+        },
+        {
+          "id": "29:533869178784666820",
+          "name": "instruction",
+          "type": 30
+        },
+        {
+          "id": "30:3672133806436929419",
+          "name": "imageFileName",
+          "type": 9
+        },
+        {
+          "id": "31:3534973823171917606",
+          "name": "userId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "2:4707290468638542427",
+          "relationTarget": "User"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:7510490782568328100",
+      "lastPropertyId": "1:3060100015683794578",
       "name": "User",
       "properties": [
         {
-          "id": "1:2916353400714214596",
+          "id": "1:3060100015683794578",
           "name": "id",
           "type": 6,
           "flags": 1
         }
       ],
+      "relations": [
+        {
+          "id": "1:2793138410119953805",
+          "name": "exercises",
+          "targetId": "1:3008231103323831688"
+        }
+      ]
+    },
+    {
+      "id": "4:8973082184935809639",
+      "lastPropertyId": "12:2893357313142973546",
+      "name": "Variations",
+      "properties": [
+        {
+          "id": "1:7920547170551620558",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1683529787628143452",
+          "name": "sportId",
+          "type": 6
+        },
+        {
+          "id": "3:6557456373294508945",
+          "name": "sportVariationsId",
+          "type": 6
+        },
+        {
+          "id": "4:7423941731417593974",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "5:5533496727351254392",
+          "name": "desc",
+          "type": 9
+        },
+        {
+          "id": "6:533139905566367718",
+          "name": "mets",
+          "type": 8
+        },
+        {
+          "id": "8:4530687362846416579",
+          "name": "imageFilename",
+          "type": 9
+        },
+        {
+          "id": "9:98058746785667943",
+          "name": "userId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "3:6506144417513643134",
+          "relationTarget": "Exercise"
+        },
+        {
+          "id": "12:2893357313142973546",
+          "name": "subVariations",
+          "type": 9
+        }
+      ],
       "relations": []
     }
   ],
-  "lastEntityId": "2:937332134421631514",
-  "lastIndexId": "1:6179608065616682971",
-  "lastRelationId": "0:0",
+  "lastEntityId": "4:8973082184935809639",
+  "lastIndexId": "3:6506144417513643134",
+  "lastRelationId": "1:2793138410119953805",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    1429937487993746113,
+    7226356010622220216,
+    5683875273788991992
+  ],
   "retiredRelationUids": [],
   "version": 1
 }
