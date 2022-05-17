@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/subscription_controller.dart';
 
-import '../../constant/color.dart';
+import '../../controller/hexcolor_controller.dart';
 
 class ProgramScreen extends StatefulWidget {
   ProgramScreen({

@@ -5,7 +5,6 @@ import 'package:sirkadian_app/constant/hex_color.dart';
 
 import 'package:sirkadian_app/widget/drawer_sidebar.dart';
 
-import '../constant/color.dart';
 import '../controller/auth_controller.dart';
 import '../controller/food_controller.dart';
 import '../controller/subscription_controller.dart';
@@ -22,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
   final authController = Get.find<AuthController>();
   final foodController = Get.find<FoodController>();
   final subscriptionController = Get.find<SubscriptionController>();
-  final color = Get.find<ColorConstantController>();
+  // final color = Get.find<ColorConstantController>();
   GlobalKey<TabNavigatorState> tabKey = GlobalKey();
   var _currentTab = "Home";
   final screenIndex = 0.obs;

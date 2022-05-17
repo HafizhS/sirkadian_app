@@ -34,14 +34,6 @@ class _VerificationScreenState extends State<VerificationScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
-
-    // if (widget.purpose == 'register') {
-    //   if (authController.cekGetWebsocket.value == false) {
-    //     authController.getWebsocket(widget.websocketUrl, widget.id, 'register');
-    //   } else {
-    //     //websocket udah true
-    //   }
-    // }
   }
 
   @override

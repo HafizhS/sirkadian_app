@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/fluid_controller.dart';
 
-import '../../../../constant/color.dart';
+import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
 import '../../../../widget/food_widget/necessity_gauge.dart';
 

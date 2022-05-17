@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../constant/color.dart';
+import '../../controller/hexcolor_controller.dart';
 import '../../controller/exercise_controller.dart';
 import '../../model/obejctbox_model.dart/food_model.dart';
 

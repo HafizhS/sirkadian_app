@@ -2,7 +2,7 @@ import 'dart:math' as Math;
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sirkadian_app/constant/color.dart';
+import 'package:sirkadian_app/controller/hexcolor_controller.dart';
 
 class NecessityGauge extends StatelessWidget {
   final String text;

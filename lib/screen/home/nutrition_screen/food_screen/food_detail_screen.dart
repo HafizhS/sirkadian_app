@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/model/food_model/foodAll_response_model.dart';
 
-import '../../../../constant/color.dart';
+import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
 import '../../../../widget/food_widget/necessity_gauge.dart';
 

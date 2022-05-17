@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../constant/hex_color.dart';
 import '../../controller/auth_controller.dart';
 
-import '../../constant/color.dart';
+import '../../controller/hexcolor_controller.dart';
 import '../../widget/food_widget/necessity_gauge.dart';
 import '../../widget/home_widget/dummy_Recommendation_shortcut.dart';
 import 'exercise_screen/exercise_general_screen.dart';

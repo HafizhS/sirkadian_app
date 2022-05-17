@@ -7,7 +7,7 @@ import 'package:sirkadian_app/model/exercise_model/exercise_history_request_mode
 import 'package:sirkadian_app/model/obejctbox_model.dart/food_model.dart';
 import 'package:sirkadian_app/widget/exercise_widget/exercise_tile.dart';
 
-import '../../../constant/color.dart';
+import '../../../controller/hexcolor_controller.dart';
 
 class ExerciseRecommendationScreen extends StatefulWidget {
   const ExerciseRecommendationScreen({Key? key}) : super(key: key);

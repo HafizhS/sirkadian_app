@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:sirkadian_app/constant/error_code.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../screen/list_screen.dart';
@@ -126,29 +127,71 @@ class AuthController extends GetxController {
         final Response _res =
             await _provider.postLogin(loginRequest: loginRequest);
         if (_res.statusCode == 200) {
-          print(200);
           LoginResponse _loginResponse =
               LoginResponse.fromJson(_res.body as Map<String, dynamic>);
 
           if (Get.isDialogOpen!) Get.back();
           informationController.showSuccessSnackBar('login berhasil');
-          if (_loginResponse.data.id != null &&
-              _loginResponse.data.accessToken != null) {
-            rememberAcc(
-              username: loginRequest.username,
-              password: loginRequest.password,
-              accessToken: _loginResponse.data.accessToken,
-              refreshToken: _loginResponse.data.refreshToken,
-              id: _loginResponse.data.id,
-            );
+          if (_loginResponse.statusCode == 200) {
+            if (_loginResponse.data!.id != null &&
+                _loginResponse.data!.accessToken != null) {
+              rememberAcc(
+                username: loginRequest.username,
+                password: loginRequest.password,
+                accessToken: _loginResponse.data!.accessToken,
+                refreshToken: _loginResponse.data!.refreshToken,
+                id: _loginResponse.data!.id,
+              );
 
-            Get.offAllNamed(RouteScreens.main);
+              Get.offAllNamed(RouteScreens.main);
+            }
           }
-        } else if (_res.statusCode == 500) {
-          print('error sc 500');
-        } else {
-          print(_res.statusCode);
+        } else if (_res.statusCode == 401) {
           print(_res.body);
+          LoginResponse _loginResponse =
+              LoginResponse.fromJson(_res.body as Map<String, dynamic>);
+
+          if (_loginResponse.statusCode == _res.statusCode) {
+            switch (_loginResponse.errorCode) {
+              case LoginErrorCode.usernameNotFound401:
+                if (Get.isDialogOpen!) Get.back();
+                informationController
+                    .showErrorSnackBar('Username tidak ditemukan.');
+                break;
+              case LoginErrorCode.wrongPassword401:
+                if (Get.isDialogOpen!) Get.back();
+                informationController
+                    .showErrorSnackBar('Password yang dimasukkan salah.');
+                break;
+              default:
+            }
+          }
+        } else if (_res.statusCode == 403) {
+          LoginResponse _loginResponse =
+              LoginResponse.fromJson(_res.body as Map<String, dynamic>);
+          if (_loginResponse.statusCode == _res.statusCode) {
+            switch (_loginResponse.errorCode) {
+              case LoginErrorCode.userNotActivatedYet403:
+                if (Get.isDialogOpen!) Get.back();
+                informationController.showErrorSnackBar(
+                    'Akun Anda belum diaktivasi, Aktivasi Sekarang');
+                final _data = data.read('dataRegister') as Map<String, dynamic>;
+                final String getWebsocketUrl =
+                    '$root/websocket/open/${_data['id']}';
+
+                if (cekGetWebsocket.value == false) {
+                  Future.delayed(Duration(seconds: 3), () {
+                    getWebsocket(getWebsocketUrl, _data['id'], 'register');
+                    Get.toNamed(RouteScreens.verification);
+                  });
+                } else {
+                  //websocket udah true
+                  print('cekwebsocekttrue');
+                }
+                break;
+              default:
+            }
+          }
         }
       } catch (e) {
         e.toString();
@@ -179,22 +222,22 @@ class AuthController extends GetxController {
           RegisterResponse _registerResponse =
               RegisterResponse.fromJson(_res.body as Map<String, dynamic>);
 
-          if (_registerResponse.data.id != null) {
+          if (_registerResponse.data!.id != null) {
             rememberRegister(
-                id: _registerResponse.data.id,
+                id: _registerResponse.data!.id,
                 email: registerRequest.email,
                 username: registerRequest.username,
                 password: registerRequest.password);
 
             final String getWebsocketUrl =
-                '$root/websocket/open/${_registerResponse.data.id}';
+                '$root/websocket/open/${_registerResponse.data!.id}';
 
             if (cekGetWebsocket.value == false) {
               Future.delayed(Duration(seconds: 3), () {
                 if (Get.isDialogOpen!) Get.back();
                 informationController.showSuccessSnackBar('register berhasil');
                 getWebsocket(
-                    getWebsocketUrl, _registerResponse.data.id, 'register');
+                    getWebsocketUrl, _registerResponse.data!.id, 'register');
                 Get.toNamed(RouteScreens.verification);
               });
             } else {
@@ -202,13 +245,28 @@ class AuthController extends GetxController {
               print('cekwebsocekttrue');
             }
           }
+        } else if (_res.statusCode == 400) {
+          RegisterResponse _registerResponse =
+              RegisterResponse.fromJson(_res.body as Map<String, dynamic>);
+          if (_registerResponse.statusCode == _res.statusCode) {
+            switch (_registerResponse.errorCode) {
+              case RegisterErrorCode.emailAlreadyExist400:
+                if (Get.isDialogOpen!) Get.back();
+                informationController
+                    .showErrorSnackBar('Email sudah digunakan.');
+                break;
+              case RegisterErrorCode.usernameAlreadyExist400:
+                if (Get.isDialogOpen!) Get.back();
+                informationController
+                    .showErrorSnackBar('Username sudah digunakan.');
+                break;
+              default:
+            }
+          }
         } else if (_res.statusCode == 500) {
           if (Get.isDialogOpen!) Get.back();
           informationController.showErrorSnackBar(
               'terjadi kesalahan pada server, harap ulangi pendaftaran');
-        } else {
-          print(_res.statusCode);
-          print(_res.body);
         }
       } catch (e) {
         e.toString();
@@ -239,17 +297,55 @@ class AuthController extends GetxController {
 
           if (Get.isDialogOpen!) Get.back();
           informationController.showSuccessSnackBar('Aktivasi berhasil');
-          if (_activationResponse.data.accessToken != null) {
+          if (_activationResponse.data!.accessToken != null) {
             Get.offNamed(RouteScreens.initialSetup, arguments: [
-              _activationResponse.data.accessToken,
+              _activationResponse.data!.accessToken,
               _registerResponseId
             ]);
+          }
+        } else if (_res.statusCode == 400) {
+          ActivationResponse _activationResponse =
+              ActivationResponse.fromJson(_res.body as Map<String, dynamic>);
+          if (_activationResponse.statusCode == _res.statusCode) {
+            switch (_activationResponse.errorCode) {
+              case ActivationErrorCode.userAlreadyActivated400:
+                if (Get.isDialogOpen!) Get.back();
+                informationController
+                    .showErrorSnackBar('Akun sudah diaktivasi.');
+                break;
+              case ActivationErrorCode.userWithAssociateEmailNotFound400:
+                if (Get.isDialogOpen!) Get.back();
+                informationController.showErrorSnackBar(
+                    'Akun dengan email ${activationRequest.email} tidak ditemukan.');
+                break;
+              case ActivationErrorCode.verificationAlreadyExpired400:
+                if (Get.isDialogOpen!) Get.back();
+                informationController
+                    .showErrorSnackBar('Waktu verifikasi sudah kadaluarsa.');
+                break;
+              case ActivationErrorCode.verificationAlreadyUsed400:
+                if (Get.isDialogOpen!) Get.back();
+                informationController
+                    .showErrorSnackBar('Verifikasi sudah digunakan.');
+                break;
+              case ActivationErrorCode.verificationNotFound400:
+                if (Get.isDialogOpen!) Get.back();
+                informationController
+                    .showErrorSnackBar('verifikasi tidak ditemukan.');
+                break;
+              case ActivationErrorCode.wrongVerificationCode400:
+                if (Get.isDialogOpen!) Get.back();
+                informationController
+                    .showErrorSnackBar('Kode verifikasi salah.');
+                break;
+              default:
+            }
           }
         } else if (_res.statusCode == 500) {
           if (Get.isDialogOpen!) Get.back();
           informationController.showErrorSnackBar(
               'terjadi kesalahan pada server, harap ulangi aktivasi');
-        } else {}
+        }
       } catch (e) {
         e.toString();
         if (Get.isDialogOpen!) Get.back();
@@ -286,6 +382,7 @@ class AuthController extends GetxController {
         }
       } catch (e) {
         e.toString();
+        if (Get.isDialogOpen!) Get.back();
         informationController.showErrorSnackBar(
             'terjadi kesalahan pada sistem, tunggu beberapa saat lagi');
         print('error:' + e.toString());
@@ -299,7 +396,7 @@ class AuthController extends GetxController {
   Future<void> getWebsocket(getWebsocketUrl, id, purpose) async {
     try {
       final Response _res = await _provider.getWebsocket(getWebsocketUrl);
-
+      print(_res.statusCode);
       if (_res.statusCode == 200) {
         channel =
             IOWebSocketChannel.connect(Uri.parse('$wssRoot/websocket/$id'));
@@ -351,6 +448,7 @@ class AuthController extends GetxController {
         });
       } else if (_res.statusCode == 500) {}
     } catch (e) {
+      if (Get.isDialogOpen!) Get.back();
       informationController.showErrorSnackBar(
           'terjadi kesalahan pada sistem, tunggu beberapa saat lagi');
       print('error websocket open:' + e.toString());
