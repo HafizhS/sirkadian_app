@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/model/auth_model/register_request_model.dart';
 
-import '../../constant/color.dart';
+import '../../controller/hexcolor_controller.dart';
 import '../../controller/auth_controller.dart';
 import '../../controller/text_controller.dart';
 import '../list_screen.dart';

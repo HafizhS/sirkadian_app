@@ -1,7 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sirkadian_app/constant/color.dart';
+import 'package:sirkadian_app/controller/hexcolor_controller.dart';
 
 class ListRekomendasi extends StatelessWidget {
   const ListRekomendasi(

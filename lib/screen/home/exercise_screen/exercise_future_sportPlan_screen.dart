@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/exercise_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../../constant/color.dart';
+import '../../../controller/hexcolor_controller.dart';
 import '../../../../model/obejctbox_model.dart/food_model.dart';
 import '../../../../objectbox.g.dart';
 import '../../../widget/exercise_widget/exercise_tile.dart';
@@ -182,7 +182,7 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
             duration: Duration(milliseconds: 200),
             width: size.width,
             alignment: Alignment.topCenter,
-            height: closeTopContainer ? 0 : size.height * 0.48,
+            height: closeTopContainer ? 0 : size.height * 0.5,
             child: dateChildWidget(size, snapshot),
           ),
         ),
@@ -361,7 +361,6 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
       fit: BoxFit.fill,
       alignment: Alignment.topCenter,
       child: SizedBox(
-        height: size.height * 0.48,
         width: size.width,
         child: TableCalendar(
             focusedDay: exerciseController.focusedDay,

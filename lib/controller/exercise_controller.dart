@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:sirkadian_app/model/exercise_model/exerciseAll_response_model.dart';
 import 'package:sirkadian_app/model/exercise_model/exercise_history_request_model.dart';
 import 'package:sirkadian_app/provider/exercise_provider.dart';
-import '../constant/color.dart';
+import 'hexcolor_controller.dart';
 import '../model/exercise_model/exercise_history_post_response_model.dart';
 import '../objectbox.g.dart';
 import '../screen/home/exercise_screen/exercise_general_screen.dart';
@@ -73,7 +73,7 @@ class ExerciseController extends GetxController {
         ExerciseGaugeModel(
             color: color.redColor, stringValue: '40%', day: '4', value: 80),
         ExerciseGaugeModel(
-            color: color.greenColor, stringValue: '80%', day: '5', value: 200),
+            color: color.greenColor, stringValue: '100%', day: '5', value: 200),
         ExerciseGaugeModel(
             color: color.blueColor, stringValue: '30%', day: '6', value: 100),
         ExerciseGaugeModel(

@@ -4,11 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../constant/color.dart';
+import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
 import '../../../../model/obejctbox_model.dart/food_model.dart';
 import '../../../../widget/food_widget/necessity_display.dart';
-import 'food_future_mealPlan_screen.dart';
 import 'food_mealplan_screen.dart';
 
 class FoodGeneralScreen extends StatefulWidget {

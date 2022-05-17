@@ -1,20 +1,22 @@
 class RegisterResponse {
   RegisterResponse({
-    required this.statusCode,
-    required this.message,
+    this.statusCode,
+    this.message,
     this.errorCode,
-    required this.data,
+    this.data,
   });
-  late final int statusCode;
-  late final String message;
-  late final Null errorCode;
-  late final DataRegisterResponse data;
+  int? statusCode;
+  String? message;
+  String? errorCode;
+  DataRegisterResponse? data;
 
   RegisterResponse.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     message = json['message'];
-    errorCode = null;
-    data = DataRegisterResponse.fromJson(json['data']);
+    errorCode = json['errorCode'] != null ? json['errorCode'] : '';
+    data = json['data'] != null
+        ? DataRegisterResponse.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,7 +24,9 @@ class RegisterResponse {
     _data['statusCode'] = statusCode;
     _data['message'] = message;
     _data['errorCode'] = errorCode;
-    _data['data'] = data.toJson();
+    if (this.data != null) {
+      _data['data'] = data!.toJson();
+    }
     return _data;
   }
 }

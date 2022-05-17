@@ -1,6 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sirkadian_app/constant/hex_color.dart';
 
 class ExerciseGauge extends StatelessWidget {
   const ExerciseGauge({
@@ -43,7 +42,7 @@ class ExerciseGauge extends StatelessWidget {
                 )),
             child: Stack(alignment: Alignment.bottomCenter, children: [
               Container(
-                height: size.height * 0.3,
+                height: 200,
                 width: 15,
               ),
               Container(

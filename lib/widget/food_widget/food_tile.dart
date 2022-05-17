@@ -2,7 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../constant/color.dart';
+import '../../controller/hexcolor_controller.dart';
 
 class FoodTile extends StatelessWidget {
   const FoodTile({

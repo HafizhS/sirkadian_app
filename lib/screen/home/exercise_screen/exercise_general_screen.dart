@@ -9,7 +9,7 @@ import 'package:sirkadian_app/screen/home/exercise_screen/exercise_future_sportP
 import 'package:sirkadian_app/screen/home/exercise_screen/exercise_recommendation_screen.dart';
 import 'package:sirkadian_app/widget/exercise_widget/exercise_tile.dart';
 import 'package:path_provider/path_provider.dart';
-import '../../../constant/color.dart';
+import '../../../controller/hexcolor_controller.dart';
 import '../../../widget/exercise_widget/exercise_gauge.dart';
 
 class ExerciseGeneralScreen extends StatefulWidget {
@@ -500,7 +500,7 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
 
   Container weekSelectWidget(Size size, String week, Function() onPress) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
           color: color.primaryTextColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(10)),

@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/auth_controller.dart';
 import 'package:sirkadian_app/controller/food_controller.dart';
 
-import '../../../../constant/color.dart';
+import '../../../../controller/hexcolor_controller.dart';
 import '../../../../model/obejctbox_model.dart/food_model.dart';
 import '../../../../objectbox.g.dart';
 import '../../../../widget/food_widget/food_tile.dart';

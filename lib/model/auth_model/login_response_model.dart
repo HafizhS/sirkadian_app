@@ -42,21 +42,24 @@ class DataLoginResponse {
 
 class LoginResponse {
   LoginResponse({
-    required this.statusCode,
-    required this.message,
+    this.statusCode,
+    this.message,
     this.errorCode,
-    required this.data,
+    this.data,
   });
-  late final int statusCode;
-  late final String message;
-  late final Null errorCode;
-  late final DataLoginResponse data;
+  int? statusCode;
+  String? message;
+  String? errorCode;
+  DataLoginResponse? data;
 
   LoginResponse.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     message = json['message'];
-    errorCode = null;
-    data = DataLoginResponse.fromJson(json['data']);
+
+    errorCode = json['errorCode'] != null ? json['errorCode'] : '';
+
+    data =
+        json['data'] != null ? DataLoginResponse.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -64,7 +67,9 @@ class LoginResponse {
     _data['statusCode'] = statusCode;
     _data['message'] = message;
     _data['errorCode'] = errorCode;
-    _data['data'] = data.toJson();
+    if (this.data != null) {
+      _data['data'] = data!.toJson();
+    }
     return _data;
   }
 }
