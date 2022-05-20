@@ -77,7 +77,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(2, 1537447124247363090),
       name: 'Food',
-      lastPropertyId: const IdUid(31, 3534973823171917606),
+      lastPropertyId: const IdUid(32, 2456367297624848551),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -218,7 +218,7 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(28, 8237221542813592976),
             name: 'foodId',
-            type: 6,
+            type: 9,
             flags: 0),
         ModelProperty(
             id: const IdUid(29, 533869178784666820),
@@ -236,7 +236,12 @@ final _entities = <ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const IdUid(2, 4707290468638542427),
-            relationTarget: 'User')
+            relationTarget: 'User'),
+        ModelProperty(
+            id: const IdUid(32, 2456367297624848551),
+            name: 'recommendationScore',
+            type: 9,
+            flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
@@ -435,6 +440,8 @@ ModelDefinition getObjectBoxModel() {
               : fbb.writeString(object.difficulty!);
           final tagsOffset =
               object.tags == null ? null : fbb.writeString(object.tags!);
+          final foodIdOffset =
+              object.foodId == null ? null : fbb.writeString(object.foodId!);
           final instructionOffset = object.instruction == null
               ? null
               : fbb.writeList(object.instruction!
@@ -443,7 +450,10 @@ ModelDefinition getObjectBoxModel() {
           final imageFileNameOffset = object.imageFileName == null
               ? null
               : fbb.writeString(object.imageFileName!);
-          fbb.startTable(32);
+          final recommendationScoreOffset = object.recommendationScore == null
+              ? null
+              : fbb.writeString(object.recommendationScore!);
+          fbb.startTable(33);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, foodTypesOffset);
@@ -471,10 +481,11 @@ ModelDefinition getObjectBoxModel() {
           fbb.addFloat64(24, object.vitaminB2);
           fbb.addFloat64(25, object.vitaminB3);
           fbb.addFloat64(26, object.retinol);
-          fbb.addInt64(27, object.foodId);
+          fbb.addOffset(27, foodIdOffset);
           fbb.addOffset(28, instructionOffset);
           fbb.addOffset(29, imageFileNameOffset);
           fbb.addInt64(30, object.user.targetId);
+          fbb.addOffset(31, recommendationScoreOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -518,9 +529,10 @@ ModelDefinition getObjectBoxModel() {
               vitaminB2: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 52),
               vitaminB3: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 54),
               retinol: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 56),
-              foodId: const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 58),
+              foodId: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 58),
               instruction: const fb.ListReader<String>(fb.StringReader(asciiOptimization: true), lazy: false).vTableGetNullable(buffer, rootOffset, 60),
-              imageFileName: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 62));
+              imageFileName: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 62),
+              recommendationScore: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 66));
           object.user.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 64, 0);
           object.user.attach(store);
@@ -751,7 +763,7 @@ class Food_ {
   static final retinol = QueryDoubleProperty<Food>(_entities[1].properties[26]);
 
   /// see [Food.foodId]
-  static final foodId = QueryIntegerProperty<Food>(_entities[1].properties[27]);
+  static final foodId = QueryStringProperty<Food>(_entities[1].properties[27]);
 
   /// see [Food.instruction]
   static final instruction =
@@ -764,6 +776,10 @@ class Food_ {
   /// see [Food.user]
   static final user =
       QueryRelationToOne<Food, User>(_entities[1].properties[30]);
+
+  /// see [Food.recommendationScore]
+  static final recommendationScore =
+      QueryStringProperty<Food>(_entities[1].properties[31]);
 }
 
 /// [User] entity fields to define ObjectBox queries.

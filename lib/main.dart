@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:sirkadian_app/bindings/bindings.dart';
+import '../bindings/bindings.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:sirkadian_app/screen/root_screen.dart';
+import '../screen/root_screen.dart';
 import 'screen/list_screen.dart';
 
 void main() async {

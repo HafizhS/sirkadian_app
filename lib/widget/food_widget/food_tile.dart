@@ -11,6 +11,7 @@ class FoodTile extends StatelessWidget {
     required this.name,
     required this.necessity,
     required this.serving,
+    required this.recommendationScore,
     required this.size,
     required this.containerButton,
     required this.iconButton,
@@ -22,6 +23,7 @@ class FoodTile extends StatelessWidget {
   final String name;
   final String necessity;
   final String serving;
+  final String recommendationScore;
   final Size size;
   final IconData icon;
   final String imageFilename;
@@ -79,14 +81,23 @@ class FoodTile extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      necessity + ' kkal',
-                      style: GoogleFonts.inter(
-                        textStyle: TextStyle(
-                            color: color.secondaryTextColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal),
-                      ),
+                    Row(
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.fire,
+                          color: color.redColor,
+                          size: 12,
+                        ),
+                        Text(
+                          ' ' + necessity + ' kkal',
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                color: color.secondaryTextColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ),
+                      ],
                     ),
                     Text(' | '),
                     Text(
@@ -97,6 +108,25 @@ class FoodTile extends StatelessWidget {
                             fontSize: 12,
                             fontWeight: FontWeight.normal),
                       ),
+                    ),
+                    Text(' | '),
+                    Row(
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.solidStar,
+                          color: color.yellowColor,
+                          size: 12,
+                        ),
+                        Text(
+                          ' ' + recommendationScore,
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                color: color.secondaryTextColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

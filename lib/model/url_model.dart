@@ -15,6 +15,10 @@ final String verifikasiForgotPasswordUrl = '$rootAuth/verify_forgot';
 //user
 final String rootUser = '$root/user';
 final String initialSetupPostUrl = '$rootUser/initial_setup';
+final String userHealthPreferenceLatestGetUrl =
+    '$rootUser/preference_history/latest';
+final String userHealthHistoryLatestUrl = '$rootUser/health_history/latest';
+final String userInfromationGetUrl = '$rootUser/info';
 
 //subscription
 final String rootSubscription = '$root/subscription';
@@ -24,6 +28,7 @@ final String subscriptionAllGetUrl = '$rootSubscription/all';
 final String rootFood = '$root/food';
 final String rootUserFood = '$root/user_food';
 final String foodAllGetUrl = '$rootFood/all';
+final String foodRecommendationGetUrl = '$rootUserFood/recommendation?';
 final String necessityGetUrl = '$rootUserFood/necessity';
 // final String foodPostUrl = '$root/food/history';
 // final String foodHistoryGetUrl = '$root/food/history?';
@@ -35,11 +40,9 @@ final String exerciseAllGetUrl = '$rootExercise/all';
 final String exerciseHistoryPostUrl = '$rootUserExercise/history';
 final String exerciseHistoryGetUrl = '$rootUserExercise/history?';
 
-//health
-// final String alergiGetUrl = '$root/allergy/all';
-// final String riwayatPenyakitGetUrl = '$root/disease/all';
-// final String userHealthGetUrl = '$root/user/health';
-// final String userHealthPatchUrl = '$root/user/update_health';
+
+
+
 
 //akun
 // final String userUpdateEmailGetUrl = '$root/user/update_email';

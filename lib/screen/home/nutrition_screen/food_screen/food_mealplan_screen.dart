@@ -237,6 +237,9 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
                                                         snapshot.data![index]
                                                             .serving!)
                                                     .toStringAsFixed(0),
+                                                recommendationScore: snapshot
+                                                    .data![index]
+                                                    .recommendationScore!,
                                               );
                                             }),
                                       ),

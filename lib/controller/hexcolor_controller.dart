@@ -2,12 +2,14 @@ import 'package:get/get.dart';
 import 'package:sirkadian_app/constant/hex_color.dart';
 
 class ColorConstantController extends GetxController {
-  final primaryColor = HexColor.fromHex('#FFFFFF');
-  final blackColor = HexColor.fromHex('#000000');
-  final backupPrimaryColor = HexColor.fromHex('#F0F3EC');
-  final backgroundColor = HexColor.fromHex('#F3F4F2');
-  final secondaryColor = HexColor.fromHex('#8CD15D');
-  final tersierColor = HexColor.fromHex('#5B9423');
+  final primaryColor = HexColor.fromHex('#FFFFFF'); //putih
+  final blackColor = HexColor.fromHex('#000000'); //hitam
+  final backupPrimaryColor = HexColor.fromHex('#F0F3EC'); //putih semi hijau?
+  // final backgroundColor = HexColor.fromHex('#F3F4F2'); //abu terang bg
+  final backgroundColor = HexColor.fromHex('EFF2EE'); //hijau background
+  final secondaryColor = HexColor.fromHex('#8CD15D'); //hijau muda
+  final tersierColor = HexColor.fromHex('#5B9423'); //hijau tua
+  final kuartenerColor = HexColor.fromHex('#F8F9FB'); //semi putih
 
   final yellowColor = HexColor.fromHex('#FFC529');
   final redColor = HexColor.fromHex('#94223D');

@@ -11,6 +11,7 @@ class NecessityGauge extends StatelessWidget {
   final Size size;
   final double value;
   final ColorConstantController color;
+  final Function() onpress;
 
   const NecessityGauge({
     Key? key,
@@ -20,78 +21,81 @@ class NecessityGauge extends StatelessWidget {
     required this.value,
     required this.size,
     required this.color,
+    required this.onpress,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final backgroundColor = this.backgroundColor;
     final foregroundColor = this.foregroundColor;
-    return Neumorphic(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      style: NeumorphicStyle(
-          color: Colors.white,
+    return NeumorphicButton(
+        onPressed: onpress,
+        style: NeumorphicStyle(
+          depth: 4,
+          color: color.primaryColor,
           shape: NeumorphicShape.flat,
           boxShape: NeumorphicBoxShape.roundRect(
             BorderRadius.circular(20),
-          )),
-      child: Container(
-        height: size.height,
-        width: size.width,
+          ),
+        ),
+        margin: const EdgeInsets.all(12),
+        child: Container(
+          height: size.height,
+          width: size.width,
 
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  top: size.height * 0.05, bottom: size.height * 0.1),
-              child: Text(
-                text,
-                style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: color.secondaryTextColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal),
-                ),
-              ),
-            ),
-            CustomPaint(
-              child: Container(
-                width: size.width * 0.7,
-                height: size.height * 0.7,
-                child: Center(
-                  child: Text(
-                    '${((value) * 100).round().toString()}%',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline3
-                        ?.copyWith(color: foregroundColor, fontSize: 25),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    top: size.height * 0.05, bottom: size.height * 0.1),
+                child: Text(
+                  text,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        color: color.secondaryTextColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal),
                   ),
                 ),
               ),
-              foregroundPainter: CircleProgressBarPainter(
-                sizeContainer: size,
-                backgroundColor: backgroundColor,
-                foregroundColor: foregroundColor,
-                percentage: this.value,
+              CustomPaint(
+                child: Container(
+                  width: size.width * 0.7,
+                  height: size.height * 0.7,
+                  child: Center(
+                    child: Text(
+                      '${((value) * 100).round().toString()}%',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3
+                          ?.copyWith(color: foregroundColor, fontSize: 25),
+                    ),
+                  ),
+                ),
+                foregroundPainter: CircleProgressBarPainter(
+                  sizeContainer: size,
+                  backgroundColor: backgroundColor,
+                  foregroundColor: foregroundColor,
+                  percentage: this.value,
+                ),
               ),
-            ),
-          ],
-        ),
-        // decoration: BoxDecoration(
-        //   boxShadow: [
-        //     BoxShadow(
-        //       color: Colors.grey.withOpacity(0.3),
-        //       spreadRadius: 2,
-        //       blurRadius: 7,
-        //       offset: Offset(0, 3), // changes position of shadow
-        //     ),
-        //   ],
-        //   color: Colors.white,
-        //   borderRadius: BorderRadius.all(
-        //     Radius.circular(30),
-        //   ),
-        // ),
-      ),
-    );
+            ],
+          ),
+          // decoration: BoxDecoration(
+          //   boxShadow: [
+          //     BoxShadow(
+          //       color: Colors.grey.withOpacity(0.3),
+          //       spreadRadius: 2,
+          //       blurRadius: 7,
+          //       offset: Offset(0, 3), // changes position of shadow
+          //     ),
+          //   ],
+          //   color: Colors.white,
+          //   borderRadius: BorderRadius.all(
+          //     Radius.circular(30),
+          //   ),
+          // ),
+        ));
   }
 }
 

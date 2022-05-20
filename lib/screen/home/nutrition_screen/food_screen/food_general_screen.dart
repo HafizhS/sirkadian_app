@@ -341,11 +341,14 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
             !widget.hasBeenInitialized
                 ? Container()
                 : NecessityDisplayWidget(
+                    listMeal: widget.listMealNecessity,
+                    listMealSarapan: widget.listMealSarapan,
+                    listMealMakanSiang: widget.listMealMakanSiang,
+                    listMealMakanMalam: widget.listMealMakanMalam,
                     size: size,
                     color: color,
-                    listMeal: widget.listMealNecessity,
                     foodController: foodController,
-                  )
+                  ),
           ],
         ),
       ],

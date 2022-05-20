@@ -581,6 +581,9 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                   ],
                 ),
                 NecessityDisplayWidget(
+                  listMealSarapan: snapshot.data!,
+                  listMealMakanSiang: snapshot.data!,
+                  listMealMakanMalam: snapshot.data!,
                   size: size,
                   color: color,
                   listMeal: snapshot.data!,

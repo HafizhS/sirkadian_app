@@ -6,7 +6,8 @@ class FoodProvider extends GetConnect {
 
   //get method-------------------------------------------------------
 
-  Future<Response> getAllFood(accessToken) async {
+  Future<Response> getFoodRecommendation(
+      String accessToken, String session, int page) async {
     Response? _response;
 
     var headers = {
@@ -14,7 +15,10 @@ class FoodProvider extends GetConnect {
       'Accept': 'application/json',
       'Authorization': 'Bearer $accessToken',
     };
-    _response = await get(foodAllGetUrl, headers: headers);
+    print('${foodRecommendationGetUrl}food_time=${session}&page=$page');
+    _response = await get(
+        '${foodRecommendationGetUrl}food_time=${session}&page=$page',
+        headers: headers);
 
     return _response;
   }

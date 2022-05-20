@@ -1,4 +1,6 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../controller/hexcolor_controller.dart';
 import '../../constant/hex_color.dart';
@@ -12,12 +14,18 @@ class NecessityDisplayWidget extends StatefulWidget {
     required this.size,
     required this.color,
     required this.listMeal,
+    required this.listMealSarapan,
+    required this.listMealMakanSiang,
+    required this.listMealMakanMalam,
     required this.foodController,
   }) : super(key: key);
 
   final Size size;
   final ColorConstantController color;
   final List<Food> listMeal;
+  final List<Food> listMealSarapan;
+  final List<Food> listMealMakanSiang;
+  final List<Food> listMealMakanMalam;
   final FoodController foodController;
 
   @override
@@ -50,6 +58,21 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
           ),
           children: [
             NecessityGauge(
+              onpress: () {
+                onPressNecessityGauge(
+                    title: 'Kalori',
+                    necessitySarapan: widget
+                        .foodController.necessity.value.energy!.breakfast!,
+                    necessityMakanSiang:
+                        widget.foodController.necessity.value.energy!.lunch!,
+                    necessityMakanMalam:
+                        widget.foodController.necessity.value.energy!.dinner!,
+                    nutritionTotal: widget.foodController.energy,
+                    nutritionSarapan: widget.foodController.energySarapan,
+                    nutritionMakanSiang: widget.foodController.energyMakanSiang,
+                    nutritionMakanMalam: widget.foodController.energyMakanMalam,
+                    unit: ' kkal');
+              },
               color: widget.color,
               text: 'Kalori',
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
@@ -60,7 +83,25 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
                       widget.foodController.necessity.value.energy!.dinner!),
               size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
             ),
+
             NecessityGauge(
+              onpress: () {
+                onPressNecessityGauge(
+                    title: 'Karbohidrat',
+                    necessitySarapan: widget.foodController.necessity.value
+                        .macro!.breakfast!.carbohydrate,
+                    necessityMakanSiang: widget.foodController.necessity.value
+                        .macro!.lunch!.carbohydrate,
+                    necessityMakanMalam: widget.foodController.necessity.value
+                        .macro!.dinner!.carbohydrate,
+                    nutritionTotal: widget.foodController.carbohydrate,
+                    nutritionSarapan: widget.foodController.carbohydrateSarapan,
+                    nutritionMakanSiang:
+                        widget.foodController.carbohydrateMakanSiang,
+                    nutritionMakanMalam:
+                        widget.foodController.carbohydrateMakanMalam,
+                    unit: ' g');
+              },
               color: widget.color,
               text: 'Karbohidrat',
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
@@ -75,6 +116,23 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               size: Size(widget.size.width * 0.3, widget.size.height * 0.15),
             ),
             NecessityGauge(
+              onpress: () {
+                onPressNecessityGauge(
+                    title: 'Protein',
+                    necessitySarapan: widget.foodController.necessity.value
+                        .macro!.breakfast!.protein,
+                    necessityMakanSiang: widget
+                        .foodController.necessity.value.macro!.lunch!.protein,
+                    necessityMakanMalam: widget
+                        .foodController.necessity.value.macro!.dinner!.protein,
+                    nutritionTotal: widget.foodController.protein,
+                    nutritionSarapan: widget.foodController.proteinSarapan,
+                    nutritionMakanSiang:
+                        widget.foodController.proteinMakanSiang,
+                    nutritionMakanMalam:
+                        widget.foodController.proteinMakanMalam,
+                    unit: ' g');
+              },
               color: widget.color,
               text: 'Protein',
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
@@ -89,6 +147,21 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
             ),
             NecessityGauge(
+              onpress: () {
+                onPressNecessityGauge(
+                    title: 'Lemak',
+                    necessitySarapan: widget
+                        .foodController.necessity.value.macro!.breakfast!.fat,
+                    necessityMakanSiang:
+                        widget.foodController.necessity.value.macro!.lunch!.fat,
+                    necessityMakanMalam: widget
+                        .foodController.necessity.value.macro!.dinner!.fat,
+                    nutritionTotal: widget.foodController.fat,
+                    nutritionSarapan: widget.foodController.fatSarapan,
+                    nutritionMakanSiang: widget.foodController.fatMakanSiang,
+                    nutritionMakanMalam: widget.foodController.fatMakanMalam,
+                    unit: ' g');
+              },
               color: widget.color,
               text: 'Lemak',
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
@@ -102,6 +175,21 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
             ),
             NecessityGauge(
+              onpress: () {
+                onPressNecessityGauge(
+                    title: 'Serat',
+                    necessitySarapan: widget
+                        .foodController.necessity.value.macro!.breakfast!.fiber,
+                    necessityMakanSiang: widget
+                        .foodController.necessity.value.macro!.lunch!.fiber,
+                    necessityMakanMalam: widget
+                        .foodController.necessity.value.macro!.dinner!.fiber,
+                    nutritionTotal: widget.foodController.fiber,
+                    nutritionSarapan: widget.foodController.fiberSarapan,
+                    nutritionMakanSiang: widget.foodController.fiberMakanSiang,
+                    nutritionMakanMalam: widget.foodController.fiberMakanMalam,
+                    unit: ' g');
+              },
               color: widget.color,
               text: 'Serat',
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
@@ -117,6 +205,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
             ),
 
             NecessityGauge(
+              onpress: () {},
               color: widget.color,
               text: 'Cairan',
               backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
@@ -125,6 +214,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
                   widget.foodController.necessity.value.water!,
               size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
             ),
+
             // NecessityGauge(
             //   color: widget.color,
             //   text: 'Kalsium',
@@ -210,13 +300,196 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
     );
   }
 
+  Future<dynamic> onPressNecessityGauge(
+      {String? title,
+      double? nutritionTotal,
+      double? nutritionSarapan,
+      double? nutritionMakanSiang,
+      double? nutritionMakanMalam,
+      double? necessitySarapan,
+      double? necessityMakanSiang,
+      double? necessityMakanMalam,
+      String? unit}) {
+    return Get.bottomSheet(Container(
+      decoration: BoxDecoration(
+          color: widget.color.primaryColor,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      height: widget.size.height * 0.4,
+      width: widget.size.width,
+      padding: EdgeInsets.all(10),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(
+              title!,
+              style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: widget.color.secondaryTextColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              height: widget.size.height * 0.02,
+            ),
+            bottomSheetNecesityChild(
+              size: widget.size,
+              title: 'Total',
+              value: nutritionTotal! /
+                  (necessitySarapan! +
+                      necessityMakanSiang! +
+                      necessityMakanMalam!),
+              valueAmount: nutritionTotal.toStringAsFixed(1),
+              unit: unit,
+              color: widget.color.secondaryColor,
+            ),
+            bottomSheetNecesityChild(
+              size: widget.size,
+              title: 'Sarapan',
+              value: nutritionSarapan! / necessitySarapan,
+              valueAmount: nutritionSarapan.toStringAsFixed(1),
+              unit: unit,
+              color: widget.color.redColor,
+            ),
+            bottomSheetNecesityChild(
+              size: widget.size,
+              title: 'Makan Siang',
+              value: nutritionMakanSiang! / necessityMakanSiang,
+              valueAmount: nutritionMakanSiang.toStringAsFixed(1),
+              unit: unit,
+              color: widget.color.purpleColor,
+            ),
+            bottomSheetNecesityChild(
+              size: widget.size,
+              title: 'Makan Malam',
+              value: nutritionMakanMalam! / necessityMakanMalam,
+              valueAmount: nutritionMakanMalam.toStringAsFixed(1),
+              unit: unit,
+              color: widget.color.blueColor,
+            ),
+            // bottomSheetNecesityChild(widget.size, 'Snack', 100),
+          ],
+        ),
+      ),
+    ));
+  }
+
+  Widget bottomSheetNecesityChild({
+    Size? size,
+    String? title,
+    double? value,
+    String? valueAmount,
+    String? unit,
+    Color? color,
+  }) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 20,
+                        top: size!.height * 0.01,
+                        bottom: size.height * 0.01),
+                    child: Text(
+                      title!,
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            color: widget.color.secondaryTextColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 5,
+                        top: size.height * 0.01,
+                        bottom: size.height * 0.01),
+                    child: Text(
+                      '($valueAmount $unit)',
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            color: widget.color.secondaryTextColor,
+                            fontSize: 10,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    right: 20,
+                    top: size.height * 0.01,
+                    bottom: size.height * 0.01),
+                child: Text(
+                  '${((value!) * 100).round().toString()}%',
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        color: widget.color.secondaryTextColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Neumorphic(
+              style: NeumorphicStyle(
+                  depth: -4,
+                  color: widget.color.backgroundColor,
+                  shape: NeumorphicShape.flat,
+                  boxShape: NeumorphicBoxShape.roundRect(
+                    BorderRadius.circular(20),
+                  )),
+              child: Stack(alignment: Alignment.centerLeft, children: [
+                Container(
+                  height: size.height * 0.02,
+                  width: size.width,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: color, borderRadius: BorderRadius.circular(20)),
+                  height: size.height * 0.02,
+                  width: size.width * value,
+                ),
+              ])),
+        ],
+      ),
+    );
+  }
+
   void getFoodNecessity() {
     widget.foodController.energy = 0;
+    widget.foodController.energySarapan = 0;
+    widget.foodController.energyMakanSiang = 0;
+    widget.foodController.energyMakanMalam = 0;
     widget.foodController.protein = 0;
+    widget.foodController.proteinSarapan = 0;
+    widget.foodController.proteinMakanSiang = 0;
+    widget.foodController.proteinMakanMalam = 0;
     widget.foodController.fat = 0;
+    widget.foodController.fatSarapan = 0;
+    widget.foodController.fatMakanSiang = 0;
+    widget.foodController.fatMakanMalam = 0;
     widget.foodController.carbohydrate = 0;
+    widget.foodController.carbohydrateSarapan = 0;
+    widget.foodController.carbohydrateMakanSiang = 0;
+    widget.foodController.carbohydrateMakanMalam = 0;
     widget.foodController.fiber = 0;
+    widget.foodController.fiberSarapan = 0;
+    widget.foodController.fiberMakanSiang = 0;
+    widget.foodController.fiberMakanMalam = 0;
     widget.foodController.water = 0;
+
     widget.foodController.sodium = 0;
     widget.foodController.calcium = 0;
     widget.foodController.iron = 0;
@@ -229,6 +502,78 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
     widget.foodController.vitaminB2 = 0;
     widget.foodController.vitaminB3 = 0;
     widget.foodController.retinol = 0;
+
+    for (var u = 0; u < widget.listMealSarapan.length; u++) {
+      setState(() {
+        widget.foodController.energySarapan =
+            widget.foodController.energySarapan +
+                (widget.listMealSarapan[u].energy! /
+                    widget.listMealSarapan[u].serving!);
+        widget.foodController.carbohydrateSarapan =
+            widget.foodController.carbohydrateSarapan +
+                (widget.listMealSarapan[u].carbohydrate! /
+                    widget.listMealSarapan[u].serving!);
+        widget.foodController.proteinSarapan =
+            widget.foodController.proteinSarapan +
+                (widget.listMealSarapan[u].protein! /
+                    widget.listMealSarapan[u].serving!);
+        widget.foodController.fatSarapan = widget.foodController.fatSarapan +
+            (widget.listMealSarapan[u].fat! /
+                widget.listMealSarapan[u].serving!);
+        widget.foodController.fiberSarapan =
+            widget.foodController.fiberSarapan +
+                (widget.listMealSarapan[u].fiber! /
+                    widget.listMealSarapan[u].serving!);
+      });
+    }
+    for (var u = 0; u < widget.listMealMakanSiang.length; u++) {
+      setState(() {
+        widget.foodController.energyMakanSiang =
+            widget.foodController.energyMakanSiang +
+                (widget.listMealMakanSiang[u].energy! /
+                    widget.listMealMakanSiang[u].serving!);
+        widget.foodController.carbohydrateMakanSiang =
+            widget.foodController.carbohydrateMakanSiang +
+                (widget.listMealMakanSiang[u].carbohydrate! /
+                    widget.listMealMakanSiang[u].serving!);
+        widget.foodController.proteinMakanSiang =
+            widget.foodController.proteinMakanSiang +
+                (widget.listMealMakanSiang[u].protein! /
+                    widget.listMealMakanSiang[u].serving!);
+        widget.foodController.fatMakanSiang =
+            widget.foodController.fatMakanSiang +
+                (widget.listMealMakanSiang[u].fat! /
+                    widget.listMealMakanSiang[u].serving!);
+        widget.foodController.fiberMakanSiang =
+            widget.foodController.fiberMakanSiang +
+                (widget.listMealMakanSiang[u].fiber! /
+                    widget.listMealMakanSiang[u].serving!);
+      });
+    }
+    for (var u = 0; u < widget.listMealMakanMalam.length; u++) {
+      setState(() {
+        widget.foodController.energyMakanMalam =
+            widget.foodController.energyMakanMalam +
+                (widget.listMealMakanMalam[u].energy! /
+                    widget.listMealMakanMalam[u].serving!);
+        widget.foodController.carbohydrateMakanMalam =
+            widget.foodController.carbohydrateMakanMalam +
+                (widget.listMealMakanMalam[u].carbohydrate! /
+                    widget.listMealMakanMalam[u].serving!);
+        widget.foodController.proteinMakanMalam =
+            widget.foodController.proteinMakanMalam +
+                (widget.listMealMakanMalam[u].protein! /
+                    widget.listMealMakanMalam[u].serving!);
+        widget.foodController.fatMakanMalam =
+            widget.foodController.fatMakanMalam +
+                (widget.listMealMakanMalam[u].fat! /
+                    widget.listMealMakanMalam[u].serving!);
+        widget.foodController.fiberMakanMalam =
+            widget.foodController.fiberMakanMalam +
+                (widget.listMealMakanMalam[u].fiber! /
+                    widget.listMealMakanMalam[u].serving!);
+      });
+    }
     for (var i = 0; i < widget.listMeal.length; i++) {
       setState(() {
         widget.foodController.energy = widget.foodController.energy +

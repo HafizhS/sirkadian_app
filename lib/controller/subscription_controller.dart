@@ -9,7 +9,7 @@ class SubscriptionController extends GetxController {
   final authController = Get.put(AuthController());
   final _provider = Get.put(SubscriptionProvider());
   final data = GetStorage('myData');
-  final isLoadingSubscriptionAll = false.obs;
+  var isLoadingSubscriptionAll = false.obs;
 
   final listSubscription = <DataSubscriptionAllResponse>[].obs;
   Future<void> getSubscriptionAll() async {

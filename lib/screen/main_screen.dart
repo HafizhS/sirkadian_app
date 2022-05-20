@@ -7,8 +7,10 @@ import 'package:sirkadian_app/widget/drawer_sidebar.dart';
 
 import '../controller/auth_controller.dart';
 import '../controller/food_controller.dart';
+import '../controller/hexcolor_controller.dart';
 import '../controller/subscription_controller.dart';
 import '../controller/tabNavigator_controller.dart';
+import '../controller/user_controller.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -20,8 +22,9 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final authController = Get.find<AuthController>();
   final foodController = Get.find<FoodController>();
+  final userController = Get.find<UserController>();
   final subscriptionController = Get.find<SubscriptionController>();
-  // final color = Get.find<ColorConstantController>();
+  final color = Get.find<ColorConstantController>();
   GlobalKey<TabNavigatorState> tabKey = GlobalKey();
   var _currentTab = "Home";
   final screenIndex = 0.obs;
@@ -50,7 +53,10 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    authController.getUsableToken();
+    authController.getUsableToken().then((value) {
+      userController.getUserHealthHistoryLatest();
+      subscriptionController.getSubscriptionAll();
+    });
   }
 
   @override
@@ -61,23 +67,34 @@ class _MainScreenState extends State<MainScreen> {
             !await _navigatorKeys[_currentTab]!.currentState!.maybePop(),
         child: Scaffold(
           backgroundColor: HexColor.fromHex('#F0F3EC'),
-          body: Stack(children: <Widget>[
-            _buildOffstageNavigator("Home"),
-            _buildOffstageNavigator("Program"),
-            _buildOffstageNavigator('Healthware'),
-          ]),
+          body: Obx(
+            () => userController.isLoadingUserHealthHistoryLatest.isTrue ||
+                    subscriptionController.isLoadingSubscriptionAll.isTrue
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: color.secondaryColor,
+                    ),
+                  )
+                : Stack(children: <Widget>[
+                    _buildOffstageNavigator("Home"),
+                    _buildOffstageNavigator("Program"),
+                    _buildOffstageNavigator('Healthware'),
+                  ]),
+          ),
           drawer: DrawerSideBar(
             authController: authController,
+            userController: userController,
+            color: color,
           ),
           floatingActionButton: FloatingActionButton(
-            backgroundColor: HexColor.fromHex('#5B9423'),
+            backgroundColor: color.tersierColor,
             onPressed: () {
               screenIndex.value = 2;
               _selectTab(pageKeys[screenIndex.value], screenIndex.value);
             },
             child: FaIcon(
               FontAwesomeIcons.unity,
-              color: HexColor.fromHex('#FFFFFF'),
+              color: color.primaryColor,
             ),
           ),
           floatingActionButtonLocation:
@@ -90,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
             child: Container(
               height: size.height * 0.1,
               padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+              margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -98,7 +115,6 @@ class _MainScreenState extends State<MainScreen> {
                     () => NeumorphicButton(
                       onPressed: () {
                         screenIndex.value = 0;
-                        // _onBottomTap(screenIndex.value);
                         _selectTab(
                             pageKeys[screenIndex.value], screenIndex.value);
                       },
@@ -113,8 +129,8 @@ class _MainScreenState extends State<MainScreen> {
                         FontAwesomeIcons.home,
                         size: 16,
                         color: screenIndex.value == 0
-                            ? HexColor.fromHex('#8CD15D')
-                            : HexColor.fromHex('#777B71'),
+                            ? color.secondaryColor
+                            : color.tersierTextColor,
                       ),
                     ),
                   ),
@@ -122,7 +138,6 @@ class _MainScreenState extends State<MainScreen> {
                     () => NeumorphicButton(
                       onPressed: () {
                         screenIndex.value = 1;
-                        // _onBottomTap(screenIndex.value);
                         _selectTab(
                             pageKeys[screenIndex.value], screenIndex.value);
                       },
@@ -137,8 +152,8 @@ class _MainScreenState extends State<MainScreen> {
                         FontAwesomeIcons.list,
                         size: 16,
                         color: screenIndex.value == 1
-                            ? HexColor.fromHex('#8CD15D')
-                            : HexColor.fromHex('#777B71'),
+                            ? color.secondaryColor
+                            : color.tersierTextColor,
                       ),
                     ),
                   ),
