@@ -29,9 +29,10 @@ class Food {
   double? vitaminB2;
   double? vitaminB3;
   double? retinol;
-  int? foodId;
+  String? foodId;
   List<String>? instruction;
   String? imageFileName;
+  String? recommendationScore;
 
   final user = ToOne<User>();
   Food({
@@ -65,6 +66,7 @@ class Food {
     required this.foodId,
     required this.instruction,
     required this.imageFileName,
+    required this.recommendationScore,
   });
 }
 

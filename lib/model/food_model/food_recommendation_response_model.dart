@@ -1,19 +1,20 @@
-class FoodAllResponse {
+class FoodRecommendationResponse {
   int? statusCode;
   String? message;
   Null errorCode;
-  List<DataFoodAllResponse>? data;
+  List<DataFoodRecommendationResponse>? data;
 
-  FoodAllResponse({this.statusCode, this.message, this.errorCode, this.data});
+  FoodRecommendationResponse(
+      {this.statusCode, this.message, this.errorCode, this.data});
 
-  FoodAllResponse.fromJson(Map<String, dynamic> json) {
+  FoodRecommendationResponse.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     message = json['message'];
     errorCode = json['errorCode'];
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data!.add(new DataFoodAllResponse.fromJson(v));
+        data!.add(new DataFoodRecommendationResponse.fromJson(v));
       });
     }
   }
@@ -30,7 +31,7 @@ class FoodAllResponse {
   }
 }
 
-class DataFoodAllResponse {
+class DataFoodRecommendationResponse {
   String? foodName;
   List<String>? foodTypes;
   List<FoodIngredientInfo>? foodIngredientInfo;
@@ -58,39 +59,42 @@ class DataFoodAllResponse {
   double? vitaminB2;
   double? vitaminB3;
   double? retinol;
-  int? foodId;
+  String? foodId;
+  double? recommendationScore;
 
-  DataFoodAllResponse(
-      {this.foodName,
-      this.foodTypes,
-      this.foodIngredientInfo,
-      this.foodInstructionInfo,
-      this.imageFilename,
-      this.duration,
-      this.serving,
-      this.difficulty,
-      this.tags,
-      this.water,
-      this.energy,
-      this.protein,
-      this.fat,
-      this.carbohydrate,
-      this.fiber,
-      this.calcium,
-      this.iron,
-      this.phosphor,
-      this.potassium,
-      this.sodium,
-      this.zinc,
-      this.copper,
-      this.vitaminC,
-      this.vitaminB1,
-      this.vitaminB2,
-      this.vitaminB3,
-      this.retinol,
-      this.foodId});
+  DataFoodRecommendationResponse({
+    this.foodName,
+    this.foodTypes,
+    this.foodIngredientInfo,
+    this.foodInstructionInfo,
+    this.imageFilename,
+    this.duration,
+    this.serving,
+    this.difficulty,
+    this.tags,
+    this.water,
+    this.energy,
+    this.protein,
+    this.fat,
+    this.carbohydrate,
+    this.fiber,
+    this.calcium,
+    this.iron,
+    this.phosphor,
+    this.potassium,
+    this.sodium,
+    this.zinc,
+    this.copper,
+    this.vitaminC,
+    this.vitaminB1,
+    this.vitaminB2,
+    this.vitaminB3,
+    this.retinol,
+    this.foodId,
+    this.recommendationScore,
+  });
 
-  DataFoodAllResponse.fromJson(Map<String, dynamic> json) {
+  DataFoodRecommendationResponse.fromJson(Map<String, dynamic> json) {
     foodName = json['foodName'];
     foodTypes = json['foodTypes'].cast<String>();
     if (json['foodIngredientInfo'] != null) {
@@ -129,6 +133,7 @@ class DataFoodAllResponse {
     vitaminB3 = json['vitaminB3'];
     retinol = json['retinol'];
     foodId = json['foodId'];
+    recommendationScore = json['recommendation_score'];
   }
 
   Map<String, dynamic> toJson() {
@@ -170,6 +175,7 @@ class DataFoodAllResponse {
     data['vitaminB3'] = this.vitaminB3;
     data['retinol'] = this.retinol;
     data['foodId'] = this.foodId;
+    data['recommendation_score'] = this.recommendationScore;
     return data;
   }
 }

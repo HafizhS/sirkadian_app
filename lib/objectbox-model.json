@@ -62,7 +62,7 @@
     },
     {
       "id": "2:1537447124247363090",
-      "lastPropertyId": "31:3534973823171917606",
+      "lastPropertyId": "32:2456367297624848551",
       "name": "Food",
       "properties": [
         {
@@ -204,7 +204,7 @@
         {
           "id": "28:8237221542813592976",
           "name": "foodId",
-          "type": 6
+          "type": 9
         },
         {
           "id": "29:533869178784666820",
@@ -223,6 +223,11 @@
           "flags": 520,
           "indexId": "2:4707290468638542427",
           "relationTarget": "User"
+        },
+        {
+          "id": "32:2456367297624848551",
+          "name": "recommendationScore",
+          "type": 9
         }
       ],
       "relations": []

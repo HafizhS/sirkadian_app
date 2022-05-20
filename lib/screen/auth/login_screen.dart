@@ -158,12 +158,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ? FaIcon(
                                             FontAwesomeIcons.eyeSlash,
                                             size: 18,
-                                            color: Colors.grey,
+                                            color: color.tersierTextColor,
                                           )
                                         : FaIcon(
                                             FontAwesomeIcons.eye,
                                             size: 18,
-                                            color: Colors.green.shade700,
+                                            color: color.tersierColor,
                                           ),
                                   ),
                                   hintStyle: TextStyle(

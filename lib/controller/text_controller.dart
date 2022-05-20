@@ -70,18 +70,20 @@ class RegisterTextC extends GetxController {
 
 class InitialSetupTextC extends GetxController {
   late TextEditingController heightC;
+  late TextEditingController dateC;
   late TextEditingController weightC;
 
   @override
   void onInit() {
     super.onInit();
-
+    dateC = TextEditingController();
     heightC = TextEditingController();
     weightC = TextEditingController();
   }
 
   @override
   void onClose() {
+    dateC.dispose();
     heightC.dispose();
     weightC.dispose();
 

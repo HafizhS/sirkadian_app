@@ -364,7 +364,7 @@ class AuthController extends GetxController {
       try {
         final Response _res = await _provider.postInitialSetup(
             initialSetupRequest: initialSetupRequest, accessToken: accessToken);
-
+        print(_res.body);
         if (_res.statusCode == 200) {
           if (Get.isDialogOpen!) Get.back();
           informationController.showSuccessSnackBar('Initial Setup berhasil');

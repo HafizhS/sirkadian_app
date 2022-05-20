@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:sirkadian_app/controller/user_controller.dart';
 import 'package:sirkadian_app/controller/hexcolor_controller.dart';
 import 'package:sirkadian_app/controller/auth_controller.dart';
 import 'package:sirkadian_app/controller/exercise_controller.dart';
@@ -20,6 +21,7 @@ class ControllerBinding implements Bindings {
     Get.lazyPut<ExerciseController>(() => ExerciseController());
     Get.lazyPut<FluidController>(() => FluidController());
     Get.lazyPut<HealthwareController>(() => HealthwareController());
+    Get.lazyPut<UserController>(() => UserController());
   }
 }
 
@@ -34,5 +36,12 @@ class RegisterTextB implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut<RegisterTextC>(() => RegisterTextC());
+  }
+}
+
+class InitialSetupTextB implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<InitialSetupTextC>(() => InitialSetupTextC());
   }
 }
