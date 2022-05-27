@@ -8,7 +8,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
-import '../../../../model/obejctbox_model.dart/food_model.dart';
+import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
 import '../../../../objectbox.g.dart';
 import '../../../../widget/food_widget/necessity_display.dart';
 import 'food_mealplan_screen.dart';
@@ -153,7 +153,7 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                     padding: const EdgeInsets.all(12.0),
                     margin: EdgeInsets.only(right: 20),
                     child: AnimatedIcon(
-                      icon: AnimatedIcons.menu_close,
+                      icon: AnimatedIcons.event_add,
                       progress: _controller,
                       size: 20,
                       color: color.secondaryTextColor,
@@ -290,6 +290,8 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                         Navigator.push(
                             context,
                             MaterialPageRoute(
+                                settings:
+                                    RouteSettings(name: "/foodMealScreen"),
                                 builder: (context) => FoodMealScreen(
                                     session: foodController.sessions[index])));
                       },
@@ -314,6 +316,8 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                         Navigator.push(
                             context,
                             MaterialPageRoute(
+                                settings:
+                                    RouteSettings(name: "/foodMealScreen"),
                                 builder: (context) => FoodMealScreen(
                                     session: foodController.sessions[index])));
                       },
@@ -337,6 +341,8 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                         Navigator.push(
                             context,
                             MaterialPageRoute(
+                                settings:
+                                    RouteSettings(name: "/foodMealScreen"),
                                 builder: (context) => FoodMealScreen(
                                     session: foodController.sessions[index])));
                       },
@@ -360,6 +366,8 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                         Navigator.push(
                             context,
                             MaterialPageRoute(
+                                settings:
+                                    RouteSettings(name: "/foodMealScreen"),
                                 builder: (context) => FoodMealScreen(
                                     session: foodController.sessions[index])));
                       },
@@ -382,6 +390,8 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                           Navigator.push(
                               context,
                               MaterialPageRoute(
+                                  settings:
+                                      RouteSettings(name: "/foodMealScreen"),
                                   builder: (context) => FoodMealScreen(
                                       session:
                                           foodController.sessions[index])));
@@ -496,7 +506,7 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                     ),
                     Container(
                       margin: EdgeInsets.only(right: 10),
-                      child: InkWell(
+                      child: GestureDetector(
                           onTap: () {
                             Get.bottomSheet(Container(
                               decoration: BoxDecoration(
@@ -591,73 +601,77 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                 ),
               ],
             ),
-      secondChild: TableCalendar(
-        focusedDay: foodController.focusedDay,
-        firstDay: DateTime.utc(
-            DateTime.now().year, DateTime.now().month, DateTime.now().day),
-        lastDay: DateTime(2050),
-        startingDayOfWeek: StartingDayOfWeek.monday,
-        calendarFormat: format,
-        // onFormatChanged: (CalendarFormat _format) {
-        //   format = _format;
-        // },
-        headerStyle:
-            HeaderStyle(formatButtonVisible: false, titleCentered: true),
-        onDaySelected: (_selectedDay, _focusedDay) {
-          setState(() {
-            if (_selectedDay.day == DateTime.now().day) {
-              foodController.selectedDay = DateTime.utc(DateTime.now().year,
-                  DateTime.now().month, DateTime.now().day);
-            } else {
-              foodController.selectedDay = _selectedDay;
-            }
+      secondChild: Container(
+        margin: EdgeInsets.only(bottom: 20),
+        child: TableCalendar(
+          focusedDay: foodController.focusedDay,
+          firstDay: DateTime.utc(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day),
+          lastDay: DateTime(2050),
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          calendarFormat: format,
+          // onFormatChanged: (CalendarFormat _format) {
+          //   format = _format;
+          // },
+          headerStyle:
+              HeaderStyle(formatButtonVisible: false, titleCentered: true),
+          onDaySelected: (_selectedDay, _focusedDay) {
+            setState(() {
+              if (_selectedDay.day == DateTime.now().day) {
+                foodController.selectedDay = DateTime.utc(DateTime.now().year,
+                    DateTime.now().month, DateTime.now().day);
+              } else {
+                foodController.selectedDay = _selectedDay;
+              }
 
-            foodController.focusedDay = _focusedDay;
-            _necessityStream = foodController.foodStore
-                .box<Food>()
-                .query(Food_.date.equals(foodController.selectedDay.toString()))
-                .watch(triggerImmediately: true)
-                .map((query) => query.find());
-            _sarapanStream = foodController.foodStore
-                .box<Food>()
-                .query(
-                    Food_.date.equals(foodController.selectedDay.toString()) &
-                        Food_.session.equals('Sarapan'))
-                .watch(triggerImmediately: true)
-                .map((query) => query.find());
-            _makanSiangStream = foodController.foodStore
-                .box<Food>()
-                .query(
-                    Food_.date.equals(foodController.selectedDay.toString()) &
-                        Food_.session.equals('Makan Siang'))
-                .watch(triggerImmediately: true)
-                .map((query) => query.find());
-            _makanMalamStream = foodController.foodStore
-                .box<Food>()
-                .query(
-                    Food_.date.equals(foodController.selectedDay.toString()) &
-                        Food_.session.equals('Makan Malam'))
-                .watch(triggerImmediately: true)
-                .map((query) => query.find());
-            _snackStream = foodController.foodStore
-                .box<Food>()
-                .query(
-                    Food_.date.equals(foodController.selectedDay.toString()) &
-                        Food_.session.equals('Snack'))
-                .watch(triggerImmediately: true)
-                .map((query) => query.find());
-          });
-          print(foodController.selectedDay);
-        },
-        selectedDayPredicate: (DateTime date) {
-          return isSameDay(foodController.selectedDay, date);
-        },
+              foodController.focusedDay = _focusedDay;
+              _necessityStream = foodController.foodStore
+                  .box<Food>()
+                  .query(
+                      Food_.date.equals(foodController.selectedDay.toString()))
+                  .watch(triggerImmediately: true)
+                  .map((query) => query.find());
+              _sarapanStream = foodController.foodStore
+                  .box<Food>()
+                  .query(
+                      Food_.date.equals(foodController.selectedDay.toString()) &
+                          Food_.session.equals('Sarapan'))
+                  .watch(triggerImmediately: true)
+                  .map((query) => query.find());
+              _makanSiangStream = foodController.foodStore
+                  .box<Food>()
+                  .query(
+                      Food_.date.equals(foodController.selectedDay.toString()) &
+                          Food_.session.equals('Makan Siang'))
+                  .watch(triggerImmediately: true)
+                  .map((query) => query.find());
+              _makanMalamStream = foodController.foodStore
+                  .box<Food>()
+                  .query(
+                      Food_.date.equals(foodController.selectedDay.toString()) &
+                          Food_.session.equals('Makan Malam'))
+                  .watch(triggerImmediately: true)
+                  .map((query) => query.find());
+              _snackStream = foodController.foodStore
+                  .box<Food>()
+                  .query(
+                      Food_.date.equals(foodController.selectedDay.toString()) &
+                          Food_.session.equals('Snack'))
+                  .watch(triggerImmediately: true)
+                  .map((query) => query.find());
+            });
+            print(foodController.selectedDay);
+          },
+          selectedDayPredicate: (DateTime date) {
+            return isSameDay(foodController.selectedDay, date);
+          },
 
-        calendarStyle: CalendarStyle(
-            isTodayHighlighted: false,
-            selectedDecoration: BoxDecoration(
-              color: color.secondaryColor,
-            )),
+          calendarStyle: CalendarStyle(
+              isTodayHighlighted: false,
+              selectedDecoration: BoxDecoration(
+                color: color.secondaryColor,
+              )),
+        ),
       ),
     );
   }

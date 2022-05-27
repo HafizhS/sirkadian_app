@@ -32,7 +32,7 @@ class NecessityGauge extends StatelessWidget {
         onPressed: onpress,
         style: NeumorphicStyle(
           depth: 4,
-          color: color.primaryColor,
+          color: color.bgColor,
           shape: NeumorphicShape.flat,
           boxShape: NeumorphicBoxShape.roundRect(
             BorderRadius.circular(20),

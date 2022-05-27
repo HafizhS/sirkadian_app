@@ -76,6 +76,7 @@ class Exercise {
   int? sportId;
   String? name;
   String? desc;
+  String? difficulty;
   double? mets;
   // List<Variations>? variations;
   String? date;
@@ -87,6 +88,7 @@ class Exercise {
     this.id = 0,
     required this.name,
     required this.desc,
+    required this.difficulty,
     required this.imageFilename,
     required this.mets,
     required this.sportId,
@@ -103,7 +105,7 @@ class Variations {
   int? sportId;
   int? sportVariationsId;
   String? name;
-
+  String? difficulty;
   String? desc;
   double? mets;
   String? subVariations;
@@ -113,6 +115,7 @@ class Variations {
   Variations({
     this.id = 0,
     required this.name,
+    required this.difficulty,
     required this.desc,
     required this.imageFilename,
     required this.mets,

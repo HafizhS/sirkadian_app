@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
-import '../../../../model/obejctbox_model.dart/food_model.dart';
+import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
 import '../../../../widget/food_widget/necessity_display.dart';
 import 'food_mealplan_screen.dart';
 
@@ -39,320 +39,338 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
-        child: Column(
-      children: [
-        //segment mealplan
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 20),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Makan Apa Hari ini?',
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                              color: color.secondaryTextColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
+      child: Column(
+        children: [
+          //segment mealplan
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 20),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Makan Apa Hari ini?',
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                                color: color.secondaryTextColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        foodController.dateNoww,
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                              color: color.secondaryTextColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal),
+                        SizedBox(width: 10),
+                        Text(
+                          foodController.dateNoww,
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                color: color.secondaryTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(right: 10),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: FaIcon(
-                        FontAwesomeIcons.history,
-                        size: 20,
-                        color: color.secondaryTextColor,
-                      ),
+                      ],
                     ),
                   ),
-                ),
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              height: size.height * 0.2,
-              width: double.infinity,
-              child: Swiper(
-                itemCount: foodController.sessions.length,
-                itemWidth: size.width * 0.8,
-                index: 0,
-                layout: SwiperLayout.DEFAULT,
-                viewportFraction: 0.5,
-                scale: 0.9,
-                itemBuilder: (BuildContext context, int index) {
-                  switch (index) {
-                    case 0:
-                      return Container(
-                        margin: EdgeInsets.all(10),
-                        child: NeumorphicButton(
-                            padding: EdgeInsets.all(0),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => FoodMealScreen(
-                                          session:
-                                              foodController.sessions[index])));
-                            },
-                            style: NeumorphicStyle(
-                                color: color.primaryColor,
-                                shape: NeumorphicShape.flat,
-                                boxShape: NeumorphicBoxShape.roundRect(
-                                  BorderRadius.circular(20),
-                                )),
-                            child: widget.listMealSarapan.isNotEmpty
-                                ? notEmptyChild(
-                                    widget.listMealSarapan[0].imageFileName!,
-                                    index,
-                                    size)
-                                : emptySessionChild(size, index)),
-                      );
-
-                    case 1:
-                      return Container(
-                        margin: EdgeInsets.all(10),
-                        child: NeumorphicButton(
-                            padding: EdgeInsets.all(0),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => FoodMealScreen(
-                                          session:
-                                              foodController.sessions[index])));
-                            },
-                            style: NeumorphicStyle(
-                                color: color.primaryColor,
-                                shape: NeumorphicShape.flat,
-                                boxShape: NeumorphicBoxShape.roundRect(
-                                  BorderRadius.circular(20),
-                                )),
-                            child: widget.listMealMakanSiang.isNotEmpty
-                                ? notEmptyChild(
-                                    widget.listMealMakanSiang[0].imageFileName!,
-                                    index,
-                                    size)
-                                : emptySessionChild(size, index)),
-                      );
-                    case 2:
-                      return Container(
-                        margin: EdgeInsets.all(10),
-                        child: NeumorphicButton(
-                            padding: EdgeInsets.all(0),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => FoodMealScreen(
-                                          session:
-                                              foodController.sessions[index])));
-                            },
-                            style: NeumorphicStyle(
-                                color: color.primaryColor,
-                                shape: NeumorphicShape.flat,
-                                boxShape: NeumorphicBoxShape.roundRect(
-                                  BorderRadius.circular(20),
-                                )),
-                            child: widget.listMealMakanMalam.isNotEmpty
-                                ? notEmptyChild(
-                                    widget.listMealMakanMalam[0].imageFileName!,
-                                    index,
-                                    size)
-                                : emptySessionChild(size, index)),
-                      );
-                    case 3:
-                      return Container(
-                        margin: EdgeInsets.all(10),
-                        child: NeumorphicButton(
-                            padding: EdgeInsets.all(0),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => FoodMealScreen(
-                                          session:
-                                              foodController.sessions[index])));
-                            },
-                            style: NeumorphicStyle(
-                                color: color.primaryColor,
-                                shape: NeumorphicShape.flat,
-                                boxShape: NeumorphicBoxShape.roundRect(
-                                  BorderRadius.circular(20),
-                                )),
-                            child: widget.listMealSnack.isNotEmpty
-                                ? notEmptyChild(
-                                    widget.listMealSnack[0].imageFileName!,
-                                    index,
-                                    size)
-                                : emptySessionChild(size, index)),
-                      );
-                    default:
-                      return Container(
+                  NeumorphicButton(
+                    onPressed: () {},
+                    padding: EdgeInsets.all(5),
+                    style: NeumorphicStyle(
+                      depth: 2,
+                      color: color.bgColor,
+                      boxShape: NeumorphicBoxShape.roundRect(
+                          BorderRadius.circular(5)),
+                    ),
+                    margin: EdgeInsets.only(right: 20),
+                    child: FaIcon(
+                      FontAwesomeIcons.history,
+                      size: 20,
+                      color: color.secondaryTextColor,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                height: size.height * 0.2,
+                width: double.infinity,
+                child: Swiper(
+                  itemCount: foodController.sessions.length,
+                  itemWidth: size.width * 0.8,
+                  index: 0,
+                  layout: SwiperLayout.DEFAULT,
+                  viewportFraction: 0.5,
+                  scale: 0.9,
+                  itemBuilder: (BuildContext context, int index) {
+                    switch (index) {
+                      case 0:
+                        return Container(
                           margin: EdgeInsets.all(10),
                           child: NeumorphicButton(
+                              padding: EdgeInsets.all(0),
                               onPressed: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
+                                        settings: RouteSettings(
+                                            name: "/foodMealScreen"),
                                         builder: (context) => FoodMealScreen(
                                             session: foodController
                                                 .sessions[index])));
                               },
                               style: NeumorphicStyle(
-                                  color: color.primaryColor,
+                                  color: color.bgColor,
                                   shape: NeumorphicShape.flat,
                                   boxShape: NeumorphicBoxShape.roundRect(
                                     BorderRadius.circular(20),
                                   )),
-                              child: emptySessionChild(size, index)));
-                  }
-                },
+                              child: widget.listMealSarapan.isNotEmpty
+                                  ? notEmptyChild(
+                                      widget.listMealSarapan[0].imageFileName!,
+                                      index,
+                                      size)
+                                  : emptySessionChild(size, index)),
+                        );
+
+                      case 1:
+                        return Container(
+                          margin: EdgeInsets.all(10),
+                          child: NeumorphicButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        settings: RouteSettings(
+                                            name: "/foodMealScreen"),
+                                        builder: (context) => FoodMealScreen(
+                                            session: foodController
+                                                .sessions[index])));
+                              },
+                              style: NeumorphicStyle(
+                                  color: color.bgColor,
+                                  shape: NeumorphicShape.flat,
+                                  boxShape: NeumorphicBoxShape.roundRect(
+                                    BorderRadius.circular(20),
+                                  )),
+                              child: widget.listMealMakanSiang.isNotEmpty
+                                  ? notEmptyChild(
+                                      widget
+                                          .listMealMakanSiang[0].imageFileName!,
+                                      index,
+                                      size)
+                                  : emptySessionChild(size, index)),
+                        );
+                      case 2:
+                        return Container(
+                          margin: EdgeInsets.all(10),
+                          child: NeumorphicButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        settings: RouteSettings(
+                                            name: "/foodMealScreen"),
+                                        builder: (context) => FoodMealScreen(
+                                            session: foodController
+                                                .sessions[index])));
+                              },
+                              style: NeumorphicStyle(
+                                  color: color.bgColor,
+                                  shape: NeumorphicShape.flat,
+                                  boxShape: NeumorphicBoxShape.roundRect(
+                                    BorderRadius.circular(20),
+                                  )),
+                              child: widget.listMealMakanMalam.isNotEmpty
+                                  ? notEmptyChild(
+                                      widget
+                                          .listMealMakanMalam[0].imageFileName!,
+                                      index,
+                                      size)
+                                  : emptySessionChild(size, index)),
+                        );
+                      case 3:
+                        return Container(
+                          margin: EdgeInsets.all(10),
+                          child: NeumorphicButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        settings: RouteSettings(
+                                            name: "/foodMealScreen"),
+                                        builder: (context) => FoodMealScreen(
+                                            session: foodController
+                                                .sessions[index])));
+                              },
+                              style: NeumorphicStyle(
+                                  color: color.bgColor,
+                                  shape: NeumorphicShape.flat,
+                                  boxShape: NeumorphicBoxShape.roundRect(
+                                    BorderRadius.circular(20),
+                                  )),
+                              child: widget.listMealSnack.isNotEmpty
+                                  ? notEmptyChild(
+                                      widget.listMealSnack[0].imageFileName!,
+                                      index,
+                                      size)
+                                  : emptySessionChild(size, index)),
+                        );
+                      default:
+                        return Container(
+                            margin: EdgeInsets.all(10),
+                            child: NeumorphicButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          settings: RouteSettings(
+                                              name: "/foodMealScreen"),
+                                          builder: (context) => FoodMealScreen(
+                                              session: foodController
+                                                  .sessions[index])));
+                                },
+                                style: NeumorphicStyle(
+                                    color: color.bgColor,
+                                    shape: NeumorphicShape.flat,
+                                    boxShape: NeumorphicBoxShape.roundRect(
+                                      BorderRadius.circular(20),
+                                    )),
+                                child: emptySessionChild(size, index)));
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
-        ),
-        //segment nutrisi
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 20),
-                  child: Text(
-                    'Nutrisi Hari ini',
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                          color: color.secondaryTextColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
+            ],
+          ),
+          //segment nutrisi
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 20),
+                    child: Text(
+                      'Nutrisi Hari ini',
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            color: color.secondaryTextColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(right: 10),
-                  child: InkWell(
-                      onTap: () {
-                        Get.bottomSheet(Container(
-                          decoration: BoxDecoration(
-                              color: color.primaryColor,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20))),
-                          height: size.height * 0.5,
-                          width: size.width,
-                          padding: EdgeInsets.all(10),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                bottomSheetNecesityChild(
-                                    size,
-                                    'Kalsium',
-                                    foodController.calcium /
-                                        foodController
-                                            .necessity.value.micro!.calcium!),
-                                bottomSheetNecesityChild(
-                                    size,
-                                    'Zat Besi',
-                                    foodController.iron /
-                                        foodController
-                                            .necessity.value.micro!.iron!),
-                                bottomSheetNecesityChild(
-                                    size,
-                                    'zinc',
-                                    foodController.zinc /
-                                        foodController
-                                            .necessity.value.micro!.zinc!),
-                                bottomSheetNecesityChild(
-                                    size,
-                                    'Copper',
-                                    foodController.copper /
-                                        foodController
-                                            .necessity.value.micro!.copper!),
-                                bottomSheetNecesityChild(
-                                    size,
-                                    'Vitamin C',
-                                    foodController.vitaminC /
-                                        foodController
-                                            .necessity.value.micro!.vitaminC!),
-                                bottomSheetNecesityChild(
-                                    size,
-                                    'Vitamin B1',
-                                    foodController.vitaminB1 /
-                                        foodController
-                                            .necessity.value.micro!.vitaminB1!),
-                                bottomSheetNecesityChild(
-                                    size,
-                                    'Vitamin B2',
-                                    foodController.vitaminB2 /
-                                        foodController
-                                            .necessity.value.micro!.vitaminB2!),
-                                bottomSheetNecesityChild(
-                                    size,
-                                    'Vitamin B3',
-                                    foodController.vitaminB3 /
-                                        foodController
-                                            .necessity.value.micro!.vitaminB3!),
-                                bottomSheetNecesityChild(
-                                    size,
-                                    'Retinol',
-                                    foodController.retinol /
-                                        foodController
-                                            .necessity.value.micro!.retinol!),
-                              ],
-                            ),
+                  NeumorphicButton(
+                    onPressed: () {
+                      Get.bottomSheet(Container(
+                        decoration: BoxDecoration(
+                            color: color.primaryColor,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20))),
+                        height: size.height * 0.5,
+                        width: size.width,
+                        padding: EdgeInsets.all(10),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              bottomSheetNecesityChild(
+                                  size,
+                                  'Kalsium',
+                                  foodController.calcium /
+                                      foodController
+                                          .necessity.value.micro!.calcium!),
+                              bottomSheetNecesityChild(
+                                  size,
+                                  'Zat Besi',
+                                  foodController.iron /
+                                      foodController
+                                          .necessity.value.micro!.iron!),
+                              bottomSheetNecesityChild(
+                                  size,
+                                  'zinc',
+                                  foodController.zinc /
+                                      foodController
+                                          .necessity.value.micro!.zinc!),
+                              bottomSheetNecesityChild(
+                                  size,
+                                  'Copper',
+                                  foodController.copper /
+                                      foodController
+                                          .necessity.value.micro!.copper!),
+                              bottomSheetNecesityChild(
+                                  size,
+                                  'Vitamin C',
+                                  foodController.vitaminC /
+                                      foodController
+                                          .necessity.value.micro!.vitaminC!),
+                              bottomSheetNecesityChild(
+                                  size,
+                                  'Vitamin B1',
+                                  foodController.vitaminB1 /
+                                      foodController
+                                          .necessity.value.micro!.vitaminB1!),
+                              bottomSheetNecesityChild(
+                                  size,
+                                  'Vitamin B2',
+                                  foodController.vitaminB2 /
+                                      foodController
+                                          .necessity.value.micro!.vitaminB2!),
+                              bottomSheetNecesityChild(
+                                  size,
+                                  'Vitamin B3',
+                                  foodController.vitaminB3 /
+                                      foodController
+                                          .necessity.value.micro!.vitaminB3!),
+                              bottomSheetNecesityChild(
+                                  size,
+                                  'Retinol',
+                                  foodController.retinol /
+                                      foodController
+                                          .necessity.value.micro!.retinol!),
+                            ],
                           ),
-                        ));
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: FaIcon(
-                          FontAwesomeIcons.ellipsisH,
-                          size: 20,
-                          color: color.secondaryTextColor,
                         ),
-                      )),
-                )
-              ],
-            ),
-            !widget.hasBeenInitialized
-                ? Container()
-                : NecessityDisplayWidget(
-                    listMeal: widget.listMealNecessity,
-                    listMealSarapan: widget.listMealSarapan,
-                    listMealMakanSiang: widget.listMealMakanSiang,
-                    listMealMakanMalam: widget.listMealMakanMalam,
-                    size: size,
-                    color: color,
-                    foodController: foodController,
+                      ));
+                    },
+                    padding: EdgeInsets.all(5),
+                    style: NeumorphicStyle(
+                      depth: 2,
+                      color: color.bgColor,
+                      boxShape: NeumorphicBoxShape.roundRect(
+                          BorderRadius.circular(5)),
+                    ),
+                    margin: EdgeInsets.only(right: 20),
+                    child: FaIcon(
+                      FontAwesomeIcons.ellipsisH,
+                      size: 20,
+                      color: color.secondaryTextColor,
+                    ),
                   ),
-          ],
-        ),
-      ],
-    ));
+                ],
+              ),
+            ],
+          ),
+          !widget.hasBeenInitialized
+              ? Container()
+              : NecessityDisplayWidget(
+                  listMeal: widget.listMealNecessity,
+                  listMealSarapan: widget.listMealSarapan,
+                  listMealMakanSiang: widget.listMealMakanSiang,
+                  listMealMakanMalam: widget.listMealMakanMalam,
+                  size: size,
+                  color: color,
+                  foodController: foodController,
+                ),
+        ],
+      ),
+    );
   }
 
   Widget notEmptyChild(String imageFilename, int index, Size size) {
@@ -399,7 +417,7 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
       children: [
         Neumorphic(
             style: NeumorphicStyle(
-              color: color.primaryColor,
+              color: color.bgColor,
               shape: NeumorphicShape.flat,
               depth: 4,
               boxShape: NeumorphicBoxShape.circle(),

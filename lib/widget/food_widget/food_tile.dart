@@ -12,10 +12,12 @@ class FoodTile extends StatelessWidget {
     required this.necessity,
     required this.serving,
     required this.recommendationScore,
+    required this.duration,
     required this.size,
     required this.containerButton,
     required this.iconButton,
     required this.icon,
+    required this.depth,
     required this.imageFilename,
   }) : super(key: key);
 
@@ -24,8 +26,10 @@ class FoodTile extends StatelessWidget {
   final String necessity;
   final String serving;
   final String recommendationScore;
+  final String duration;
   final Size size;
   final IconData icon;
+  final double depth;
   final String imageFilename;
   final Function() containerButton;
   final Function() iconButton;
@@ -36,7 +40,7 @@ class FoodTile extends StatelessWidget {
       onPressed: containerButton,
       padding: EdgeInsets.all(0),
       style: NeumorphicStyle(
-          color: color.primaryColor,
+          color: color.bgColor,
           shape: NeumorphicShape.flat,
           boxShape: NeumorphicBoxShape.roundRect(
             BorderRadius.circular(20),
@@ -53,7 +57,10 @@ class FoodTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20)),
                 child: imageFilename == ''
                     ? Icon(Icons.image_not_supported_rounded)
-                    : Image.network(imageFilename)),
+                    : Image.network(
+                        imageFilename,
+                        fit: BoxFit.cover,
+                      )),
             SizedBox(
               width: size.width * 0.02,
             ),
@@ -65,7 +72,7 @@ class FoodTile extends StatelessWidget {
                   width: size.width * 0.5,
                   child: Text(
                     name,
-                    // overflow: TextOverflow.ellipsis,
+                    overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: GoogleFonts.poppins(
                       textStyle: TextStyle(
@@ -100,25 +107,15 @@ class FoodTile extends StatelessWidget {
                       ],
                     ),
                     Text(' | '),
-                    Text(
-                      serving + ' Porsi',
-                      style: GoogleFonts.inter(
-                        textStyle: TextStyle(
-                            color: color.secondaryTextColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                    Text(' | '),
                     Row(
                       children: [
                         FaIcon(
-                          FontAwesomeIcons.solidStar,
-                          color: color.yellowColor,
+                          FontAwesomeIcons.clock,
+                          color: color.blueColor,
                           size: 12,
                         ),
                         Text(
-                          ' ' + recommendationScore,
+                          ' ' + duration + ' min',
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
@@ -128,6 +125,16 @@ class FoodTile extends StatelessWidget {
                         ),
                       ],
                     ),
+                    Text(' | '),
+                    Text(
+                      serving + ' Porsi',
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            color: color.secondaryTextColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -136,22 +143,51 @@ class FoodTile extends StatelessWidget {
         ),
 
         //segment 3
-        Container(
-          margin: EdgeInsets.only(right: 20, bottom: 20),
-          child: NeumorphicButton(
-            onPressed: iconButton,
-            style: NeumorphicStyle(
-              shape: NeumorphicShape.flat,
-              boxShape: NeumorphicBoxShape.circle(),
-              color: color.primaryColor,
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 20, bottom: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FaIcon(
+                    FontAwesomeIcons.solidStar,
+                    color: color.yellowColor,
+                    size: 12,
+                  ),
+                  Text(
+                    ' ' + recommendationScore,
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                          color: color.secondaryTextColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            padding: const EdgeInsets.all(10.0),
-            child: FaIcon(
-              icon,
-              size: 12,
-              color: color.secondaryColor,
+            Container(
+              margin: EdgeInsets.only(right: 20, bottom: 20),
+              child: NeumorphicButton(
+                onPressed: iconButton,
+                style: NeumorphicStyle(
+                  depth: depth,
+                  shape: NeumorphicShape.flat,
+                  boxShape: NeumorphicBoxShape.circle(),
+                  color: color.bgColor,
+                ),
+                padding: const EdgeInsets.all(10.0),
+                child: FaIcon(
+                  icon,
+                  size: 12,
+                  color: color.secondaryColor,
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ]),
     );

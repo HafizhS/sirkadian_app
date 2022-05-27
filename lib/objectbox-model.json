@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:3008231103323831688",
-      "lastPropertyId": "9:5785605612801335971",
+      "lastPropertyId": "10:5656940485429870223",
       "name": "Exercise",
       "properties": [
         {
@@ -56,6 +56,11 @@
           "id": "9:5785605612801335971",
           "name": "isChecked",
           "type": 1
+        },
+        {
+          "id": "10:5656940485429870223",
+          "name": "difficulty",
+          "type": 9
         }
       ],
       "relations": []
@@ -254,7 +259,7 @@
     },
     {
       "id": "4:8973082184935809639",
-      "lastPropertyId": "12:2893357313142973546",
+      "lastPropertyId": "13:5107727704619027609",
       "name": "Variations",
       "properties": [
         {
@@ -304,6 +309,11 @@
         {
           "id": "12:2893357313142973546",
           "name": "subVariations",
+          "type": 9
+        },
+        {
+          "id": "13:5107727704619027609",
+          "name": "difficulty",
           "type": 9
         }
       ],

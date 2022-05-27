@@ -1,26 +1,26 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../controller/hexcolor_controller.dart';
-import '../../controller/exercise_controller.dart';
-import '../../model/obejctbox_model.dart/food_model.dart';
 
-class ExerciseTile extends StatefulWidget {
+class ExerciseTile extends StatelessWidget {
   const ExerciseTile({
     Key? key,
     required this.color,
     required this.size,
     required this.title,
-    required this.subtitle_1,
-    required this.subtitle_2,
+    required this.mets,
+    required this.difficulty,
+    required this.desc,
     required this.onRecom,
+    required this.depth,
+    required this.iconColor,
+    required this.icon,
     required this.imageFilename,
     required this.onpressPlus,
     required this.onpressCheck,
     required this.onpressDelete,
-    this.exercise,
   }) : super(key: key);
 
   final ColorConstantController color;
@@ -28,26 +28,23 @@ class ExerciseTile extends StatefulWidget {
   final Size size;
 
   final String title;
-  final String subtitle_1;
-  final String subtitle_2;
+  final String mets;
+  final String difficulty;
+  final String desc;
   final String imageFilename;
   final bool onRecom;
-  final Exercise? exercise;
+  final double depth;
+  final Color iconColor;
+  final IconData icon;
   final Function() onpressPlus;
   final Function() onpressCheck;
   final Function() onpressDelete;
 
   @override
-  State<ExerciseTile> createState() => _ExerciseTileState();
-}
-
-class _ExerciseTileState extends State<ExerciseTile> {
-  final exerciseController = Get.find<ExerciseController>();
-  @override
   Widget build(BuildContext context) {
     return Neumorphic(
       style: NeumorphicStyle(
-          color: widget.color.primaryColor,
+          color: color.bgColor,
           shape: NeumorphicShape.flat,
           boxShape: NeumorphicBoxShape.roundRect(
             BorderRadius.circular(20),
@@ -60,55 +57,76 @@ class _ExerciseTileState extends State<ExerciseTile> {
             Row(
               children: [
                 Container(
-                    height: widget.size.height * 0.15,
-                    width: widget.size.width * 0.3,
+                    height: size.height * 0.15,
+                    width: size.width * 0.3,
                     decoration: BoxDecoration(
-                        color: widget.color.backupPrimaryColor,
+                        color: color.backupPrimaryColor,
                         borderRadius: BorderRadius.circular(20)),
-                    child: widget.imageFilename == ''
+                    child: imageFilename == ''
                         ? Icon(Icons.image_not_supported_rounded)
-                        : Image.network(widget.imageFilename)),
+                        : Image.network(
+                            imageFilename,
+                            fit: BoxFit.cover,
+                          )),
                 SizedBox(
-                  width: widget.size.width * 0.02,
+                  width: size.width * 0.02,
                 ),
                 //segment 2
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.title,
+                      title,
                       style: GoogleFonts.poppins(
                         textStyle: TextStyle(
-                            color: widget.color.primaryTextColor,
+                            color: color.primaryTextColor,
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
                       ),
                     ),
                     SizedBox(
-                      height: widget.size.height * 0.02,
+                      height: size.height * 0.02,
                     ),
                     Row(
                       children: [
                         Text(
-                          widget.subtitle_1,
+                          'Mets: ',
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
-                                color: widget.color.secondaryTextColor,
+                                color: color.secondaryTextColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ),
+                        Text(
+                          mets,
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                color: color.secondaryTextColor,
                                 fontSize: 12,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
                         Text(' | '),
                         Text(
-                          widget.subtitle_2,
+                          difficulty,
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
-                                color: widget.color.secondaryTextColor,
+                                color: color.secondaryTextColor,
                                 fontSize: 12,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
                       ],
+                    ),
+                    Text(
+                      desc,
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            color: color.secondaryTextColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal),
+                      ),
                     ),
                   ],
                 ),
@@ -116,68 +134,68 @@ class _ExerciseTileState extends State<ExerciseTile> {
             ),
 
             //segment 3
-            widget.onRecom
+            onRecom
                 ? Container(
                     margin: EdgeInsets.only(right: 20, bottom: 20),
                     child: NeumorphicButton(
-                        onPressed: widget.onpressPlus,
+                        onPressed: onpressPlus,
                         style: NeumorphicStyle(
                           shape: NeumorphicShape.flat,
                           boxShape: NeumorphicBoxShape.circle(),
-                          color: widget.color.primaryColor,
+                          color: color.bgColor,
                         ),
                         padding: const EdgeInsets.all(10.0),
                         child: FaIcon(
                           FontAwesomeIcons.plus,
                           size: 12,
-                          color: widget.color.secondaryTextColor,
+                          color: color.secondaryTextColor,
                         )))
-                : Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 10, bottom: 20),
-                        child: NeumorphicButton(
-                          onPressed: widget.onpressCheck,
-                          style: NeumorphicStyle(
-                            depth: widget.exercise!.isChecked! ? -4 : 4,
-                            shape: NeumorphicShape.flat,
-                            boxShape: NeumorphicBoxShape.circle(),
-                            color: widget.color.primaryColor,
-                          ),
-                          padding: const EdgeInsets.all(10.0),
-                          child: FaIcon(
-                            FontAwesomeIcons.check,
-                            size: 12,
-                            color: widget.exercise!.isChecked!
-                                ? widget.color.secondaryColor
-                                : widget.color.secondaryTextColor,
-                          ),
-                        ),
+                :
+                // Row(
+                //     children: [
+                // Container(
+                //   margin: EdgeInsets.only(right: 10, bottom: 20),
+                //   child: NeumorphicButton(
+                //     onPressed: onpressCheck,
+                //     style: NeumorphicStyle(
+                //       depth: exercise!.isChecked! ? -4 : 4,
+                //       shape: NeumorphicShape.flat,
+                //       boxShape: NeumorphicBoxShape.circle(),
+                //       color: color.bgColor,
+                //     ),
+                //     padding: const EdgeInsets.all(10.0),
+                //     child: FaIcon(
+                //       FontAwesomeIcons.check,
+                //       size: 12,
+                //       color: exercise!.isChecked!
+                //           ? color.secondaryColor
+                //           : color.secondaryTextColor,
+                //     ),
+                //   ),
+                // ),
+                // !exercise!.isChecked!
+                // ?
+                Container(
+                    margin: EdgeInsets.only(right: 20, bottom: 20),
+                    child: NeumorphicButton(
+                      onPressed: onpressDelete,
+                      style: NeumorphicStyle(
+                        depth: depth,
+                        shape: NeumorphicShape.flat,
+                        boxShape: NeumorphicBoxShape.circle(),
+                        color: color.bgColor,
                       ),
-                      !widget.exercise!.isChecked!
-                          ? Container(
-                              margin: EdgeInsets.only(right: 20, bottom: 20),
-                              child: NeumorphicButton(
-                                onPressed: widget.onpressDelete,
-                                style: NeumorphicStyle(
-                                  depth: widget.exercise!.isChecked! ? -4 : 4,
-                                  shape: NeumorphicShape.flat,
-                                  boxShape: NeumorphicBoxShape.circle(),
-                                  color: widget.color.primaryColor,
-                                ),
-                                padding: const EdgeInsets.all(10.0),
-                                child: FaIcon(
-                                  FontAwesomeIcons.trash,
-                                  size: 12,
-                                  color: widget.exercise!.isChecked!
-                                      ? widget.color.secondaryTextColor
-                                      : widget.color.redColor,
-                                ),
-                              ),
-                            )
-                          : Container()
-                    ],
-                  ),
+                      padding: const EdgeInsets.all(10.0),
+                      child: FaIcon(
+                        icon,
+                        size: 12,
+                        color: iconColor,
+                      ),
+                    ),
+                  )
+            //         // : Container()
+            //   ],
+            // ),
           ]),
     );
   }

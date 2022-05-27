@@ -10,6 +10,7 @@ class ColorConstantController extends GetxController {
   final secondaryColor = HexColor.fromHex('#8CD15D'); //hijau muda
   final tersierColor = HexColor.fromHex('#5B9423'); //hijau tua
   final kuartenerColor = HexColor.fromHex('#F8F9FB'); //semi putih
+  final bgColor = HexColor.fromHex('#F5F5F8'); //
 
   final yellowColor = HexColor.fromHex('#FFC529');
   final redColor = HexColor.fromHex('#94223D');

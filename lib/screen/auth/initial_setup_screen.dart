@@ -373,6 +373,7 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
                   },
                   decoration: InputDecoration(
                       focusedBorder: InputBorder.none,
+                      suffixText: 'cm',
                       border: InputBorder.none,
                       hintText: '170 cm',
                       hintStyle: TextStyle(
@@ -403,6 +404,7 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
                   },
                   decoration: InputDecoration(
                       focusedBorder: InputBorder.none,
+                      suffixText: 'kg',
                       border: InputBorder.none,
                       hintText: '65 kg',
                       hintStyle: TextStyle(

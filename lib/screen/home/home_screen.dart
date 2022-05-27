@@ -7,7 +7,7 @@ import '../../controller/auth_controller.dart';
 
 import '../../controller/hexcolor_controller.dart';
 import '../../widget/food_widget/necessity_gauge.dart';
-import '../../widget/home_widget/dummy_Recommendation_shortcut.dart';
+import '../../widget/food_widget/other_food_tile.dart';
 import 'exercise_screen/exercise_general_screen.dart';
 import 'nutrition_screen/nutrition_screen.dart';
 
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: color.backgroundColor,
+      backgroundColor: color.bgColor,
 
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
+                    GestureDetector(
                       onTap: () {
                         Scaffold.of(context).openDrawer();
                       },
@@ -83,7 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         radius: 25,
                       ),
                       CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/user.jpg'),
+                        backgroundImage:
+                            AssetImage('assets/images/user_male.jpg'),
                         radius: 20,
                       ),
                     ]),
@@ -299,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             Scaffold.of(context).openDrawer();
                           },
@@ -315,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           CircleAvatar(
                             backgroundImage:
-                                AssetImage('assets/images/yuda.jpg'),
+                                AssetImage('assets/images/user_male.jpg'),
                             radius: 20,
                           ),
                         ]),
@@ -460,22 +461,33 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollDirection: Axis.horizontal,
                       children: [
                         Container(
-                          padding: EdgeInsets.all(10),
                           alignment: Alignment.bottomLeft,
-                          child: Text(
-                            "Resep Menu Sehat",
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: color.secondaryTextColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal),
-                            ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                  child: Image.asset(
+                                      'assets/images/featured_1.jpeg')),
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Resep Menu Sehat",
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                        color: color.secondaryTextColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image:
-                                    AssetImage('assets/images/featured_1.jpeg'),
-                                alignment: Alignment.topCenter),
                             color: color.primaryColor,
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -484,21 +496,33 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 200,
                         ),
                         Container(
-                          padding: EdgeInsets.all(10),
                           alignment: Alignment.bottomLeft,
-                          child: Text(
-                            "Tips Olahraga di Rumah",
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: color.secondaryTextColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal),
-                            ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                  child:
+                                      Image.asset('assets/images/jogging.jpg')),
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Resep Menu Sehat",
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                        color: color.secondaryTextColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('assets/images/jogging.jpg'),
-                                alignment: Alignment.topCenter),
                             color: color.primaryColor,
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -507,21 +531,32 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 200,
                         ),
                         Container(
-                          padding: EdgeInsets.all(10),
                           alignment: Alignment.bottomLeft,
-                          child: Text(
-                            "Aneka Buah Indonesia",
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: color.secondaryTextColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal),
-                            ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                  child: Image.asset('assets/images/bcg.jpg')),
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Resep Menu Sehat",
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                        color: color.secondaryTextColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('assets/images/bcg.jpg'),
-                                alignment: Alignment.topCenter),
                             color: color.primaryColor,
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -534,131 +569,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                 ],
               ),
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     Container(
-              //       margin: EdgeInsets.symmetric(horizontal: 20),
-              //       child: Text(
-              //         "Tren Makanan Hari Ini",
-              //         style: GoogleFonts.poppins(
-              //           textStyle: TextStyle(
-              //               color: color.blackColor,
-              //               fontSize: 14,
-              //               fontWeight: FontWeight.bold),
-              //         ),
-              //       ),
-              //     ),
-              //     Container(
-              //       width: size.width,
-              //       height: size.height * 0.3,
-              //       child: ListView(
-              //         scrollDirection: Axis.horizontal,
-              //         children: [
-              //           Container(
-              //             margin: EdgeInsets.all(10),
-              //             height: 200,
-              //             width: 200,
-              //             decoration: BoxDecoration(
-              //               color: color.primaryColor,
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //           ),
-              //           Container(
-              //             margin: EdgeInsets.all(10),
-              //             height: 200,
-              //             width: 200,
-              //             decoration: BoxDecoration(
-              //               color: color.primaryColor,
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //           ),
-              //           Container(
-              //             margin: EdgeInsets.all(10),
-              //             height: 200,
-              //             width: 200,
-              //             decoration: BoxDecoration(
-              //               color: color.primaryColor,
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //           ),
-              //           Container(
-              //             margin: EdgeInsets.all(10),
-              //             height: 200,
-              //             width: 200,
-              //             decoration: BoxDecoration(
-              //               color: color.primaryColor,
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     )
-              //   ],
-              // ),
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     Container(
-              //       margin: EdgeInsets.symmetric(horizontal: 20),
-              //       child: Text(
-              //         "Tren Olahraga Hari Ini",
-              //         style: GoogleFonts.poppins(
-              //           textStyle: TextStyle(
-              //               color: color.blackColor,
-              //               fontSize: 14,
-              //               fontWeight: FontWeight.bold),
-              //         ),
-              //       ),
-              //     ),
-              //     Container(
-              //       width: size.width,
-              //       height: size.height * 0.3,
-              //       child: ListView(
-              //         scrollDirection: Axis.horizontal,
-              //         children: [
-              //           Container(
-              //             margin: EdgeInsets.all(10),
-              //             height: 200,
-              //             width: 200,
-              //             decoration: BoxDecoration(
-              //               color: color.primaryColor,
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //           ),
-              //           Container(
-              //             margin: EdgeInsets.all(10),
-              //             height: 200,
-              //             width: 200,
-              //             decoration: BoxDecoration(
-              //               color: color.primaryColor,
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //           ),
-              //           Container(
-              //             margin: EdgeInsets.all(10),
-              //             height: 200,
-              //             width: 200,
-              //             decoration: BoxDecoration(
-              //               color: color.primaryColor,
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //           ),
-              //           Container(
-              //             margin: EdgeInsets.all(10),
-              //             height: 200,
-              //             width: 200,
-              //             decoration: BoxDecoration(
-              //               color: color.primaryColor,
-              //               borderRadius: BorderRadius.circular(20),
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     )
-
-              //     ],
-              //   )
               ListRekomendasi(
                   size: size,
                   sportList: sportList,
