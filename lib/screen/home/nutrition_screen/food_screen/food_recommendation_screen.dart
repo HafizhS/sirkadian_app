@@ -8,7 +8,7 @@ import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/auth_controller.dart';
 import '../../../../controller/food_controller.dart';
 
-import '../../../../model/obejctbox_model.dart/food_model.dart';
+import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
 import '../../../../widget/food_widget/food_tile.dart';
 import 'food_detail_screen.dart';
 
@@ -73,11 +73,11 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
       length: 6,
       initialIndex: 0,
       child: Container(
-          decoration: BoxDecoration(color: color.primaryColor),
+          decoration: BoxDecoration(color: color.bgColor),
           child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
               child: Scaffold(
-                  backgroundColor: color.primaryColor,
+                  backgroundColor: color.bgColor,
                   body: Obx(
                     () => foodController.isLoadingFoodRecommendation.isTrue
                         ? Center(
@@ -105,7 +105,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                               shape: NeumorphicShape.flat,
                                               boxShape:
                                                   NeumorphicBoxShape.circle(),
-                                              color: color.primaryColor,
+                                              color: color.bgColor,
                                             ),
                                             padding: const EdgeInsets.all(16.0),
                                             child: FaIcon(
@@ -292,11 +292,15 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                   itemCount: _searchResult.length,
                   itemBuilder: (context, index) {
                     return FoodTile(
+                      depth: 4,
                       containerButton: () {
+                        foodController.getOtherFoodRecommendation(
+                            _searchResult[index].foodId, widget.session);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => FoodDetailScreen(
+                                      session: widget.session,
                                       foodController: foodController,
                                       color: color,
                                       food: _searchResult[index],
@@ -353,15 +357,15 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                           ? ''
                           : _searchResult[index].imageFilename!,
                       name: _searchResult[index].foodName!,
-                      necessity: (_searchResult[index].energy! /
-                              _searchResult[index].serving!)
-                          .toStringAsFixed(0),
-                      serving: (_searchResult[index].serving! /
-                              _searchResult[index].serving!)
-                          .toStringAsFixed(0),
+                      necessity:
+                          (_searchResult[index].energy!).toStringAsFixed(0),
+                      serving:
+                          (_searchResult[index].serving!).toStringAsFixed(0),
                       recommendationScore: _searchResult[index]
                           .recommendationScore!
                           .toStringAsFixed(2),
+                      duration:
+                          _searchResult[index].duration!.toStringAsFixed(0),
                     );
                   }),
             )
@@ -373,11 +377,16 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                   itemCount: foodController.listFood.length,
                   itemBuilder: (context, index) {
                     return FoodTile(
+                      depth: 4,
                       containerButton: () {
+                        foodController.getOtherFoodRecommendation(
+                            foodController.listFood[index].foodId,
+                            widget.session);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => FoodDetailScreen(
+                                      session: widget.session,
                                       foodController: foodController,
                                       color: color,
                                       food: foodController.listFood[index],
@@ -385,47 +394,49 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                       },
                       iconButton: () {
                         final food = Food(
-                            imageFileName:
-                                foodController.listFood[index].imageFilename,
-                            session: widget.session,
-                            date: foodController.selectedDay.toString(),
-                            name: foodController.listFood[index].foodName,
-                            calcium: foodController.listFood[index].calcium,
-                            carbohydrate:
-                                foodController.listFood[index].carbohydrate,
-                            copper: foodController.listFood[index].copper,
-                            difficulty:
-                                foodController.listFood[index].difficulty,
-                            duration: foodController.listFood[index].duration,
-                            energy: foodController.listFood[index].energy,
-                            fat: foodController.listFood[index].fat,
-                            fiber: foodController.listFood[index].fiber,
-                            foodId: foodController.listFood[index].foodId,
-                            foodTypes: foodController.listFood[index].foodTypes,
-                            iron: foodController.listFood[index].iron,
-                            phosphor: foodController.listFood[index].phosphor,
-                            potassium: foodController.listFood[index].potassium,
-                            protein: foodController.listFood[index].protein,
-                            retinol: foodController.listFood[index].retinol,
-                            serving: foodController.listFood[index].serving,
-                            sodium: foodController.listFood[index].sodium,
-                            tags: foodController.listFood[index].tags,
-                            vitaminB1: foodController.listFood[index].vitaminB1,
-                            vitaminB2: foodController.listFood[index].vitaminB2,
-                            vitaminB3: foodController.listFood[index].vitaminB3,
-                            vitaminC: foodController.listFood[index].vitaminC,
-                            water: foodController.listFood[index].water,
-                            zinc: foodController.listFood[index].zinc,
-                            // instruction: foodController
-                            //     .listFood[index]
-                            //     .foodInstructionInfo!
-                            //     .map((e) =>
-                            //         e.instruction!)
-                            //     .toList(),
-                            instruction: [],
-                            recommendationScore: foodController
-                                .listFood[index].recommendationScore!
-                                .toStringAsFixed(2));
+                          imageFileName:
+                              foodController.listFood[index].imageFilename,
+                          session: widget.session,
+                          date: foodController.selectedDay.toString(),
+                          name: foodController.listFood[index].foodName,
+                          calcium: foodController.listFood[index].calcium,
+                          carbohydrate:
+                              foodController.listFood[index].carbohydrate,
+                          copper: foodController.listFood[index].copper,
+                          difficulty: foodController.listFood[index].difficulty,
+                          duration: foodController.listFood[index].duration,
+                          energy: foodController.listFood[index].energy,
+                          fat: foodController.listFood[index].fat,
+                          fiber: foodController.listFood[index].fiber,
+                          foodId: foodController.listFood[index].foodId,
+                          foodTypes: foodController.listFood[index].foodTypes,
+                          iron: foodController.listFood[index].iron,
+                          phosphor: foodController.listFood[index].phosphor,
+                          potassium: foodController.listFood[index].potassium,
+                          protein: foodController.listFood[index].protein,
+                          retinol: foodController.listFood[index].retinol,
+                          serving: foodController.listFood[index].serving,
+                          sodium: foodController.listFood[index].sodium,
+                          tags: foodController.listFood[index].tags,
+                          vitaminB1: foodController.listFood[index].vitaminB1,
+                          vitaminB2: foodController.listFood[index].vitaminB2,
+                          vitaminB3: foodController.listFood[index].vitaminB3,
+                          vitaminC: foodController.listFood[index].vitaminC,
+                          water: foodController.listFood[index].water,
+                          zinc: foodController.listFood[index].zinc,
+                          // instruction: foodController
+                          //     .listFood[index]
+                          //     .foodInstructionInfo!
+                          //     .map((e) =>
+                          //         e.instruction!)
+                          //     .toList(),
+
+                          instruction: [],
+                          recommendationScore: foodController
+                              .listFood[index].recommendationScore!
+                              .toStringAsFixed(2),
+                        );
+
                         foodController.foodStore.box<Food>().put(food);
 
                         Navigator.pop(context);
@@ -438,15 +449,15 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                               ? ''
                               : foodController.listFood[index].imageFilename!,
                       name: foodController.listFood[index].foodName!,
-                      necessity: (foodController.listFood[index].energy! /
-                              foodController.listFood[index].serving!)
+                      necessity: (foodController.listFood[index].energy!)
                           .toStringAsFixed(0),
-                      serving: (foodController.listFood[index].serving! /
-                              foodController.listFood[index].serving!)
+                      serving: (foodController.listFood[index].serving!)
                           .toStringAsFixed(0),
                       recommendationScore: foodController
                           .listFood[index].recommendationScore!
                           .toStringAsFixed(2),
+                      duration: foodController.listFood[index].duration!
+                          .toStringAsFixed(0),
                     );
                   }),
             ),

@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../controller/hexcolor_controller.dart';
 import '../../constant/hex_color.dart';
 import '../../controller/food_controller.dart';
-import '../../model/obejctbox_model.dart/food_model.dart';
+import '../../model/obejctbox_model.dart/food_exercise_model.dart';
 import 'necessity_gauge.dart';
 
 class NecessityDisplayWidget extends StatefulWidget {

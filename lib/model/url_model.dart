@@ -17,7 +17,9 @@ final String rootUser = '$root/user';
 final String initialSetupPostUrl = '$rootUser/initial_setup';
 final String userHealthPreferenceLatestGetUrl =
     '$rootUser/preference_history/latest';
-final String userHealthHistoryLatestUrl = '$rootUser/health_history/latest';
+final String userHealthPreferencePostUrl = '$rootUser/preference_history/add';
+final String userHealthHistoryLatestGetUrl = '$rootUser/health_history/latest';
+final String userHealthHistoryPostUrl = '$rootUser/health_history/add';
 final String userInfromationGetUrl = '$rootUser/info';
 
 //subscription
@@ -30,7 +32,7 @@ final String rootUserFood = '$root/user_food';
 final String foodAllGetUrl = '$rootFood/all';
 final String foodRecommendationGetUrl = '$rootUserFood/recommendation?';
 final String necessityGetUrl = '$rootUserFood/necessity';
-// final String foodPostUrl = '$root/food/history';
+final String foodHistoryPostUrl = '$rootUserFood/history';
 // final String foodHistoryGetUrl = '$root/food/history?';
 
 //exercise

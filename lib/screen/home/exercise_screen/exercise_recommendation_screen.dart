@@ -3,8 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/exercise_controller.dart';
-import 'package:sirkadian_app/model/exercise_model/exercise_history_request_model.dart';
-import 'package:sirkadian_app/model/obejctbox_model.dart/food_model.dart';
+import 'package:sirkadian_app/model/obejctbox_model.dart/food_exercise_model.dart';
 import 'package:sirkadian_app/widget/exercise_widget/exercise_tile.dart';
 
 import '../../../controller/hexcolor_controller.dart';
@@ -37,11 +36,11 @@ class _ExerciseRecommendationScreenState
       length: 4,
       initialIndex: 0,
       child: Container(
-          decoration: BoxDecoration(color: color.primaryColor),
+          decoration: BoxDecoration(color: color.bgColor),
           child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
               child: Scaffold(
-                  backgroundColor: color.primaryColor,
+                  backgroundColor: color.bgColor,
                   body: Obx(
                     () => exerciseController.listExercise.isEmpty
                         ? Center(
@@ -68,7 +67,7 @@ class _ExerciseRecommendationScreenState
                                               shape: NeumorphicShape.flat,
                                               boxShape:
                                                   NeumorphicBoxShape.circle(),
-                                              color: color.primaryColor,
+                                              color: color.bgColor,
                                             ),
                                             padding: const EdgeInsets.all(16.0),
                                             child: FaIcon(
@@ -207,6 +206,9 @@ class _ExerciseRecommendationScreenState
                                                   .listExercise.length,
                                               itemBuilder: (context, index) {
                                                 return ExerciseTile(
+                                                  depth: 4,
+                                                  icon: FontAwesomeIcons.trash,
+                                                  iconColor: color.redColor,
                                                   onpressCheck: () {},
                                                   onpressDelete: () {},
                                                   onpressPlus: () {
@@ -218,7 +220,11 @@ class _ExerciseRecommendationScreenState
                                                           .listExercise[index]
                                                           .desc,
                                                       isChecked: false,
-                                                      imageFilename: '',
+                                                      imageFilename:
+                                                          exerciseController
+                                                              .listExercise[
+                                                                  index]
+                                                              .imageFileName,
                                                       date: exerciseController
                                                           .selectedDay
                                                           .toString(),
@@ -230,28 +236,32 @@ class _ExerciseRecommendationScreenState
                                                       mets: exerciseController
                                                           .listExercise[index]
                                                           .mets,
+                                                      difficulty:
+                                                          exerciseController
+                                                              .listExercise[
+                                                                  index]
+                                                              .difficulty,
                                                     );
                                                     exerciseController
                                                         .exerciseStore
                                                         .box<Exercise>()
                                                         .put(exercise);
 
-                                                    final exerciseHistoryRequest =
-                                                        ExerciseHistoryRequest(
-                                                            sportDate:
-                                                                '${exerciseController.selectedDay.year}-${exerciseController.selectedDay.month}-${exerciseController.selectedDay.day}',
-                                                            sports: []);
-//                                                     exerciseController
-//                                                         .postExerciseHistory(exerciseHistoryRequest: );
                                                     Navigator.pop(context);
                                                   },
                                                   onRecom: true,
-                                                  imageFilename: '',
+                                                  imageFilename:
+                                                      exerciseController
+                                                          .listExercise[index]
+                                                          .imageFileName!,
                                                   color: color,
-                                                  subtitle_1: exerciseController
+                                                  mets: exerciseController
                                                       .listExercise[index].mets!
                                                       .toString(),
-                                                  subtitle_2: exerciseController
+                                                  difficulty: exerciseController
+                                                      .listExercise[index]
+                                                      .difficulty!,
+                                                  desc: exerciseController
                                                       .listExercise[index]
                                                       .desc!,
                                                   size: size,

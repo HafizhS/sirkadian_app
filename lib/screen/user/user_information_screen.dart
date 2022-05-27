@@ -2,6 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sirkadian_app/screen/user/user_information_setting_screen.dart';
 
 import '../../controller/hexcolor_controller.dart';
 import '../../controller/text_controller.dart';
@@ -82,7 +83,13 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                             Container(
                               margin: EdgeInsets.only(right: 20),
                               child: NeumorphicButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              UserInformationSettingScreen()));
+                                },
                                 style: NeumorphicStyle(
                                   shape: NeumorphicShape.flat,
                                   boxShape: NeumorphicBoxShape.circle(),
@@ -100,6 +107,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                         ),
                       ),
                       Container(
+                        margin: EdgeInsets.only(top: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(20),
@@ -111,44 +119,33 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                               margin: EdgeInsets.all(10),
                               child: CircleAvatar(
                                 backgroundImage:
-                                    AssetImage('assets/images/yuda.jpg'),
+                                    AssetImage('assets/images/user_male.jpg'),
                                 radius: 60,
                               ),
                             ),
-                            // Container(
-                            //   child: FaIcon(
-                            //     FontAwesomeIcons.userCircle,
-                            //     size: size.width * 0.3,
-                            //   ),
-                            // ),
                             Container(
                               alignment: Alignment.center,
                               width: double.infinity,
                               child: Text(
                                 'Test',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'CenturyGothic'),
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      color: color.primaryTextColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.all(10),
-                              height: size.height * 0.1,
-                              decoration: BoxDecoration(
-                                  // boxShadow: [
-                                  //   BoxShadow(
-                                  //     color: Colors.grey.shade200,
-                                  //     // offset: const Offset(
-                                  //     //   5.0,
-                                  //     //   5.0,
-                                  //     // ),
-                                  //     blurRadius: 5.0,
-                                  //     spreadRadius: 2.0,
-                                  //   )
-                                  // ],
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
+                            Neumorphic(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              style: NeumorphicStyle(
+                                shape: NeumorphicShape.flat,
+                                color: color.primaryColor,
+                                boxShape: NeumorphicBoxShape.roundRect(
+                                    BorderRadius.circular(20)),
+                              ),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 20),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
@@ -158,16 +155,21 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                                     children: [
                                       Text(
                                         20.toString(),
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Nunito'),
+                                        style: GoogleFonts.inter(
+                                          textStyle: TextStyle(
+                                              color: color.primaryTextColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                       ),
                                       Text(
                                         'Usia',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500),
+                                        style: GoogleFonts.inter(
+                                          textStyle: TextStyle(
+                                              color: color.primaryTextColor,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w400),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -190,16 +192,21 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                                                             .height! /
                                                         100)))
                                             .toStringAsFixed(0),
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Nunito'),
+                                        style: GoogleFonts.inter(
+                                          textStyle: TextStyle(
+                                              color: color.primaryTextColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                       ),
                                       Text(
                                         'BMI',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500),
+                                        style: GoogleFonts.inter(
+                                          textStyle: TextStyle(
+                                              color: color.primaryTextColor,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w400),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -213,26 +220,34 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                                                 .value
                                                 .height!
                                                 .toStringAsFixed(0),
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
+                                            style: GoogleFonts.inter(
+                                              textStyle: TextStyle(
+                                                  color: color.primaryTextColor,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600),
                                             ),
                                             children: [
                                               TextSpan(
-                                                  text: ' cm',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 12,
+                                                text: ' cm',
+                                                style: GoogleFonts.inter(
+                                                  textStyle: TextStyle(
+                                                      color: color
+                                                          .primaryTextColor,
+                                                      fontSize: 11,
                                                       fontWeight:
-                                                          FontWeight.normal))
+                                                          FontWeight.w400),
+                                                ),
+                                              )
                                             ]),
                                       ),
                                       Text(
                                         'Tinggi Badan',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500),
+                                        style: GoogleFonts.inter(
+                                          textStyle: TextStyle(
+                                              color: color.primaryTextColor,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w400),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -246,26 +261,34 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                                                 .value
                                                 .weight!
                                                 .toStringAsFixed(0),
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
+                                            style: GoogleFonts.inter(
+                                              textStyle: TextStyle(
+                                                  color: color.primaryTextColor,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600),
                                             ),
                                             children: [
                                               TextSpan(
-                                                  text: ' kg',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 12,
+                                                text: ' kg',
+                                                style: GoogleFonts.inter(
+                                                  textStyle: TextStyle(
+                                                      color: color
+                                                          .primaryTextColor,
+                                                      fontSize: 11,
                                                       fontWeight:
-                                                          FontWeight.normal))
+                                                          FontWeight.w400),
+                                                ),
+                                              )
                                             ]),
                                       ),
                                       Text(
                                         'Berat Badan',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500),
+                                        style: GoogleFonts.inter(
+                                          textStyle: TextStyle(
+                                              color: color.primaryTextColor,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w400),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -275,8 +298,18 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                           ],
                         ),
                       ),
-                      Text('Integrasi Pola Hidup Sehat Anda Hari Ini'),
-                      SizedBox(height: size.height * 0.03),
+                      Container(
+                          margin: EdgeInsets.all(10),
+                          child: Text(
+                            'Integrasi Pola Hidup Sehat Anda Hari Ini',
+                            style: GoogleFonts.inter(
+                              textStyle: TextStyle(
+                                  color: color.primaryTextColor,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          )),
+                      SizedBox(height: size.height * 0.01),
                       childUserGauge(size),
                     ],
                   ),
@@ -293,25 +326,22 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
         children: [
           Column(
             children: [
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    isOpen = !isOpen;
-                  });
-                },
-                child: IntegrateBarWidget(
-                  size: size,
-                  title: 'Diet / Makan',
-                  // kebutuhanDipenuhi: (foodC.calorie /
-                  //         necessityController
-                  //             .productList.value!.calorie!) *
-                  //     200,
-                  kebutuhanDipenuhi: 80,
-                  color: Colors.yellow.shade900,
-                ),
+              IntegrateBarWidget(
+                onTap: () {},
+                colorText: color,
+                size: size,
+                title: 'Nutrisi',
+                // kebutuhanDipenuhi: (foodC.calorie /
+                //         necessityController
+                //             .productList.value!.calorie!) *
+                //     200,
+                kebutuhanDipenuhi: 80,
+                color: Colors.yellow.shade900,
               ),
               SizedBox(height: size.height * 0.02),
               IntegrateBarWidget(
+                onTap: () {},
+                colorText: color,
                 size: size,
                 title: 'Olahraga',
                 kebutuhanDipenuhi: 120,
@@ -319,37 +349,14 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
               ),
               SizedBox(height: size.height * 0.02),
               IntegrateBarWidget(
+                onTap: () {},
+                colorText: color,
                 size: size,
                 title: 'Cairan',
-                // kebutuhanDipenuhi: (drinkC.valueMinumHarian /
-                //         necessityController
-                //             .productList.value!.water!) *
-                //     200,
                 kebutuhanDipenuhi: 40,
                 color: Colors.blue.shade400,
               ),
               SizedBox(height: size.height * 0.02),
-              IntegrateBarWidget(
-                size: size,
-                title: 'Mental',
-                kebutuhanDipenuhi: 150,
-                color: Colors.purple.shade400,
-              ),
-              SizedBox(height: size.height * 0.02),
-              IntegrateBarWidget(
-                size: size,
-                title: 'Tidur',
-                kebutuhanDipenuhi: 70,
-                color: Colors.grey.shade700,
-              ),
-              SizedBox(height: size.height * 0.02),
-              IntegrateBarWidget(
-                size: size,
-                title: 'Adiksi',
-                kebutuhanDipenuhi: 110,
-                color: Colors.red.shade700,
-              ),
-              SizedBox(height: size.height * 0.1),
             ],
           ),
         ],
@@ -366,6 +373,8 @@ class IntegrateBarWidget extends StatelessWidget {
     // required this.kebutuhanHarian,
     required this.kebutuhanDipenuhi,
     required this.color,
+    required this.colorText,
+    required this.onTap,
   }) : super(key: key);
 
   final Size size;
@@ -373,55 +382,65 @@ class IntegrateBarWidget extends StatelessWidget {
   // final double kebutuhanHarian;
   final double kebutuhanDipenuhi;
   final Color color;
+  final ColorConstantController colorText;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      margin: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            height: size.height * 0.05,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(color: Colors.grey.shade400, blurRadius: 2.0)
-                ]),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(title),
-                Row(
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          height: size.height * 0.01,
-                          width: 200,
-                          decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(10)),
-                        ),
-                        Container(
-                          height: size.height * 0.01,
-                          width: kebutuhanDipenuhi,
-                          decoration: BoxDecoration(
-                              color: color,
-                              borderRadius: BorderRadius.circular(10)),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: size.width * 0.03),
-                    FaIcon(
-                      FontAwesomeIcons.chevronDown,
-                      size: 12,
-                    )
-                  ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: size.width * 0.15,
+                child: Text(
+                  title,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        color: colorText.primaryTextColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500),
+                  ),
                 ),
-              ],
-            ),
+              ),
+              Stack(alignment: Alignment.centerLeft, children: [
+                Neumorphic(
+                  style: NeumorphicStyle(
+                    shape: NeumorphicShape.flat,
+                    color: colorText.primaryColor,
+                    boxShape:
+                        NeumorphicBoxShape.roundRect(BorderRadius.circular(20)),
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Container(
+                    height: size.height * 0.03,
+                    width: size.width * 0.6,
+                  ),
+                ),
+                Container(
+                  height: size.height * 0.03,
+                  width: kebutuhanDipenuhi,
+                  decoration: BoxDecoration(
+                      color: color, borderRadius: BorderRadius.circular(20)),
+                ),
+              ]),
+              // SizedBox(width: size.width * 0.01),
+              IconButton(
+                onPressed: onTap,
+                icon: FaIcon(
+                  FontAwesomeIcons.chevronDown,
+                ),
+                alignment: Alignment.center,
+                iconSize: 12,
+                padding: EdgeInsets.all(0),
+                visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                splashRadius: 16,
+              )
+            ],
           ),
         ],
       ),

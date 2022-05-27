@@ -1,6 +1,6 @@
 import 'package:get/route_manager.dart';
 import 'package:sirkadian_app/bindings/bindings.dart';
-import 'package:sirkadian_app/screen/user/user_health_preferance_screen.dart';
+import 'package:sirkadian_app/screen/user/user_health_preference_screen.dart';
 import 'package:sirkadian_app/screen/home/nutrition_screen/nutrition_screen.dart';
 import 'package:sirkadian_app/screen/user/user_information_screen.dart';
 import '../screen/main_screen.dart';

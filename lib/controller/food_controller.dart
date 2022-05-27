@@ -4,30 +4,93 @@ import 'package:objectbox/objectbox.dart';
 import 'package:intl/intl.dart';
 import 'package:sirkadian_app/controller/auth_controller.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
+import 'package:sirkadian_app/model/food_model/food_history_request_model.dart';
 import 'package:sirkadian_app/model/food_model/food_recommendation_response_model.dart';
 import 'package:sirkadian_app/model/food_model/necessity_response_model.dart';
 import 'package:sirkadian_app/provider/food_provider.dart';
 
-import '../model/obejctbox_model.dart/food_model.dart';
+import '../model/obejctbox_model.dart/food_exercise_model.dart';
 
 class FoodController extends GetxController {
   final data = GetStorage('myData');
   final _provider = Get.put(FoodProvider());
   final informationController = Get.put(InformationController());
   final authController = Get.put(AuthController());
-  final sessions = ['Sarapan', 'Makan Siang', 'Makan Malam', 'Snack'];
 
   //foods material
   RxList<DataFoodRecommendationResponse> listFood =
       <DataFoodRecommendationResponse>[].obs;
+  RxList<DataFoodRecommendationResponse> listOtherFood =
+      <DataFoodRecommendationResponse>[].obs;
+  var isLoadingFoodRecommendation = false.obs;
+  var isLoadingOtherFoodRecommendation = false.obs;
+  var isLoadingNecessity = false.obs;
 
-  final isLoadingFoodRecommendation = false.obs;
-  final isLoadingNecessity = false.obs;
+  var isOnFood = false.obs;
 
-  final isOnFood = false.obs;
+  //food session
+  // final sessions = ['Sarapan', 'Makan Siang', 'Makan Malam', 'Snack'];
+  final sessions = [
+    'Sarapan',
+    'Makan Siang',
+    'Makan Malam',
+  ];
+  String getSessions(session) {
+    return session == 'Sarapan'
+        ? 'breakfast'
+        : session == 'Makan Siang'
+            ? 'lunch'
+            : 'dinner';
+  }
+
+  var sessionSarapanClosed = false.obs;
+  var sessionMakanSiangClosed = false.obs;
+  var sessionMakanMalamClosed = false.obs;
+  //nanti tambahin if date != date.now maka false
+  void saveSession({
+    String? session,
+  }) async {
+    if (session == 'Sarapan') {
+      if (data.read('dataSessionSarapan') != null) {
+        data
+            .remove('dataSessionSarapan')
+            .then((_) => data.write('dataSessionSarapan', {
+                  'sessionSarapan': sessionSarapanClosed.value,
+                }));
+      } else {
+        data.write('dataSessionSarapan', {
+          'sessionSarapan': sessionSarapanClosed.value,
+        });
+      }
+    } else if (session == 'Makan Siang') {
+      if (data.read('dataSessionMakanSiang') != null) {
+        data
+            .remove('dataSessionMakanSiang')
+            .then((_) => data.write('dataSessionMakanSiang', {
+                  'sessionMakanSiang': sessionMakanSiangClosed.value,
+                }));
+      } else {
+        data.write('dataSessionMakanSiang', {
+          'sessionMakanSiang': sessionMakanSiangClosed.value,
+        });
+      }
+    } else {
+      if (data.read('dataSessionMakanMalam') != null) {
+        data
+            .remove('dataSessionMakanMalam')
+            .then((_) => data.write('dataSessionMakanMalam', {
+                  'sessionMakanMalam': sessionMakanMalamClosed.value,
+                }));
+      } else {
+        data.write('dataSessionMakanMalam', {
+          'sessionMakanMalam': sessionMakanMalamClosed.value,
+        });
+      }
+    }
+  }
 
   //food recommendation material
-  final isLoadingNewPage = false.obs;
+  var isLoadingNewPage = false.obs;
   var page = 1.obs;
 
   //necessity material
@@ -124,6 +187,7 @@ class FoodController extends GetxController {
       var _res = await _provider.getFoodRecommendation(
           accessToken, foodTime, page.value);
       print(_res.statusCode);
+
       if (_res.statusCode == 200) {
         FoodRecommendationResponse _foodRecommendationResponse =
             FoodRecommendationResponse.fromJson(
@@ -136,6 +200,34 @@ class FoodController extends GetxController {
       if (Get.isDialogOpen!) Get.back();
     } finally {
       isLoadingFoodRecommendation(false);
+    }
+  }
+
+  Future<void> getOtherFoodRecommendation(foodId, session) async {
+    isLoadingOtherFoodRecommendation(true);
+    await authController.getUsableToken();
+    var foodTime = session == 'Sarapan'
+        ? 'breakfast'
+        : session == 'Makan Siang'
+            ? 'lunch'
+            : 'dinner';
+    try {
+      String accessToken = data.read('dataUser')['accessToken'];
+      var _res = await _provider.getOtherFoodRecommendation(
+          accessToken, foodId, foodTime);
+      print(_res.statusCode);
+      if (_res.statusCode == 200) {
+        FoodRecommendationResponse _foodRecommendationResponse =
+            FoodRecommendationResponse.fromJson(
+                _res.body as Map<String, dynamic>);
+        if (_foodRecommendationResponse.statusCode == 200) {
+          listOtherFood.value = _foodRecommendationResponse.data!;
+        }
+      }
+
+      if (Get.isDialogOpen!) Get.back();
+    } finally {
+      isLoadingOtherFoodRecommendation(false);
     }
   }
 
@@ -197,6 +289,44 @@ class FoodController extends GetxController {
       if (Get.isDialogOpen!) Get.back();
     } finally {
       isLoadingNecessity(false);
+    }
+  }
+
+  //post method
+  Future<void> postFoodHistory(
+      {FoodHistoryRequest? foodHistoryRequest, String? session}) async {
+    if (foodHistoryRequest!.foodDate != null &&
+        foodHistoryRequest.foodTime != null &&
+        foodHistoryRequest.foods != null) {
+      await authController.getUsableToken();
+      informationController
+          .loadingDialog('Harap Menunggu, Sedang Menyimpan Makanan ke Server');
+      try {
+        String accessToken = data.read('dataUser')['accessToken'];
+        final Response _res =
+            await _provider.postFoodHistory(accessToken, foodHistoryRequest);
+        if (_res.statusCode == 200) {
+          if (Get.isDialogOpen!) Get.back();
+          informationController.showSuccessSnackBar('Berhasil');
+
+          // sessionSarapanClosed.value = true;
+          // saveSession(session: session);
+          // update();
+        } else {
+          if (Get.isDialogOpen!) Get.back();
+          informationController.showErrorSnackBar('Gagal');
+          print('error' + _res.statusCode.toString());
+        }
+      } catch (e) {
+        e.toString();
+        if (Get.isDialogOpen!) Get.back();
+        informationController
+            .showErrorSnackBar('terjadi masalah, harap ulangi');
+
+        print(e);
+      }
+    } else {
+      if (Get.isDialogOpen!) Get.back();
     }
   }
 }

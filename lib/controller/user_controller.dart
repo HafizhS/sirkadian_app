@@ -1,17 +1,20 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sirkadian_app/model/user_model/user_health_historyLatest_response_model.dart';
+import 'package:sirkadian_app/model/user_model/user_health_history_request_model.dart';
 import 'package:sirkadian_app/model/user_model/user_health_preferenceLatest_response_model.dart';
+import 'package:sirkadian_app/model/user_model/user_health_preference_request_model.dart';
 import 'package:sirkadian_app/model/user_model/user_information_response_model.dart';
 
 import '../provider/user_provider.dart';
 import 'auth_controller.dart';
+import 'information_controller.dart';
 
 class UserController extends GetxController {
   final _provider = Get.put(UserProvider());
   final authController = Get.put(AuthController());
+  final informationController = Get.put(InformationController());
   final data = GetStorage('myData');
-
   var isLoadingUserHealthPreferenceLatest = false.obs;
   var isLoadingUserHealthHistoryLatest = false.obs;
   var isLoadingUserInformation = false.obs;
@@ -123,6 +126,78 @@ class UserController extends GetxController {
       if (Get.isDialogOpen!) Get.back();
     } finally {
       isLoadingUserInformation(false);
+    }
+  }
+
+  //post method
+  Future<void> postUserHealthPreference(
+      {UserHealthPreferenceRequest? postUserHealthPreferenceRequest}) async {
+    if (postUserHealthPreferenceRequest!.activityLevel != null &&
+        postUserHealthPreferenceRequest.sportDifficulty != null &&
+        postUserHealthPreferenceRequest.vegan != null &&
+        postUserHealthPreferenceRequest.vegetarian != null &&
+        postUserHealthPreferenceRequest.halal != null) {
+      await authController.getUsableToken();
+      informationController
+          .loadingDialog('Harap Menunggu, Sedang Memasukkan Data ke Server');
+      try {
+        String accessToken = data.read('dataUser')['accessToken'];
+        final Response _res = await _provider.postUserHealthPreference(
+            accessToken, postUserHealthPreferenceRequest);
+        if (_res.statusCode == 200) {
+          if (Get.isDialogOpen!) Get.back();
+          informationController.showSuccessSnackBar('berhasil');
+        } else {
+          if (Get.isDialogOpen!) Get.back();
+          informationController.showErrorSnackBar('gagal');
+          print('error' + _res.statusCode.toString());
+        }
+      } catch (e) {
+        e.toString();
+        if (Get.isDialogOpen!) Get.back();
+        informationController
+            .showErrorSnackBar('terjadi masalah, harap ulangi');
+
+        print(e);
+      }
+    } else {
+      if (Get.isDialogOpen!) Get.back();
+      informationController.snackBarError("Data Tidak Lengkap",
+          "silakan isi semua data pribadi Anda terlebih dahulu");
+    }
+  }
+
+  Future<void> postUserHealthHistory(
+      {UserHealthHistoryRequest? userHealthHistoryRequest}) async {
+    if (userHealthHistoryRequest!.height != null &&
+        userHealthHistoryRequest.weight != null) {
+      await authController.getUsableToken();
+      informationController
+          .loadingDialog('Harap Menunggu, Sedang Memasukkan Data ke Server');
+      try {
+        String accessToken = data.read('dataUser')['accessToken'];
+        final Response _res = await _provider.postUserHealthHistory(
+            accessToken, userHealthHistoryRequest);
+        if (_res.statusCode == 200) {
+          if (Get.isDialogOpen!) Get.back();
+          informationController.showSuccessSnackBar('berhasil');
+        } else {
+          if (Get.isDialogOpen!) Get.back();
+          informationController.showErrorSnackBar('gagal');
+          print('error' + _res.statusCode.toString());
+        }
+      } catch (e) {
+        e.toString();
+        if (Get.isDialogOpen!) Get.back();
+        informationController
+            .showErrorSnackBar('terjadi masalah, harap ulangi');
+
+        print(e);
+      }
+    } else {
+      if (Get.isDialogOpen!) Get.back();
+      informationController.snackBarError("Data Tidak Lengkap",
+          "silakan isi semua data pribadi Anda terlebih dahulu");
     }
   }
 }

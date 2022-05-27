@@ -81,7 +81,8 @@ class DrawerSideBar extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.all(10),
                       child: CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/user.jpg'),
+                        backgroundImage:
+                            AssetImage('assets/images/user_male.jpg'),
                         radius: 40,
                       ),
                     ),
@@ -180,7 +181,7 @@ class DrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onPressed,
       child: Padding(
         padding: EdgeInsets.only(left: 30),

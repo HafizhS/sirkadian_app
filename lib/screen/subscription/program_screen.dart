@@ -64,7 +64,7 @@ class _ProgramScreenState extends State<ProgramScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             Scaffold.of(context).openDrawer();
                           },
@@ -80,7 +80,7 @@ class _ProgramScreenState extends State<ProgramScreen> {
                           ),
                           CircleAvatar(
                             backgroundImage:
-                                AssetImage('assets/images/user.jpg'),
+                                AssetImage('assets/images/user_male.jpg'),
                             radius: 20,
                           ),
                         ]),
@@ -144,7 +144,7 @@ class _ProgramScreenState extends State<ProgramScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
+                          GestureDetector(
                             onTap: () {
                               Scaffold.of(context).openDrawer();
                             },
@@ -160,7 +160,7 @@ class _ProgramScreenState extends State<ProgramScreen> {
                             ),
                             CircleAvatar(
                               backgroundImage:
-                                  AssetImage('assets/images/yuda.jpg'),
+                                  AssetImage('assets/images/user_male.jpg'),
                               radius: 20,
                             ),
                           ]),

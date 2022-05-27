@@ -13,7 +13,7 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import 'model/obejctbox_model.dart/food_model.dart';
+import 'model/obejctbox_model.dart/food_exercise_model.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -21,7 +21,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 3008231103323831688),
       name: 'Exercise',
-      lastPropertyId: const IdUid(9, 5785605612801335971),
+      lastPropertyId: const IdUid(10, 5656940485429870223),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -70,6 +70,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(9, 5785605612801335971),
             name: 'isChecked',
             type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(10, 5656940485429870223),
+            name: 'difficulty',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -269,7 +274,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(4, 8973082184935809639),
       name: 'Variations',
-      lastPropertyId: const IdUid(12, 2893357313142973546),
+      lastPropertyId: const IdUid(13, 5107727704619027609),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -317,6 +322,11 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(12, 2893357313142973546),
             name: 'subVariations',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(13, 5107727704619027609),
+            name: 'difficulty',
             type: 9,
             flags: 0)
       ],
@@ -379,7 +389,10 @@ ModelDefinition getObjectBoxModel() {
               : fbb.writeString(object.imageFilename!);
           final dateOffset =
               object.date == null ? null : fbb.writeString(object.date!);
-          fbb.startTable(10);
+          final difficultyOffset = object.difficulty == null
+              ? null
+              : fbb.writeString(object.difficulty!);
+          fbb.startTable(11);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.sportId);
           fbb.addOffset(2, nameOffset);
@@ -389,6 +402,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addInt64(6, object.user.targetId);
           fbb.addOffset(7, dateOffset);
           fbb.addBool(8, object.isChecked);
+          fbb.addOffset(9, difficultyOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -402,6 +416,8 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 8),
               desc: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 10),
+              difficulty: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 22),
               imageFilename: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 14),
               mets: const fb.Float64Reader()
@@ -592,7 +608,10 @@ ModelDefinition getObjectBoxModel() {
           final subVariationsOffset = object.subVariations == null
               ? null
               : fbb.writeString(object.subVariations!);
-          fbb.startTable(13);
+          final difficultyOffset = object.difficulty == null
+              ? null
+              : fbb.writeString(object.difficulty!);
+          fbb.startTable(14);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.sportId);
           fbb.addInt64(2, object.sportVariationsId);
@@ -602,6 +621,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(7, imageFilenameOffset);
           fbb.addInt64(8, object.user.targetId);
           fbb.addOffset(11, subVariationsOffset);
+          fbb.addOffset(12, difficultyOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -613,6 +633,8 @@ ModelDefinition getObjectBoxModel() {
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               name: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 10),
+              difficulty: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 28),
               desc: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 12),
               imageFilename: const fb.StringReader(asciiOptimization: true)
@@ -623,8 +645,8 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 6),
               subVariations: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 26),
-              sportVariationsId: const fb.Int64Reader()
-                  .vTableGetNullable(buffer, rootOffset, 8));
+              sportVariationsId:
+                  const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 8));
           object.user.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
           object.user.attach(store);
@@ -667,6 +689,10 @@ class Exercise_ {
   /// see [Exercise.isChecked]
   static final isChecked =
       QueryBooleanProperty<Exercise>(_entities[0].properties[8]);
+
+  /// see [Exercise.difficulty]
+  static final difficulty =
+      QueryStringProperty<Exercise>(_entities[0].properties[9]);
 }
 
 /// [Food] entity fields to define ObjectBox queries.
@@ -829,4 +855,8 @@ class Variations_ {
   /// see [Variations.subVariations]
   static final subVariations =
       QueryStringProperty<Variations>(_entities[3].properties[8]);
+
+  /// see [Variations.difficulty]
+  static final difficulty =
+      QueryStringProperty<Variations>(_entities[3].properties[9]);
 }

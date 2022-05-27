@@ -12,7 +12,7 @@ import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import '../../../controller/hexcolor_controller.dart';
 import '../../../controller/auth_controller.dart';
 import '../../../controller/food_controller.dart';
-import '../../../model/obejctbox_model.dart/food_model.dart';
+import '../../../model/obejctbox_model.dart/food_exercise_model.dart';
 import '../../../objectbox.g.dart';
 import 'food_screen/food_future_mealPlan_screen.dart';
 
@@ -98,9 +98,9 @@ class _NutritionScreenState extends State<NutritionScreen> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: color.backgroundColor,
+      backgroundColor: color.bgColor,
       body: SafeArea(
-        child: Obx(() => foodController.necessity.value.water == null
+        child: Obx(() => foodController.isLoadingNecessity.isTrue
             ? Center(
                 child: CircularProgressIndicator(
                   color: color.secondaryColor,
@@ -181,7 +181,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                             style: NeumorphicStyle(
                               shape: NeumorphicShape.flat,
                               boxShape: NeumorphicBoxShape.circle(),
-                              color: color.primaryColor,
+                              color: color.bgColor,
                             ),
                             padding: const EdgeInsets.all(16.0),
                             child: FaIcon(
@@ -225,7 +225,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                             style: NeumorphicStyle(
                               shape: NeumorphicShape.flat,
                               boxShape: NeumorphicBoxShape.circle(),
-                              color: color.primaryColor,
+                              color: color.bgColor,
                             ),
                             padding: const EdgeInsets.all(16.0),
                             child: FaIcon(
@@ -252,7 +252,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                             },
                             style: NeumorphicStyle(
                                 depth: isFood ? -4 : 4,
-                                color: color.primaryColor,
+                                color: color.bgColor,
                                 shape: NeumorphicShape.flat,
                                 boxShape: NeumorphicBoxShape.roundRect(
                                     BorderRadius.only(
@@ -280,7 +280,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                             },
                             style: NeumorphicStyle(
                                 depth: isFood ? 4 : -4,
-                                color: color.primaryColor,
+                                color: color.bgColor,
                                 shape: NeumorphicShape.flat,
                                 boxShape: NeumorphicBoxShape.roundRect(
                                     BorderRadius.only(

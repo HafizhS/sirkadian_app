@@ -38,6 +38,7 @@ class DataExerciseAllResponse {
   String? difficulty;
   int? sportId;
   List<Variations>? variations;
+  String? imageFileName;
 
   DataExerciseAllResponse(
       {this.name,
@@ -45,7 +46,8 @@ class DataExerciseAllResponse {
       this.mets,
       this.difficulty,
       this.sportId,
-      this.variations});
+      this.variations,
+      this.imageFileName});
 
   DataExerciseAllResponse.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -53,6 +55,7 @@ class DataExerciseAllResponse {
     mets = json['mets'];
     difficulty = json['difficulty'];
     sportId = json['sportId'];
+    imageFileName = json['image_filename'];
     if (json['variations'] != null) {
       variations = <Variations>[];
       json['variations'].forEach((v) {
@@ -68,6 +71,7 @@ class DataExerciseAllResponse {
     data['mets'] = this.mets;
     data['difficulty'] = this.difficulty;
     data['sportId'] = this.sportId;
+    data['image_filename'] = this.imageFileName;
     if (this.variations != null) {
       data['variations'] = this.variations!.map((v) => v.toJson()).toList();
     }

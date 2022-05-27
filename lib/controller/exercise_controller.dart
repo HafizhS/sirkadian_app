@@ -19,8 +19,25 @@ class ExerciseController extends GetxController {
   final data = GetStorage('myData');
   final isLoadingSubscriptionAll = false.obs;
 
-//objectbox material
+//objectbox material / getstorage material
   late Store exerciseStore;
+  var sessionExerciseClosed =
+      false.obs; //nanti tambahin if date != date.now maka false
+  void saveSession() async {
+    if (data.read('dataSessionExercise') != null) {
+      data
+          .remove('dataSessionExercise')
+          .then((_) => data.write('dataSessionExercise', {
+                'sessionExercise': sessionExerciseClosed.value,
+              }));
+      print('here');
+    } else {
+      data.write('dataSessionExercise', {
+        'sessionExercise': sessionExerciseClosed.value,
+      });
+    }
+  }
+
   //dependencies
   var isCheckExerciseTile = false.obs;
 

@@ -105,7 +105,7 @@ class _FluidGeneralScreenState extends State<FluidGeneralScreen> {
                           style: NeumorphicStyle(
                             depth: 4,
                             shape: NeumorphicShape.flat,
-                            color: color.primaryColor,
+                            color: color.bgColor,
                             boxShape: NeumorphicBoxShape.roundRect(
                                 BorderRadius.circular(20)),
                           ),
@@ -179,7 +179,7 @@ class _FluidGeneralScreenState extends State<FluidGeneralScreen> {
                                   vertical: 20, horizontal: 20),
                               onPressed: () {},
                               style: NeumorphicStyle(
-                                  color: color.primaryColor,
+                                  color: color.bgColor,
                                   shape: NeumorphicShape.flat,
                                   boxShape: NeumorphicBoxShape.roundRect(
                                     BorderRadius.circular(20),
@@ -250,7 +250,7 @@ class _FluidGeneralScreenState extends State<FluidGeneralScreen> {
                                   vertical: 20, horizontal: 20),
                               onPressed: () {},
                               style: NeumorphicStyle(
-                                  color: color.primaryColor,
+                                  color: color.bgColor,
                                   shape: NeumorphicShape.flat,
                                   boxShape: NeumorphicBoxShape.roundRect(
                                     BorderRadius.circular(20),
@@ -299,7 +299,7 @@ class _FluidGeneralScreenState extends State<FluidGeneralScreen> {
                   ),
                   Container(
                     margin: EdgeInsets.only(right: 30),
-                    child: InkWell(
+                    child: GestureDetector(
                       onTap: () {
                         setState(() {
                           closeTopContainer = false;
@@ -382,7 +382,7 @@ class _FluidGeneralScreenState extends State<FluidGeneralScreen> {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3, mainAxisSpacing: 1),
                       children: [
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             setState(() {
                               u1 = true;
@@ -428,7 +428,7 @@ class _FluidGeneralScreenState extends State<FluidGeneralScreen> {
                                   )),
                           ),
                         ),
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             setState(() {
                               u1 = false;
@@ -474,7 +474,7 @@ class _FluidGeneralScreenState extends State<FluidGeneralScreen> {
                                   )),
                           ),
                         ),
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             setState(() {
                               u1 = false;
@@ -520,7 +520,7 @@ class _FluidGeneralScreenState extends State<FluidGeneralScreen> {
                                   )),
                           ),
                         ),
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             setState(() {
                               u1 = false;
@@ -566,7 +566,7 @@ class _FluidGeneralScreenState extends State<FluidGeneralScreen> {
                                   )),
                           ),
                         ),
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             setState(() {
                               u1 = false;
@@ -612,7 +612,7 @@ class _FluidGeneralScreenState extends State<FluidGeneralScreen> {
                                   )),
                           ),
                         ),
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             setState(() {
                               u1 = false;
@@ -658,7 +658,7 @@ class _FluidGeneralScreenState extends State<FluidGeneralScreen> {
                                   )),
                           ),
                         ),
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             setState(() {
                               u1 = false;
@@ -794,7 +794,7 @@ class DrinkWaters extends StatelessWidget {
                           depth: fluidController.isCheckedDrinkWater[index]
                               ? -4
                               : 4,
-                          color: color.primaryColor,
+                          color: color.bgColor,
                           shape: NeumorphicShape.flat,
                           boxShape: NeumorphicBoxShape.roundRect(
                             BorderRadius.circular(20),

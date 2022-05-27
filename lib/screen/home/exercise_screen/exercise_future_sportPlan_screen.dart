@@ -6,7 +6,7 @@ import 'package:sirkadian_app/controller/exercise_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../controller/hexcolor_controller.dart';
-import '../../../../model/obejctbox_model.dart/food_model.dart';
+import '../../../model/obejctbox_model.dart/food_exercise_model.dart';
 import '../../../../objectbox.g.dart';
 import '../../../widget/exercise_widget/exercise_tile.dart';
 import 'exercise_recommendation_screen.dart';
@@ -140,7 +140,7 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
             ),
             NeumorphicButton(
               onPressed: () {
-                if (isClicked) {
+                if (closeTopContainer) {
                   setState(() {
                     _controller.reverse();
                   });
@@ -150,7 +150,7 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
                   });
                 }
                 setState(() {
-                  isClicked = !isClicked;
+                  closeTopContainer = !closeTopContainer;
                 });
               },
               style: NeumorphicStyle(
@@ -163,7 +163,7 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
               padding: const EdgeInsets.all(12.0),
               margin: EdgeInsets.only(right: 20),
               child: AnimatedIcon(
-                icon: AnimatedIcons.menu_close,
+                icon: AnimatedIcons.event_add,
                 progress: _controller,
                 size: 20,
                 color: color.secondaryTextColor,
@@ -247,7 +247,7 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
                             ),
                           ),
                           Container(
-                            child: InkWell(
+                            child: GestureDetector(
                               onTap: () {
                                 setState(() {
                                   closeTopContainer = false;
@@ -278,7 +278,7 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
                       ),
                 Container(
                   padding: EdgeInsets.only(right: 20),
-                  child: InkWell(
+                  child: GestureDetector(
                     onTap: () {
                       Navigator.push(
                           context,
@@ -335,17 +335,22 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
                       date: exerciseController.selectedDay.toString(),
                       sportId: exerciseController.listExercise[index].sportId,
                       mets: exerciseController.listExercise[index].mets,
+                      difficulty:
+                          exerciseController.listExercise[index].difficulty,
                     );
                     exerciseController.exerciseStore
                         .box<Exercise>()
                         .put(exercise);
                   },
-                  exercise: snapshot.data![index],
-                  imageFilename: '',
+                  icon: FontAwesomeIcons.trash,
+                  iconColor: color.redColor,
+                  imageFilename: snapshot.data![index].imageFilename!,
+                  depth: 4,
                   onRecom: false,
                   color: color,
-                  subtitle_1: snapshot.data![index].mets.toString(),
-                  subtitle_2: snapshot.data![index].desc!,
+                  mets: snapshot.data![index].mets.toString(),
+                  desc: snapshot.data![index].desc!,
+                  difficulty: snapshot.data![index].difficulty!,
                   size: size,
                   title: snapshot.data![index].name!,
                 );

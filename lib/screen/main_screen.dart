@@ -86,19 +86,19 @@ class _MainScreenState extends State<MainScreen> {
             userController: userController,
             color: color,
           ),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: color.tersierColor,
-            onPressed: () {
-              screenIndex.value = 2;
-              _selectTab(pageKeys[screenIndex.value], screenIndex.value);
-            },
-            child: FaIcon(
-              FontAwesomeIcons.unity,
-              color: color.primaryColor,
-            ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          // floatingActionButton: FloatingActionButton(
+          //   backgroundColor: color.tersierColor,
+          //   onPressed: () {
+          //     screenIndex.value = 2;
+          //     _selectTab(pageKeys[screenIndex.value], screenIndex.value);
+          //   },
+          //   child: FaIcon(
+          //     FontAwesomeIcons.unity,
+          //     color: color.primaryColor,
+          //   ),
+          // ),
+          // floatingActionButtonLocation:
+          //     FloatingActionButtonLocation.centerDocked,
           extendBody: true,
           bottomNavigationBar: BottomAppBar(
             notchMargin: 6,
@@ -125,12 +125,14 @@ class _MainScreenState extends State<MainScreen> {
                         color: HexColor.fromHex('#F8F9FB'),
                       ),
                       padding: const EdgeInsets.all(20.0),
-                      child: FaIcon(
-                        FontAwesomeIcons.home,
-                        size: 16,
-                        color: screenIndex.value == 0
-                            ? color.secondaryColor
-                            : color.tersierTextColor,
+                      child: Center(
+                        child: FaIcon(
+                          FontAwesomeIcons.home,
+                          size: 16,
+                          color: screenIndex.value == 0
+                              ? color.secondaryColor
+                              : color.tersierTextColor,
+                        ),
                       ),
                     ),
                   ),
@@ -148,12 +150,14 @@ class _MainScreenState extends State<MainScreen> {
                         color: HexColor.fromHex('#F8F9FB'),
                       ),
                       padding: const EdgeInsets.all(20.0),
-                      child: FaIcon(
-                        FontAwesomeIcons.list,
-                        size: 16,
-                        color: screenIndex.value == 1
-                            ? color.secondaryColor
-                            : color.tersierTextColor,
+                      child: Center(
+                        child: FaIcon(
+                          FontAwesomeIcons.list,
+                          size: 16,
+                          color: screenIndex.value == 1
+                              ? color.secondaryColor
+                              : color.tersierTextColor,
+                        ),
                       ),
                     ),
                   ),
