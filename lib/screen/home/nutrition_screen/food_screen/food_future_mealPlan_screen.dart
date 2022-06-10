@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
 import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
@@ -89,21 +89,17 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: color.backgroundColor,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              //segment 1
-              Row(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: color.bgColor,
+        appBar: PreferredSize(
+            child: Padding(
+              padding: EdgeInsets.only(top: 20.h),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   NeumorphicButton(
-                    margin: EdgeInsets.only(left: 20),
+                    margin: EdgeInsets.only(left: 20.w),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -112,10 +108,10 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                       boxShape: NeumorphicBoxShape.circle(),
                       color: color.primaryColor,
                     ),
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.0.sp),
                     child: FaIcon(
                       FontAwesomeIcons.chevronLeft,
-                      size: 16,
+                      size: 16.sp,
                       color: color.secondaryTextColor,
                     ),
                   ),
@@ -124,7 +120,7 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                     style: GoogleFonts.poppins(
                       textStyle: TextStyle(
                           color: color.primaryTextColor,
-                          fontSize: 18,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -150,21 +146,27 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                       ),
                       color: color.primaryColor,
                     ),
-                    padding: const EdgeInsets.all(12.0),
-                    margin: EdgeInsets.only(right: 20),
+                    padding: EdgeInsets.all(12.0.sp),
+                    margin: EdgeInsets.only(right: 20.w),
                     child: AnimatedIcon(
                       icon: AnimatedIcons.event_add,
                       progress: _controller,
-                      size: 20,
+                      size: 20.sp,
                       color: color.secondaryTextColor,
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: size.height * 0.03),
-//segment 2
+            ),
+            preferredSize: Size.fromHeight(70.h)),
+        body: Padding(
+          padding: EdgeInsets.only(top: 20.h),
+          child: SingleChildScrollView(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              //segment 1
               Padding(
-                padding: EdgeInsets.only(left: 20),
+                padding: EdgeInsets.only(left: 20.w),
                 child: RichText(
                   text: TextSpan(
                     text: foodController.selectedDay.weekday == 1
@@ -193,7 +195,7 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                         style: GoogleFonts.inter(
                           textStyle: TextStyle(
                               color: color.primaryTextColor,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.normal),
                         ),
                       ),
@@ -216,7 +218,6 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                         );
                       case ConnectionState.active:
                         return sessionChildWidget(
-                            size,
                             snapshot.item1.data!,
                             snapshot.item2.data!,
                             snapshot.item3.data!,
@@ -224,14 +225,13 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
 
                       case ConnectionState.done:
                         return sessionChildWidget(
-                            size,
                             snapshot.item1.data!,
                             snapshot.item2.data!,
                             snapshot.item3.data!,
                             snapshot.item4.data!);
                     }
                   }),
-              //segment 3
+              //segment 2
               !hasBeenInitialized
                   ? Center(
                       child: CircularProgressIndicator(
@@ -250,9 +250,9 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                               ),
                             );
                           case ConnectionState.active:
-                            return childWidget(size, snapshot);
+                            return childWidget(snapshot);
                           case ConnectionState.done:
-                            return childWidget(size, snapshot);
+                            return childWidget(snapshot);
                         }
                       })
             ]),
@@ -263,18 +263,17 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
   }
 
   Container sessionChildWidget(
-      Size size,
       List<Food> listMealSarapan,
       List<Food> listMealMakanSiang,
       List<Food> listMealMakanMalam,
       List<Food> listMealSnack) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
-      height: size.height * 0.2,
-      width: double.infinity,
+      margin: EdgeInsets.only(top: 10.h),
+      height: 150.h,
+      width: 360.w,
       child: Swiper(
           itemCount: foodController.sessions.length,
-          itemWidth: size.width * 0.8,
+          itemWidth: 300.w,
           index: 0,
           layout: SwiperLayout.DEFAULT,
           viewportFraction: 0.5,
@@ -283,7 +282,7 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
             switch (index) {
               case 0:
                 return Container(
-                  margin: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10.sp),
                   child: NeumorphicButton(
                       padding: EdgeInsets.all(0),
                       onPressed: () {
@@ -303,13 +302,13 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                           )),
                       child: listMealSarapan.isNotEmpty
                           ? notEmptyChild(
-                              listMealSarapan[0].imageFileName!, index, size)
-                          : emptySessionChild(size, index)),
+                              listMealSarapan[0].imageFileName!, index)
+                          : emptySessionChild(index)),
                 );
 
               case 1:
                 return Container(
-                  margin: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10.sp),
                   child: NeumorphicButton(
                       padding: EdgeInsets.all(0),
                       onPressed: () {
@@ -329,12 +328,12 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                           )),
                       child: listMealMakanSiang.isNotEmpty
                           ? notEmptyChild(
-                              listMealMakanSiang[0].imageFileName!, index, size)
-                          : emptySessionChild(size, index)),
+                              listMealMakanSiang[0].imageFileName!, index)
+                          : emptySessionChild(index)),
                 );
               case 2:
                 return Container(
-                  margin: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10.sp),
                   child: NeumorphicButton(
                       padding: EdgeInsets.all(0),
                       onPressed: () {
@@ -354,12 +353,12 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                           )),
                       child: listMealMakanMalam.isNotEmpty
                           ? notEmptyChild(
-                              listMealMakanMalam[0].imageFileName!, index, size)
-                          : emptySessionChild(size, index)),
+                              listMealMakanMalam[0].imageFileName!, index)
+                          : emptySessionChild(index)),
                 );
               case 3:
                 return Container(
-                  margin: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10.sp),
                   child: NeumorphicButton(
                       padding: EdgeInsets.all(0),
                       onPressed: () {
@@ -379,12 +378,12 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                           )),
                       child: listMealSnack.isNotEmpty
                           ? notEmptyChild(
-                              listMealSnack[0].imageFileName!, index, size)
-                          : emptySessionChild(size, index)),
+                              listMealSnack[0].imageFileName!, index)
+                          : emptySessionChild(index)),
                 );
               default:
                 return Container(
-                    margin: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(10.sp),
                     child: NeumorphicButton(
                         onPressed: () {
                           Navigator.push(
@@ -402,18 +401,18 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                             boxShape: NeumorphicBoxShape.roundRect(
                               BorderRadius.circular(20),
                             )),
-                        child: emptySessionChild(size, index)));
+                        child: emptySessionChild(index)));
             }
           }),
     );
   }
 
-  Widget notEmptyChild(String imageFilename, int index, Size size) {
+  Widget notEmptyChild(String imageFilename, int index) {
     return Container(
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Container(
-          height: size.height * 0.1,
+          height: 70.h,
           alignment: Alignment.bottomCenter,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -436,16 +435,16 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
           style: GoogleFonts.poppins(
             textStyle: TextStyle(
                 color: color.primaryTextColor,
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.normal),
           ),
         ),
-        SizedBox(height: size.height * 0.01),
+        SizedBox(height: 18.h),
       ]),
     );
   }
 
-  Widget emptySessionChild(Size size, int index) {
+  Widget emptySessionChild(int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -457,19 +456,19 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
               depth: 4,
               boxShape: NeumorphicBoxShape.circle(),
             ),
-            padding: const EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(12.0.sp),
             child: FaIcon(
               FontAwesomeIcons.plus,
-              size: 16,
+              size: 16.sp,
               color: color.secondaryColor,
             )),
-        SizedBox(height: size.height * 0.02),
+        SizedBox(height: 18.h),
         Text(
           foodController.sessions[index],
           style: GoogleFonts.poppins(
             textStyle: TextStyle(
                 color: color.primaryTextColor,
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.normal),
           ),
         ),
@@ -478,7 +477,7 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
   }
 
 //
-  Widget childWidget(Size size, AsyncSnapshot<List<Food>> snapshot) {
+  Widget childWidget(AsyncSnapshot<List<Food>> snapshot) {
     return AnimatedCrossFade(
       duration: const Duration(milliseconds: 200),
       crossFadeState:
@@ -488,24 +487,24 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: size.height * 0.02),
+                SizedBox(height: 18.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(left: 20),
+                      margin: EdgeInsets.only(left: 20.w),
                       child: Text(
                         'Nutrisi Hari ini',
                         style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               color: color.secondaryTextColor,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 10),
+                      margin: EdgeInsets.only(right: 10.w),
                       child: GestureDetector(
                           onTap: () {
                             Get.bottomSheet(Container(
@@ -514,62 +513,53 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(20),
                                       topRight: Radius.circular(20))),
-                              height: size.height * 0.5,
-                              width: size.width,
-                              padding: EdgeInsets.all(10),
+                              height: 400.h,
+                              width: 360.w,
+                              padding: EdgeInsets.all(10.sp),
                               child: SingleChildScrollView(
                                 child: Column(
                                   children: [
                                     bottomSheetNecesityChild(
-                                        size,
                                         'Kalsium',
                                         foodController.calcium /
                                             foodController.necessity.value
                                                 .micro!.calcium!),
                                     bottomSheetNecesityChild(
-                                        size,
                                         'Zat Besi',
                                         foodController.iron /
                                             foodController
                                                 .necessity.value.micro!.iron!),
                                     bottomSheetNecesityChild(
-                                        size,
                                         'zinc',
                                         foodController.zinc /
                                             foodController
                                                 .necessity.value.micro!.zinc!),
                                     bottomSheetNecesityChild(
-                                        size,
                                         'Copper',
                                         foodController.copper /
                                             foodController.necessity.value
                                                 .micro!.copper!),
                                     bottomSheetNecesityChild(
-                                        size,
                                         'Vitamin C',
                                         foodController.vitaminC /
                                             foodController.necessity.value
                                                 .micro!.vitaminC!),
                                     bottomSheetNecesityChild(
-                                        size,
                                         'Vitamin B1',
                                         foodController.vitaminB1 /
                                             foodController.necessity.value
                                                 .micro!.vitaminB1!),
                                     bottomSheetNecesityChild(
-                                        size,
                                         'Vitamin B2',
                                         foodController.vitaminB2 /
                                             foodController.necessity.value
                                                 .micro!.vitaminB2!),
                                     bottomSheetNecesityChild(
-                                        size,
                                         'Vitamin B3',
                                         foodController.vitaminB3 /
                                             foodController.necessity.value
                                                 .micro!.vitaminB3!),
                                     bottomSheetNecesityChild(
-                                        size,
                                         'Retinol',
                                         foodController.retinol /
                                             foodController.necessity.value
@@ -580,10 +570,10 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                             ));
                           },
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
                             child: FaIcon(
                               FontAwesomeIcons.ellipsisH,
-                              size: 20,
+                              size: 20.sp,
                               color: color.secondaryTextColor,
                             ),
                           )),
@@ -594,7 +584,6 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                   listMealSarapan: snapshot.data!,
                   listMealMakanSiang: snapshot.data!,
                   listMealMakanMalam: snapshot.data!,
-                  size: size,
                   color: color,
                   listMeal: snapshot.data!,
                   foodController: foodController,
@@ -602,7 +591,7 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
               ],
             ),
       secondChild: Container(
-        margin: EdgeInsets.only(bottom: 20),
+        margin: EdgeInsets.only(bottom: 20.h),
         child: TableCalendar(
           focusedDay: foodController.focusedDay,
           firstDay: DateTime.utc(
@@ -676,40 +665,34 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
     );
   }
 
-  Widget bottomSheetNecesityChild(Size size, String title, double value) {
+  Widget bottomSheetNecesityChild(String title, double value) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: EdgeInsets.symmetric(vertical: 5.h),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                    left: 20,
-                    top: size.height * 0.01,
-                    bottom: size.height * 0.01),
+                padding: EdgeInsets.only(left: 20.w, top: 10.h, bottom: 10.h),
                 child: Text(
                   title,
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
                         color: color.secondaryTextColor,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.normal),
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(
-                    right: 20,
-                    top: size.height * 0.01,
-                    bottom: size.height * 0.01),
+                padding: EdgeInsets.only(right: 20.w, top: 10.h, bottom: 10.h),
                 child: Text(
                   '${((value) * 100).round().toString()}%',
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
                         color: color.secondaryTextColor,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.normal),
                   ),
                 ),
@@ -726,15 +709,15 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                   )),
               child: Stack(alignment: Alignment.centerLeft, children: [
                 Container(
-                  height: size.height * 0.02,
-                  width: size.width,
+                  height: 18.h,
+                  width: 360.w,
                 ),
                 Container(
                   decoration: BoxDecoration(
                       color: color.secondaryColor,
                       borderRadius: BorderRadius.circular(20)),
-                  height: size.height * 0.02,
-                  width: size.width * value,
+                  height: 18.h,
+                  width: 360.w * value,
                 ),
               ])),
         ],

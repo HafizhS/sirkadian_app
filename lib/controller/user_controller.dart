@@ -95,6 +95,7 @@ class UserController extends GetxController {
         UserHealthHistoryLatestResponse _userHealthHistoryLatestResponse =
             UserHealthHistoryLatestResponse.fromJson(
                 _res.body as Map<String, dynamic>);
+
         if (_userHealthHistoryLatestResponse.statusCode == 200) {
           userHealthHistoryLatestResponse.value =
               _userHealthHistoryLatestResponse.data!;

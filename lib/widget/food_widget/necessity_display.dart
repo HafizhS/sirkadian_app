@@ -1,7 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../controller/hexcolor_controller.dart';
 import '../../constant/hex_color.dart';
 import '../../controller/food_controller.dart';
@@ -11,7 +11,6 @@ import 'necessity_gauge.dart';
 class NecessityDisplayWidget extends StatefulWidget {
   const NecessityDisplayWidget({
     Key? key,
-    required this.size,
     required this.color,
     required this.listMeal,
     required this.listMealSarapan,
@@ -20,7 +19,6 @@ class NecessityDisplayWidget extends StatefulWidget {
     required this.foodController,
   }) : super(key: key);
 
-  final Size size;
   final ColorConstantController color;
   final List<Food> listMeal;
   final List<Food> listMealSarapan;
@@ -48,8 +46,8 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      height: widget.size.height * 0.75,
+      margin: EdgeInsets.symmetric(horizontal: 20.h),
+      height: 600.h,
       width: double.infinity,
       child: GridView(
           physics: NeverScrollableScrollPhysics(),
@@ -81,7 +79,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
                   (widget.foodController.necessity.value.energy!.breakfast! +
                       widget.foodController.necessity.value.energy!.lunch! +
                       widget.foodController.necessity.value.energy!.dinner!),
-              size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
+              size: Size(100.w, 120.h),
             ),
 
             NecessityGauge(
@@ -113,7 +111,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
                           .carbohydrate! +
                       widget.foodController.necessity.value.macro!.dinner!
                           .carbohydrate!),
-              size: Size(widget.size.width * 0.3, widget.size.height * 0.15),
+              size: Size(100.w, 120.h),
             ),
             NecessityGauge(
               onpress: () {
@@ -144,7 +142,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
                           .protein! +
                       widget.foodController.necessity.value.macro!.dinner!
                           .protein!),
-              size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
+              size: Size(100.w, 120.h),
             ),
             NecessityGauge(
               onpress: () {
@@ -172,7 +170,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
                       widget.foodController.necessity.value.macro!.lunch!.fat! +
                       widget
                           .foodController.necessity.value.macro!.dinner!.fat!),
-              size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
+              size: Size(100.w, 120.h),
             ),
             NecessityGauge(
               onpress: () {
@@ -201,7 +199,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
                           .foodController.necessity.value.macro!.lunch!.fiber! +
                       widget.foodController.necessity.value.macro!.dinner!
                           .fiber!),
-              size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
+              size: Size(100.w, 120.h),
             ),
 
             NecessityGauge(
@@ -212,7 +210,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               foregroundColor: HexColor.fromHex('#238094'),
               value: widget.foodController.water /
                   widget.foodController.necessity.value.water!,
-              size: Size(widget.size.width * 0.32, widget.size.height * 0.15),
+              size: Size(100.w, 120.h),
             ),
 
             // NecessityGauge(
@@ -222,7 +220,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
             //   foregroundColor: HexColor.fromHex('#238094'),
             //   value: widget.foodController.calcium /
             //       widget.foodController.necessity.calcium!,
-            //   size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+            //   size: Size(size.width * 0.32, size.height * 0.2),
             // ),
             // NecessityGauge(
             //   color: widget.color,
@@ -231,7 +229,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
             //   foregroundColor: HexColor.fromHex('#238094'),
             //   value: widget.foodController.iron /
             //       widget.foodController.necessity.iron!,
-            //   size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+            //   size: Size(size.width * 0.32, size.height * 0.2),
             // ),
             // NecessityGauge(
             //   color: widget.color,
@@ -240,7 +238,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
             //   foregroundColor: HexColor.fromHex('#238094'),
             //   value: widget.foodController.zinc /
             //       widget.foodController.necessity.zinc!,
-            //   size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+            //   size: Size(size.width * 0.32, size.height * 0.2),
             // ),
             // NecessityGauge(
             //   color: widget.color,
@@ -249,7 +247,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
             //   foregroundColor: HexColor.fromHex('#238094'),
             //   value: widget.foodController.copper /
             //       widget.foodController.necessity.copper!,
-            //   size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+            //   size: Size(size.width * 0.32, size.height * 0.2),
             // ),
             // NecessityGauge(
             //   color: widget.color,
@@ -258,7 +256,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
             //   foregroundColor: HexColor.fromHex('#238094'),
             //   value: widget.foodController.vitaminC /
             //       widget.foodController.necessity.vitaminC!,
-            //   size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+            //   size: Size(size.width * 0.32, size.height * 0.2),
             // ),
             // NecessityGauge(
             //   color: widget.color,
@@ -267,7 +265,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
             //   foregroundColor: HexColor.fromHex('#238094'),
             //   value: widget.foodController.vitaminB1 /
             //       widget.foodController.necessity.vitaminB1!,
-            //   size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+            //   size: Size(size.width * 0.32, size.height * 0.2),
             // ),
             // NecessityGauge(
             //   color: widget.color,
@@ -276,7 +274,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
             //   foregroundColor: HexColor.fromHex('#238094'),
             //   value: widget.foodController.vitaminB2 /
             //       widget.foodController.necessity.vitaminB2!,
-            //   size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+            //   size: Size(size.width * 0.32, size.height * 0.2),
             // ),
             // NecessityGauge(
             //   color: widget.color,
@@ -285,7 +283,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
             //   foregroundColor: HexColor.fromHex('#238094'),
             //   value: widget.foodController.vitaminB3 /
             //       widget.foodController.necessity.vitaminB3!,
-            //   size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+            //   size: Size(size.width * 0.32, size.height * 0.2),
             // ),
             // NecessityGauge(
             //   color: widget.color,
@@ -294,7 +292,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
             //   foregroundColor: HexColor.fromHex('#238094'),
             //   value: widget.foodController.retinol /
             //       widget.foodController.necessity.retinol!,
-            //   size: Size(widget.size.width * 0.32, widget.size.height * 0.2),
+            //   size: Size(size.width * 0.32, size.height * 0.2),
             // ),
           ]),
     );
@@ -315,9 +313,9 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
           color: widget.color.primaryColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-      height: widget.size.height * 0.4,
-      width: widget.size.width,
-      padding: EdgeInsets.all(10),
+      height: 360.h,
+      width: 360.w,
+      padding: EdgeInsets.all(10.sp),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -326,15 +324,14 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               style: GoogleFonts.inter(
                 textStyle: TextStyle(
                     color: widget.color.secondaryTextColor,
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(
-              height: widget.size.height * 0.02,
+              height: 28.h,
             ),
             bottomSheetNecesityChild(
-              size: widget.size,
               title: 'Total',
               value: nutritionTotal! /
                   (necessitySarapan! +
@@ -345,7 +342,6 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               color: widget.color.secondaryColor,
             ),
             bottomSheetNecesityChild(
-              size: widget.size,
               title: 'Sarapan',
               value: nutritionSarapan! / necessitySarapan,
               valueAmount: nutritionSarapan.toStringAsFixed(1),
@@ -353,7 +349,6 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               color: widget.color.redColor,
             ),
             bottomSheetNecesityChild(
-              size: widget.size,
               title: 'Makan Siang',
               value: nutritionMakanSiang! / necessityMakanSiang,
               valueAmount: nutritionMakanSiang.toStringAsFixed(1),
@@ -361,7 +356,6 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
               color: widget.color.purpleColor,
             ),
             bottomSheetNecesityChild(
-              size: widget.size,
               title: 'Makan Malam',
               value: nutritionMakanMalam! / necessityMakanMalam,
               valueAmount: nutritionMakanMalam.toStringAsFixed(1),
@@ -376,7 +370,6 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
   }
 
   Widget bottomSheetNecesityChild({
-    Size? size,
     String? title,
     double? value,
     String? valueAmount,
@@ -384,7 +377,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
     Color? color,
   }) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: EdgeInsets.symmetric(vertical: 5.h),
       child: Column(
         children: [
           Row(
@@ -394,31 +387,27 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(
-                        left: 20,
-                        top: size!.height * 0.01,
-                        bottom: size.height * 0.01),
+                    padding:
+                        EdgeInsets.only(left: 20.w, top: 10.h, bottom: 10.h),
                     child: Text(
                       title!,
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
                             color: widget.color.secondaryTextColor,
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.normal),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                        left: 5,
-                        top: size.height * 0.01,
-                        bottom: size.height * 0.01),
+                    padding:
+                        EdgeInsets.only(left: 5.w, top: 10.h, bottom: 10.h),
                     child: Text(
                       '($valueAmount $unit)',
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
                             color: widget.color.secondaryTextColor,
-                            fontSize: 10,
+                            fontSize: 10.sp,
                             fontWeight: FontWeight.normal),
                       ),
                     ),
@@ -426,10 +415,7 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only(
-                    right: 20,
-                    top: size.height * 0.01,
-                    bottom: size.height * 0.01),
+                padding: EdgeInsets.only(right: 20.w, top: 10.h, bottom: 10.h),
                 child: Text(
                   '${((value!) * 100).round().toString()}%',
                   style: GoogleFonts.inter(
@@ -452,14 +438,14 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
                   )),
               child: Stack(alignment: Alignment.centerLeft, children: [
                 Container(
-                  height: size.height * 0.02,
-                  width: size.width,
+                  height: 18.h,
+                  width: 360.w,
                 ),
                 Container(
                   decoration: BoxDecoration(
                       color: color, borderRadius: BorderRadius.circular(20)),
-                  height: size.height * 0.02,
-                  width: size.width * value,
+                  height: 18.h,
+                  width: 360.w * value,
                 ),
               ])),
         ],

@@ -5,10 +5,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sirkadian_app/controller/notification_controller.dart';
 import 'package:sirkadian_app/screen/home/nutrition_screen/fluid_screen/fuild_general_screen.dart';
 import 'package:sirkadian_app/screen/home/nutrition_screen/food_screen/food_general_screen.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../controller/hexcolor_controller.dart';
 import '../../../controller/auth_controller.dart';
 import '../../../controller/food_controller.dart';
@@ -27,7 +28,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
   final authController = Get.find<AuthController>();
   final foodController = Get.find<FoodController>();
   final color = Get.find<ColorConstantController>();
-  // StreamController<List<Food>> controller = StreamController<List<Food>>();
+  final notificationController = Get.find<NotificationController>();
   late Stream<List<Food>> _necessityStream;
   late Stream<List<Food>> _sarapanStream;
   late Stream<List<Food>> _makanSiangStream;
@@ -35,7 +36,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
   late Stream<List<Food>> _snackStream;
   // = controller.stream;
 
-  bool hasBeenInitialized = false;
+  var hasBeenInitialized = false.obs;
   var isFood = true;
 
   @override
@@ -78,7 +79,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
               .watch(triggerImmediately: true)
               .map((query) => query.find());
 
-          hasBeenInitialized = true;
+          hasBeenInitialized(true);
         }));
   }
 
@@ -89,70 +90,142 @@ class _NutritionScreenState extends State<NutritionScreen> {
     // controller.close();
 
     // foodController.hasBeenInitialized(false);
-    hasBeenInitialized = false;
+    hasBeenInitialized(false);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
-    return Scaffold(
-      backgroundColor: color.bgColor,
-      body: SafeArea(
-        child: Obx(() => foodController.isLoadingNecessity.isTrue
-            ? Center(
+    return Obx(() => foodController.isLoadingNecessity.isTrue
+        ? Scaffold(
+            body: SafeArea(
+              child: Center(
                 child: CircularProgressIndicator(
                   color: color.secondaryColor,
                 ),
-              )
-            : !hasBeenInitialized
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: color.secondaryColor,
+              ),
+            ),
+          )
+        : Obx(() => hasBeenInitialized.isFalse
+            ? Scaffold(
+                body: Center(
+                child: CircularProgressIndicator(
+                  color: color.secondaryColor,
+                ),
+              ))
+            : StreamBuilder5<List<Food>, List<Food>, List<Food>, List<Food>,
+                    List<Food>>(
+                streams: Tuple5(_necessityStream, _sarapanStream,
+                    _makanSiangStream, _makanMalamStream, _snackStream),
+                // stream: _necessityStream,
+                builder: (context, snapshot) {
+                  switch (snapshot.item1.connectionState) {
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: color.secondaryColor,
+                        ),
+                      );
+                    case ConnectionState.active:
+                      return bodyWidget(context, snapshot);
+                    case ConnectionState.done:
+                      return bodyWidget(context, snapshot);
+                  }
+                })));
+  }
+
+  Widget bodyWidget(
+      BuildContext context,
+      Tuple5<
+              AsyncSnapshot<List<Food>>,
+              AsyncSnapshot<List<Food>>,
+              AsyncSnapshot<List<Food>>,
+              AsyncSnapshot<List<Food>>,
+              AsyncSnapshot<List<Food>>>
+          snapshot) {
+    return Scaffold(
+        backgroundColor: color.bgColor,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.h),
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.only(top: 20.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 20.w),
+                    child: NeumorphicButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: NeumorphicStyle(
+                        shape: NeumorphicShape.flat,
+                        boxShape: NeumorphicBoxShape.circle(),
+                        color: color.bgColor,
+                      ),
+                      padding: EdgeInsets.all(16.sp),
+                      child: FaIcon(
+                        FontAwesomeIcons.chevronLeft,
+                        size: 16.sp,
+                        color: color.secondaryTextColor,
+                      ),
                     ),
-                  )
-                : StreamBuilder5<List<Food>, List<Food>, List<Food>, List<Food>,
-                        List<Food>>(
-                    streams: Tuple5(_necessityStream, _sarapanStream,
-                        _makanSiangStream, _makanMalamStream, _snackStream),
-                    // stream: _necessityStream,
-                    builder: (context, snapshot) {
-                      switch (snapshot.item1.connectionState) {
-                        case ConnectionState.none:
-                        case ConnectionState.waiting:
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: color.secondaryColor,
-                            ),
-                          );
-                        case ConnectionState.active:
-                          return nutritionChildWidget(
-                              context,
-                              size,
-                              snapshot.item1,
-                              snapshot.item2,
-                              snapshot.item3,
-                              snapshot.item4,
-                              snapshot.item5);
-                        case ConnectionState.done:
-                          return nutritionChildWidget(
-                              context,
-                              size,
-                              snapshot.item1,
-                              snapshot.item2,
-                              snapshot.item3,
-                              snapshot.item4,
-                              snapshot.item5);
-                      }
-                    })),
-      ),
-    );
+                  ),
+                  Text(
+                    isFood ? 'SirkaDiet' : 'SirkaFluid',
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          color: color.primaryTextColor,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(right: 20.w),
+                    child: NeumorphicButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FutureMealPlanScreen(
+                                      listMealNecessity: snapshot.item1.data!,
+                                      hasBeenInitialized:
+                                          hasBeenInitialized.value,
+                                    ))).then((_) {
+                          foodController.selectedDay = DateTime.utc(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day);
+
+                          print(foodController.selectedDay);
+                        });
+                      },
+                      style: NeumorphicStyle(
+                        shape: NeumorphicShape.flat,
+                        boxShape: NeumorphicBoxShape.circle(),
+                        color: color.bgColor,
+                      ),
+                      padding: EdgeInsets.all(16.0.sp),
+                      child: FaIcon(
+                        FontAwesomeIcons.calendarAlt,
+                        size: 16.sp,
+                        color: color.secondaryTextColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        body: nutritionChildWidget(context, snapshot.item1, snapshot.item2,
+            snapshot.item3, snapshot.item4, snapshot.item5));
   }
 
   Widget nutritionChildWidget(
     BuildContext context,
-    Size size,
     AsyncSnapshot<List<Food>> snapshotNecessity,
     AsyncSnapshot<List<Food>> snapshotSarapan,
     AsyncSnapshot<List<Food>> snapshotMakanSiang,
@@ -160,7 +233,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
     AsyncSnapshot<List<Food>> snapshotSnack,
   ) {
     return Padding(
-      padding: EdgeInsets.only(top: 20),
+      padding: EdgeInsets.only(top: 20.h),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -170,81 +243,10 @@ class _NutritionScreenState extends State<NutritionScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 20),
-                          child: NeumorphicButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            style: NeumorphicStyle(
-                              shape: NeumorphicShape.flat,
-                              boxShape: NeumorphicBoxShape.circle(),
-                              color: color.bgColor,
-                            ),
-                            padding: const EdgeInsets.all(16.0),
-                            child: FaIcon(
-                              FontAwesomeIcons.chevronLeft,
-                              size: 16,
-                              color: color.secondaryTextColor,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          isFood ? 'SirkaDiet' : 'SirkaFluid',
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                color: color.primaryTextColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 20),
-                          child: NeumorphicButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          FutureMealPlanScreen(
-                                            listMealNecessity:
-                                                snapshotNecessity.data!,
-                                            hasBeenInitialized:
-                                                hasBeenInitialized,
-                                          ))).then((_) {
-                                foodController.selectedDay = DateTime.utc(
-                                    DateTime.now().year,
-                                    DateTime.now().month,
-                                    DateTime.now().day);
-
-                                print(foodController.selectedDay);
-                              });
-                            },
-                            style: NeumorphicStyle(
-                              shape: NeumorphicShape.flat,
-                              boxShape: NeumorphicBoxShape.circle(),
-                              color: color.bgColor,
-                            ),
-                            padding: const EdgeInsets.all(16.0),
-                            child: FaIcon(
-                              FontAwesomeIcons.calendarAlt,
-                              size: 16,
-                              color: color.secondaryTextColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.02,
-                    ),
-                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         NeumorphicButton(
-                            margin: EdgeInsets.only(top: 12),
+                            margin: EdgeInsets.only(top: 12.h),
                             onPressed: () {
                               setState(() {
                                 isFood = true;
@@ -259,7 +261,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                                         bottomLeft: Radius.circular(20),
                                         topLeft: Radius.circular(20)))),
                             padding: EdgeInsets.symmetric(
-                                vertical: 12, horizontal: size.width * 0.1),
+                                vertical: 12.h, horizontal: 30.w),
                             child: Text(
                               'Makan',
                               style: GoogleFonts.inter(
@@ -267,12 +269,12 @@ class _NutritionScreenState extends State<NutritionScreen> {
                                     color: isFood
                                         ? color.secondaryColor
                                         : color.secondaryTextColor,
-                                    fontSize: 14,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.normal),
                               ),
                             )),
                         NeumorphicButton(
-                            margin: EdgeInsets.only(top: 12),
+                            margin: EdgeInsets.only(top: 12.h),
                             onPressed: () {
                               setState(() {
                                 isFood = false;
@@ -287,7 +289,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                                         bottomRight: Radius.circular(20),
                                         topRight: Radius.circular(20)))),
                             padding: EdgeInsets.symmetric(
-                                vertical: 12, horizontal: size.width * 0.1),
+                                vertical: 12.h, horizontal: 30.w),
                             child: Text(
                               'Minum',
                               style: GoogleFonts.inter(
@@ -295,14 +297,14 @@ class _NutritionScreenState extends State<NutritionScreen> {
                                     color: isFood
                                         ? color.secondaryTextColor
                                         : color.secondaryColor,
-                                    fontSize: 14,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.normal),
                               ),
                             )),
                       ],
                     ),
                     SizedBox(
-                      height: size.height * 0.03,
+                      height: 28.h,
                     ),
                   ]),
             ),
@@ -313,7 +315,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                     ? CrossFadeState.showFirst
                     : CrossFadeState.showSecond,
                 firstChild: FoodGeneralScreen(
-                  hasBeenInitialized: hasBeenInitialized,
+                  hasBeenInitialized: hasBeenInitialized.value,
                   listMealNecessity: snapshotNecessity.data!,
                   listMealSarapan: snapshotSarapan.data!,
                   listMealMakanSiang: snapshotMakanSiang.data!,

@@ -1,7 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../controller/hexcolor_controller.dart';
 
 class FoodTile extends StatelessWidget {
@@ -13,7 +13,6 @@ class FoodTile extends StatelessWidget {
     required this.serving,
     required this.recommendationScore,
     required this.duration,
-    required this.size,
     required this.containerButton,
     required this.iconButton,
     required this.icon,
@@ -27,7 +26,7 @@ class FoodTile extends StatelessWidget {
   final String serving;
   final String recommendationScore;
   final String duration;
-  final Size size;
+
   final IconData icon;
   final double depth;
   final String imageFilename;
@@ -45,13 +44,13 @@ class FoodTile extends StatelessWidget {
           boxShape: NeumorphicBoxShape.roundRect(
             BorderRadius.circular(20),
           )),
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: Stack(alignment: Alignment.bottomRight, children: [
         Row(
           children: [
             Container(
-                height: size.height * 0.15,
-                width: size.width * 0.3,
+                height: 120.h,
+                width: 100.w,
                 decoration: BoxDecoration(
                     color: color.backupPrimaryColor,
                     borderRadius: BorderRadius.circular(20)),
@@ -62,14 +61,14 @@ class FoodTile extends StatelessWidget {
                         fit: BoxFit.cover,
                       )),
             SizedBox(
-              width: size.width * 0.02,
+              width: 10.w,
             ),
             //segment 2
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: size.width * 0.5,
+                  width: 200.w,
                   child: Text(
                     name,
                     overflow: TextOverflow.ellipsis,
@@ -77,13 +76,13 @@ class FoodTile extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       textStyle: TextStyle(
                           color: color.primaryTextColor,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.02,
+                  height: 18.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,14 +92,14 @@ class FoodTile extends StatelessWidget {
                         FaIcon(
                           FontAwesomeIcons.fire,
                           color: color.redColor,
-                          size: 12,
+                          size: 12.sp,
                         ),
                         Text(
                           ' ' + necessity + ' kkal',
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
@@ -119,7 +118,7 @@ class FoodTile extends StatelessWidget {
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
@@ -131,7 +130,7 @@ class FoodTile extends StatelessWidget {
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
                             color: color.secondaryTextColor,
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.normal),
                       ),
                     ),
@@ -148,7 +147,7 @@ class FoodTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
-              margin: EdgeInsets.only(right: 20, bottom: 30),
+              margin: EdgeInsets.only(right: 20.w, bottom: 30.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -162,7 +161,7 @@ class FoodTile extends StatelessWidget {
                     style: GoogleFonts.inter(
                       textStyle: TextStyle(
                           color: color.secondaryTextColor,
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.normal),
                     ),
                   ),
@@ -170,7 +169,7 @@ class FoodTile extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(right: 20, bottom: 20),
+              margin: EdgeInsets.only(right: 20.w, bottom: 20.h),
               child: NeumorphicButton(
                 onPressed: iconButton,
                 style: NeumorphicStyle(
@@ -179,10 +178,10 @@ class FoodTile extends StatelessWidget {
                   boxShape: NeumorphicBoxShape.circle(),
                   color: color.bgColor,
                 ),
-                padding: const EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(10.sp),
                 child: FaIcon(
                   icon,
-                  size: 12,
+                  size: 12.sp,
                   color: color.secondaryColor,
                 ),
               ),

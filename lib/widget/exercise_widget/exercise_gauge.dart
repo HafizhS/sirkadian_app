@@ -1,12 +1,12 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ExerciseGauge extends StatelessWidget {
   const ExerciseGauge({
     Key? key,
     required this.backgroundColor,
     required this.foregroundColor,
-    required this.size,
     required this.value,
     required this.day,
     required this.stringValue,
@@ -15,7 +15,7 @@ class ExerciseGauge extends StatelessWidget {
 
   final Color backgroundColor;
   final Color foregroundColor;
-  final Size size;
+
   final double value;
   final String day;
   final String stringValue;
@@ -32,7 +32,7 @@ class ExerciseGauge extends StatelessWidget {
                 color: textColor, fontSize: 12, fontWeight: FontWeight.normal),
           ),
         ),
-        SizedBox(height: size.height * 0.02),
+        SizedBox(height: 18.h),
         Neumorphic(
             style: NeumorphicStyle(
                 color: backgroundColor,
@@ -53,7 +53,7 @@ class ExerciseGauge extends StatelessWidget {
                 width: 15,
               ),
             ])),
-        SizedBox(height: size.height * 0.02),
+        SizedBox(height: 18.h),
         Text(
           day,
           style: GoogleFonts.poppins(

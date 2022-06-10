@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../bindings/bindings.dart';
 import 'package:get_storage/get_storage.dart';
@@ -24,15 +25,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Sirkadian App',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-      ),
-      home: const RootScreen(),
-      getPages: ListScreen.screens,
-      initialBinding: ControllerBinding(),
-    );
+    return ScreenUtilInit(
+        designSize: const Size(360, 800),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Sirkadian App',
+            theme: ThemeData(
+              primarySwatch: Colors.grey,
+            ),
+            home: const RootScreen(),
+            getPages: ListScreen.screens,
+            initialBinding: ControllerBinding(),
+          );
+        });
   }
 }

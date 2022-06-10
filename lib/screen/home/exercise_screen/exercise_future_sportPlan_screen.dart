@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/exercise_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../controller/hexcolor_controller.dart';
 import '../../../model/obejctbox_model.dart/food_exercise_model.dart';
 import '../../../../objectbox.g.dart';
@@ -73,126 +73,136 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: color.backgroundColor,
-      body: SafeArea(
-          child: !hasBeenInitialized
-              ? Center(
-                  child: CircularProgressIndicator(
-                    color: color.secondaryColor,
-                  ),
-                )
-              : StreamBuilder<List<Exercise>>(
-                  stream: _exerciseStream,
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: color.secondaryColor,
-                          ),
-                        );
-                      case ConnectionState.active:
-                        return childWidget(context, size, snapshot);
-                      case ConnectionState.done:
-                        return childWidget(context, size, snapshot);
-                    }
-                  })),
-    );
+    return !hasBeenInitialized
+        ? Center(
+            child: CircularProgressIndicator(
+              color: color.secondaryColor,
+            ),
+          )
+        : StreamBuilder<List<Exercise>>(
+            stream: _exerciseStream,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: color.secondaryColor,
+                    ),
+                  );
+                case ConnectionState.active:
+                  return SafeArea(
+                    child: Scaffold(
+                        backgroundColor: color.bgColor,
+                        appBar: appBarWidget(context),
+                        body: childWidget(context, snapshot)),
+                  );
+                case ConnectionState.done:
+                  return SafeArea(
+                    child: Scaffold(
+                        backgroundColor: color.bgColor,
+                        appBar: appBarWidget(context),
+                        body: childWidget(context, snapshot)),
+                  );
+              }
+            });
   }
 
-  Padding childWidget(
-      BuildContext context, Size size, AsyncSnapshot<List<Exercise>> snapshot) {
-    return Padding(
-      padding: EdgeInsets.only(top: 20),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        //segment 1
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            NeumorphicButton(
-              margin: EdgeInsets.only(left: 20),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: NeumorphicStyle(
-                shape: NeumorphicShape.flat,
-                boxShape: NeumorphicBoxShape.circle(),
-                color: color.primaryColor,
-              ),
-              padding: const EdgeInsets.all(16.0),
-              child: FaIcon(
-                FontAwesomeIcons.chevronLeft,
-                size: 16,
-                color: color.secondaryTextColor,
-              ),
-            ),
-            Text(
-              'Jadwalkan Olahragamu',
-              style: GoogleFonts.poppins(
-                textStyle: TextStyle(
-                    color: color.primaryTextColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            NeumorphicButton(
-              onPressed: () {
-                if (closeTopContainer) {
-                  setState(() {
-                    _controller.reverse();
-                  });
-                } else {
-                  setState(() {
-                    _controller.forward();
-                  });
-                }
-                setState(() {
-                  closeTopContainer = !closeTopContainer;
-                });
-              },
-              style: NeumorphicStyle(
-                shape: NeumorphicShape.flat,
-                boxShape: NeumorphicBoxShape.roundRect(
-                  BorderRadius.circular(10),
+  PreferredSize appBarWidget(BuildContext context) {
+    return PreferredSize(
+        child: Padding(
+          padding: EdgeInsets.only(top: 20.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              NeumorphicButton(
+                margin: EdgeInsets.only(left: 20.w),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: NeumorphicStyle(
+                  shape: NeumorphicShape.flat,
+                  boxShape: NeumorphicBoxShape.circle(),
+                  color: color.primaryColor,
                 ),
-                color: color.primaryColor,
+                padding: EdgeInsets.all(16.sp),
+                child: FaIcon(
+                  FontAwesomeIcons.chevronLeft,
+                  size: 16.sp,
+                  color: color.secondaryTextColor,
+                ),
               ),
-              padding: const EdgeInsets.all(12.0),
-              margin: EdgeInsets.only(right: 20),
-              child: AnimatedIcon(
-                icon: AnimatedIcons.event_add,
-                progress: _controller,
-                size: 20,
-                color: color.secondaryTextColor,
+              Text(
+                'Jadwalkan Olahragamu',
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                      color: color.primaryTextColor,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: size.height * 0.01,
-        ),
-        //segment 2
-        AnimatedOpacity(
-          duration: const Duration(milliseconds: 200),
-          opacity: closeTopContainer ? 0 : 1,
-          child: AnimatedContainer(
-            duration: Duration(milliseconds: 200),
-            width: size.width,
-            alignment: Alignment.topCenter,
-            height: closeTopContainer ? 0 : size.height * 0.5,
-            child: dateChildWidget(size, snapshot),
+              NeumorphicButton(
+                onPressed: () {
+                  if (closeTopContainer) {
+                    setState(() {
+                      _controller.reverse();
+                    });
+                  } else {
+                    setState(() {
+                      _controller.forward();
+                    });
+                  }
+                  setState(() {
+                    closeTopContainer = !closeTopContainer;
+                  });
+                },
+                style: NeumorphicStyle(
+                  shape: NeumorphicShape.flat,
+                  boxShape: NeumorphicBoxShape.roundRect(
+                    BorderRadius.circular(10),
+                  ),
+                  color: color.primaryColor,
+                ),
+                padding: EdgeInsets.all(12.sp),
+                margin: EdgeInsets.only(right: 20.w),
+                child: AnimatedIcon(
+                  icon: AnimatedIcons.event_add,
+                  progress: _controller,
+                  size: 20.sp,
+                  color: color.secondaryTextColor,
+                ),
+              ),
+            ],
           ),
         ),
+        preferredSize: Size.fromHeight(70.h));
+  }
+
+  Widget childWidget(
+      BuildContext context, AsyncSnapshot<List<Exercise>> snapshot) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      //segment 1
+
+      AnimatedOpacity(
+        duration: const Duration(milliseconds: 200),
+        opacity: closeTopContainer ? 0 : 1,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 200),
+          width: 360.w,
+          alignment: Alignment.topCenter,
+          height: closeTopContainer ? 0 : 360.h,
+          child: dateChildWidget(snapshot),
+        ),
+      ),
 
 //segment 3
-        Row(
+      Padding(
+        padding: EdgeInsets.only(top: 10.h),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 20),
+              padding: EdgeInsets.only(left: 20.w),
               child: RichText(
                 text: TextSpan(
                   text: exerciseController.selectedDay.weekday == 1
@@ -213,7 +223,7 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
                   style: GoogleFonts.inter(
                       textStyle: TextStyle(
                           color: color.primaryTextColor,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.bold)),
                   children: <TextSpan>[
                     TextSpan(
@@ -222,7 +232,7 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
                             color: color.primaryTextColor,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.normal),
                       ),
                     ),
@@ -236,137 +246,144 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
                     ? Row(
                         children: [
                           Container(
+                            margin: EdgeInsets.only(right: 10.w),
                             child: Text(
                               snapshot.data!.length.toString() + ' item',
                               style: GoogleFonts.inter(
                                 textStyle: TextStyle(
                                     color: color.secondaryTextColor,
-                                    fontSize: 14,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.normal),
                               ),
                             ),
                           ),
-                          Container(
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  closeTopContainer = false;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: FaIcon(
-                                  FontAwesomeIcons.chevronDown,
-                                  size: 20,
-                                  color: color.secondaryTextColor,
-                                ),
-                              ),
+                          NeumorphicButton(
+                            onPressed: () {
+                              setState(() {
+                                closeTopContainer = false;
+                              });
+                            },
+                            padding: EdgeInsets.all(5.sp),
+                            style: NeumorphicStyle(
+                              depth: 2,
+                              color: color.bgColor,
+                              boxShape: NeumorphicBoxShape.roundRect(
+                                  BorderRadius.circular(5)),
+                            ),
+                            margin: EdgeInsets.only(right: 10.w),
+                            child: FaIcon(
+                              FontAwesomeIcons.chevronDown,
+                              size: 20.sp,
+                              color: color.secondaryTextColor,
                             ),
                           ),
                         ],
                       )
                     : Container(
+                        margin: EdgeInsets.only(right: 10.w),
                         child: Text(
                           snapshot.data!.length.toString() + ' item',
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 14,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
                       ),
-                Container(
-                  padding: EdgeInsets.only(right: 20),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ExerciseRecommendationScreen()));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: FaIcon(
-                        FontAwesomeIcons.plus,
-                        size: 20,
-                        color: color.secondaryTextColor,
-                      ),
-                    ),
+                NeumorphicButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ExerciseRecommendationScreen()));
+                  },
+                  padding: EdgeInsets.all(5.sp),
+                  style: NeumorphicStyle(
+                    depth: 2,
+                    color: color.bgColor,
+                    boxShape:
+                        NeumorphicBoxShape.roundRect(BorderRadius.circular(5)),
+                  ),
+                  margin: EdgeInsets.only(right: 20.w),
+                  child: FaIcon(
+                    FontAwesomeIcons.plus,
+                    size: 20.sp,
+                    color: color.secondaryTextColor,
                   ),
                 ),
               ],
             ),
           ],
         ),
-        Expanded(
-          child: ListView.builder(
-              controller: _scrollController,
-              // scrollDirection: Axis.horizontal,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                double scale = 1.0;
-                if (topContainer > 0.5) {
-                  scale = index + 0.5 - topContainer;
-                  if (scale < 0) {
-                    scale = 0;
-                  } else if (scale > 1) {
-                    scale = 1;
-                  }
+      ),
+      Expanded(
+        child: ListView.builder(
+            controller: _scrollController,
+            // scrollDirection: Axis.horizontal,
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              double scale = 1.0;
+              if (topContainer > 0.5) {
+                scale = index + 0.5 - topContainer;
+                if (scale < 0) {
+                  scale = 0;
+                } else if (scale > 1) {
+                  scale = 1;
                 }
-                return ExerciseTile(
-                  onpressPlus: () {},
-                  onpressDelete: () {
-                    exerciseController.exerciseStore
-                        .box<Exercise>()
-                        .remove(snapshot.data![index].id);
-                  },
-                  onpressCheck: () {
-                    exerciseController.exerciseStore
-                        .box<Exercise>()
-                        .remove(snapshot.data![index].id);
-                    final exercise = Exercise(
-                      name: exerciseController.listExercise[index].name,
-                      desc: exerciseController.listExercise[index].desc,
-                      isChecked: snapshot.data![index].isChecked =
-                          !snapshot.data![index].isChecked!,
-                      imageFilename: '',
-                      date: exerciseController.selectedDay.toString(),
-                      sportId: exerciseController.listExercise[index].sportId,
-                      mets: exerciseController.listExercise[index].mets,
-                      difficulty:
-                          exerciseController.listExercise[index].difficulty,
-                    );
-                    exerciseController.exerciseStore
-                        .box<Exercise>()
-                        .put(exercise);
-                  },
-                  icon: FontAwesomeIcons.trash,
-                  iconColor: color.redColor,
-                  imageFilename: snapshot.data![index].imageFilename!,
-                  depth: 4,
-                  onRecom: false,
-                  color: color,
-                  mets: snapshot.data![index].mets.toString(),
-                  desc: snapshot.data![index].desc!,
-                  difficulty: snapshot.data![index].difficulty!,
-                  size: size,
-                  title: snapshot.data![index].name!,
-                );
-              }),
-        ),
-      ]),
-    );
+              }
+              return ExerciseTile(
+                containerButton: () {},
+                onpressPlus: () {},
+                onpressDelete: () {
+                  exerciseController.exerciseStore
+                      .box<Exercise>()
+                      .remove(snapshot.data![index].id);
+                },
+                onpressCheck: () {
+                  exerciseController.exerciseStore
+                      .box<Exercise>()
+                      .remove(snapshot.data![index].id);
+                  final exercise = Exercise(
+                    name: exerciseController.listExercise[index].name,
+                    desc: exerciseController.listExercise[index].desc,
+                    isChecked: snapshot.data![index].isChecked =
+                        !snapshot.data![index].isChecked!,
+                    imageFilename: '',
+                    date: exerciseController.selectedDay.toString(),
+                    sportId: exerciseController.listExercise[index].sportId,
+                    mets: exerciseController.listExercise[index].mets,
+                    difficulty:
+                        exerciseController.listExercise[index].difficulty,
+                  );
+                  exerciseController.exerciseStore
+                      .box<Exercise>()
+                      .put(exercise);
+                },
+                icon: FontAwesomeIcons.trash,
+                iconColor: color.redColor,
+                imageFilename: snapshot.data![index].imageFilename!,
+                depth: 4,
+                onRecom: false,
+                color: color,
+                mets: snapshot.data![index].mets.toString(),
+                desc: snapshot.data![index].desc!,
+                difficulty: snapshot.data![index].difficulty!,
+                title: snapshot.data![index].name!,
+              );
+            }),
+      ),
+    ]);
   }
 
 //
-  Widget dateChildWidget(Size size, AsyncSnapshot<List<Exercise>> snapshot) {
+  Widget dateChildWidget(AsyncSnapshot<List<Exercise>> snapshot) {
     return FittedBox(
       fit: BoxFit.fill,
       alignment: Alignment.topCenter,
       child: SizedBox(
-        width: size.width,
+        width: 360.w,
         child: TableCalendar(
             focusedDay: exerciseController.focusedDay,
             firstDay: DateTime.utc(
@@ -412,7 +429,7 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
     );
   }
 
-  Widget bottomSheetNecesityChild(Size size, String title, double value) {
+  Widget bottomSheetNecesityChild(String title, double value) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5),
       child: Column(
@@ -421,31 +438,25 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                    left: 20,
-                    top: size.height * 0.01,
-                    bottom: size.height * 0.01),
+                padding: EdgeInsets.only(left: 20.w, top: 10.h, bottom: 10.h),
                 child: Text(
                   title,
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
                         color: color.secondaryTextColor,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.normal),
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(
-                    right: 20,
-                    top: size.height * 0.01,
-                    bottom: size.height * 0.01),
+                padding: EdgeInsets.only(right: 20.w, top: 10.h, bottom: 10.h),
                 child: Text(
                   '${((value) * 100).round().toString()}%',
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
                         color: color.secondaryTextColor,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.normal),
                   ),
                 ),
@@ -462,15 +473,15 @@ class _FutureExercisePlanScreenState extends State<FutureExercisePlanScreen>
                   )),
               child: Stack(alignment: Alignment.centerLeft, children: [
                 Container(
-                  height: size.height * 0.02,
-                  width: size.width,
+                  height: 18.h,
+                  width: 360.w,
                 ),
                 Container(
                   decoration: BoxDecoration(
                       color: color.secondaryColor,
                       borderRadius: BorderRadius.circular(20)),
-                  height: size.height * 0.02,
-                  width: size.width * value,
+                  height: 18.h,
+                  width: 360.w * value,
                 ),
               ])),
         ],

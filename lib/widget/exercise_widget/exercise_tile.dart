@@ -1,14 +1,13 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../controller/hexcolor_controller.dart';
 
 class ExerciseTile extends StatelessWidget {
   const ExerciseTile({
     Key? key,
     required this.color,
-    required this.size,
     required this.title,
     required this.mets,
     required this.difficulty,
@@ -21,11 +20,10 @@ class ExerciseTile extends StatelessWidget {
     required this.onpressPlus,
     required this.onpressCheck,
     required this.onpressDelete,
+    required this.containerButton,
   }) : super(key: key);
 
   final ColorConstantController color;
-
-  final Size size;
 
   final String title;
   final String mets;
@@ -39,17 +37,20 @@ class ExerciseTile extends StatelessWidget {
   final Function() onpressPlus;
   final Function() onpressCheck;
   final Function() onpressDelete;
+  final Function() containerButton;
 
   @override
   Widget build(BuildContext context) {
-    return Neumorphic(
+    return NeumorphicButton(
+      onPressed: containerButton,
+      padding: EdgeInsets.all(0),
       style: NeumorphicStyle(
           color: color.bgColor,
           shape: NeumorphicShape.flat,
           boxShape: NeumorphicBoxShape.roundRect(
             BorderRadius.circular(20),
           )),
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -57,8 +58,8 @@ class ExerciseTile extends StatelessWidget {
             Row(
               children: [
                 Container(
-                    height: size.height * 0.15,
-                    width: size.width * 0.3,
+                    height: 120.h,
+                    width: 100.w,
                     decoration: BoxDecoration(
                         color: color.backupPrimaryColor,
                         borderRadius: BorderRadius.circular(20)),
@@ -69,7 +70,7 @@ class ExerciseTile extends StatelessWidget {
                             fit: BoxFit.cover,
                           )),
                 SizedBox(
-                  width: size.width * 0.02,
+                  width: 10.w,
                 ),
                 //segment 2
                 Column(
@@ -80,13 +81,11 @@ class ExerciseTile extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                             color: color.primaryTextColor,
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600),
                       ),
                     ),
-                    SizedBox(
-                      height: size.height * 0.02,
-                    ),
+                    SizedBox(height: 18.h),
                     Row(
                       children: [
                         Text(
@@ -94,7 +93,7 @@ class ExerciseTile extends StatelessWidget {
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
@@ -103,7 +102,7 @@ class ExerciseTile extends StatelessWidget {
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
@@ -113,7 +112,7 @@ class ExerciseTile extends StatelessWidget {
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
@@ -124,7 +123,7 @@ class ExerciseTile extends StatelessWidget {
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
                             color: color.secondaryTextColor,
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.normal),
                       ),
                     ),
@@ -136,7 +135,7 @@ class ExerciseTile extends StatelessWidget {
             //segment 3
             onRecom
                 ? Container(
-                    margin: EdgeInsets.only(right: 20, bottom: 20),
+                    margin: EdgeInsets.only(right: 20.w, bottom: 20.h),
                     child: NeumorphicButton(
                         onPressed: onpressPlus,
                         style: NeumorphicStyle(
@@ -144,10 +143,10 @@ class ExerciseTile extends StatelessWidget {
                           boxShape: NeumorphicBoxShape.circle(),
                           color: color.bgColor,
                         ),
-                        padding: const EdgeInsets.all(10.0),
+                        padding: EdgeInsets.all(10.sp),
                         child: FaIcon(
                           FontAwesomeIcons.plus,
-                          size: 12,
+                          size: 12.sp,
                           color: color.secondaryTextColor,
                         )))
                 :
@@ -176,7 +175,7 @@ class ExerciseTile extends StatelessWidget {
                 // !exercise!.isChecked!
                 // ?
                 Container(
-                    margin: EdgeInsets.only(right: 20, bottom: 20),
+                    margin: EdgeInsets.only(right: 20.w, bottom: 20.h),
                     child: NeumorphicButton(
                       onPressed: onpressDelete,
                       style: NeumorphicStyle(
@@ -185,10 +184,10 @@ class ExerciseTile extends StatelessWidget {
                         boxShape: NeumorphicBoxShape.circle(),
                         color: color.bgColor,
                       ),
-                      padding: const EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(10.sp),
                       child: FaIcon(
                         icon,
-                        size: 12,
+                        size: 12.sp,
                         color: iconColor,
                       ),
                     ),

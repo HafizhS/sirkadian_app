@@ -1,7 +1,7 @@
 class ExerciseHistoryGetResponse {
   int? statusCode;
   String? message;
-  Null? errorCode;
+  String? errorCode;
   List<DataExerciseHistoryGetResponse>? data;
 
   ExerciseHistoryGetResponse(
@@ -10,7 +10,7 @@ class ExerciseHistoryGetResponse {
   ExerciseHistoryGetResponse.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     message = json['message'];
-    errorCode = json['errorCode'];
+    errorCode = json['errorCode'] != null ? json['errorCode'] : '';
     if (json['data'] != null) {
       data = <DataExerciseHistoryGetResponse>[];
       json['data'].forEach((v) {
@@ -32,6 +32,7 @@ class ExerciseHistoryGetResponse {
 }
 
 class DataExerciseHistoryGetResponse {
+  bool? isOpen;
   String? name;
   String? desc;
   double? mets;
@@ -47,6 +48,7 @@ class DataExerciseHistoryGetResponse {
       this.difficulty,
       this.sportId,
       this.imageFilename,
+      this.isOpen,
       this.variations});
 
   DataExerciseHistoryGetResponse.fromJson(Map<String, dynamic> json) {

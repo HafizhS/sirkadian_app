@@ -28,8 +28,8 @@ class Sports {
   int? sportId;
   int? sportVariationId;
   int? duration;
-  String? amount;
-  String? set;
+  int? amount;
+  int? set;
 
   Sports(
       {this.sportId,

@@ -7,7 +7,7 @@ import 'package:sirkadian_app/model/food_model/food_recommendation_response_mode
 import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/auth_controller.dart';
 import '../../../../controller/food_controller.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
 import '../../../../widget/food_widget/food_tile.dart';
 import 'food_detail_screen.dart';
@@ -68,7 +68,6 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return DefaultTabController(
       length: 6,
       initialIndex: 0,
@@ -87,15 +86,15 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                           )
                         : SafeArea(
                             child: Container(
-                              padding: EdgeInsets.only(top: 20),
-                              height: size.height,
+                              padding: EdgeInsets.only(top: 20.h),
+                              height: 800.h,
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       children: [
                                         Container(
-                                          margin: EdgeInsets.only(left: 20),
+                                          margin: EdgeInsets.only(left: 20.w),
                                           child: NeumorphicButton(
                                             onPressed: () {
                                               Navigator.pop(context);
@@ -107,10 +106,10 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                                   NeumorphicBoxShape.circle(),
                                               color: color.bgColor,
                                             ),
-                                            padding: const EdgeInsets.all(16.0),
+                                            padding: EdgeInsets.all(16.sp),
                                             child: FaIcon(
                                               FontAwesomeIcons.chevronLeft,
-                                              size: 16,
+                                              size: 16.sp,
                                               color: color.secondaryTextColor,
                                             ),
                                           ),
@@ -126,9 +125,9 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                                   BorderRadius.circular(30),
                                                 )),
                                             padding: EdgeInsets.only(
-                                                left: 20, right: 10),
+                                                left: 20.w, right: 10.w),
                                             margin: EdgeInsets.symmetric(
-                                                horizontal: 20),
+                                                horizontal: 20.w),
                                             child: TextFormField(
                                               controller: _searchTextController,
                                               onChanged: (text) {
@@ -137,7 +136,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                               decoration: InputDecoration(
                                                 icon: FaIcon(
                                                   FontAwesomeIcons.search,
-                                                  size: 16,
+                                                  size: 16.sp,
                                                   color:
                                                       color.secondaryTextColor,
                                                 ),
@@ -149,7 +148,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                                   textStyle: TextStyle(
                                                       color: color
                                                           .secondaryTextColor,
-                                                      fontSize: 14,
+                                                      fontSize: 14.sp,
                                                       fontWeight:
                                                           FontWeight.normal),
                                                 ),
@@ -169,7 +168,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                                   },
                                                   icon: FaIcon(
                                                     FontAwesomeIcons.times,
-                                                    size: 16,
+                                                    size: 16.sp,
                                                     color: color
                                                         .secondaryTextColor,
                                                   ),
@@ -182,11 +181,11 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                     ),
 
                                     SizedBox(
-                                      height: size.height * 0.03,
+                                      height: 28.h,
                                     ),
                                     //segment 2
                                     Container(
-                                        height: 30,
+                                        height: 30.h,
                                         child: TabBar(
                                             indicatorColor:
                                                 color.secondaryColor,
@@ -202,7 +201,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                             },
                                             tabs: [
                                               SizedBox(
-                                                width: size.width * 0.15,
+                                                width: 50.w,
                                                 child: Center(
                                                   child: Text(
                                                     'Semua',
@@ -210,7 +209,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: size.width * 0.15,
+                                                width: 50.w,
                                                 child: Center(
                                                   child: Text(
                                                     'Pokok',
@@ -218,7 +217,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: size.width * 0.15,
+                                                width: 50.w,
                                                 child: Center(
                                                   child: Text(
                                                     'Lauk',
@@ -226,7 +225,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: size.width * 0.15,
+                                                width: 50.w,
                                                 child: Center(
                                                   child: Text(
                                                     'Sayur',
@@ -234,7 +233,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: size.width * 0.15,
+                                                width: 50.w,
                                                 child: Center(
                                                   child: Text(
                                                     'Snack',
@@ -242,7 +241,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: size.width * 0.15,
+                                                width: 50.w,
                                                 child: Center(
                                                   child: Text(
                                                     'Minum',
@@ -251,12 +250,12 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                               ),
                                             ])),
                                     SizedBox(
-                                      height: size.height * 0.02,
+                                      height: 18.h,
                                     ),
                                     //segment 3
                                     Expanded(
                                       child: TabBarView(children: [
-                                        tabBarItemSemuaMakanan(size),
+                                        tabBarItemSemuaMakanan(),
                                         Center(
                                           child: Text('Pokok'),
                                         ),
@@ -281,7 +280,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
     );
   }
 
-  Widget tabBarItemSemuaMakanan(Size size) {
+  Widget tabBarItemSemuaMakanan() {
     return Container(
       child: _searchTextController.text.isNotEmpty
           ? Obx(
@@ -351,7 +350,6 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                         Navigator.pop(context);
                       },
                       icon: FontAwesomeIcons.plus,
-                      size: size,
                       color: color,
                       imageFilename: _searchResult[index].imageFilename! == ''
                           ? ''
@@ -442,7 +440,6 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                         Navigator.pop(context);
                       },
                       icon: FontAwesomeIcons.plus,
-                      size: size,
                       color: color,
                       imageFilename:
                           foodController.listFood[index].imageFilename! == ''

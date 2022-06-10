@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:sirkadian_app/controller/auth_controller.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/model/food_model/food_history_request_model.dart';
+import 'package:sirkadian_app/model/food_model/food_history_response_model.dart';
 import 'package:sirkadian_app/model/food_model/food_recommendation_response_model.dart';
 import 'package:sirkadian_app/model/food_model/necessity_response_model.dart';
 import 'package:sirkadian_app/provider/food_provider.dart';
@@ -22,9 +23,12 @@ class FoodController extends GetxController {
       <DataFoodRecommendationResponse>[].obs;
   RxList<DataFoodRecommendationResponse> listOtherFood =
       <DataFoodRecommendationResponse>[].obs;
+  RxList<DataFoodHistoryResponse> listFoodHistory =
+      <DataFoodHistoryResponse>[].obs;
   var isLoadingFoodRecommendation = false.obs;
   var isLoadingOtherFoodRecommendation = false.obs;
   var isLoadingNecessity = false.obs;
+  var isLoadingFoodHistory = false.obs;
 
   var isOnFood = false.obs;
 
@@ -46,45 +50,44 @@ class FoodController extends GetxController {
   var sessionSarapanClosed = false.obs;
   var sessionMakanSiangClosed = false.obs;
   var sessionMakanMalamClosed = false.obs;
+  var sessionSarapanSucceed = false.obs;
+  var sessionMakanSiangSucceed = false.obs;
+  var sessionMakanMalamSucceed = false.obs;
   //nanti tambahin if date != date.now maka false
   void saveSession({
     String? session,
+    String? date,
   }) async {
     if (session == 'Sarapan') {
       if (data.read('dataSessionSarapan') != null) {
-        data
-            .remove('dataSessionSarapan')
-            .then((_) => data.write('dataSessionSarapan', {
-                  'sessionSarapan': sessionSarapanClosed.value,
-                }));
+        data.remove('dataSessionSarapan').then((_) => data.write(
+            'dataSessionSarapan',
+            {'sessionSarapan': sessionSarapanClosed.value, 'date': date}));
       } else {
-        data.write('dataSessionSarapan', {
-          'sessionSarapan': sessionSarapanClosed.value,
-        });
+        data.write('dataSessionSarapan',
+            {'sessionSarapan': sessionSarapanClosed.value, 'date': date});
       }
     } else if (session == 'Makan Siang') {
       if (data.read('dataSessionMakanSiang') != null) {
-        data
-            .remove('dataSessionMakanSiang')
-            .then((_) => data.write('dataSessionMakanSiang', {
-                  'sessionMakanSiang': sessionMakanSiangClosed.value,
-                }));
+        data.remove('dataSessionMakanSiang').then((_) => data.write(
+                'dataSessionMakanSiang', {
+              'sessionMakanSiang': sessionMakanSiangClosed.value,
+              'date': date
+            }));
       } else {
-        data.write('dataSessionMakanSiang', {
-          'sessionMakanSiang': sessionMakanSiangClosed.value,
-        });
+        data.write('dataSessionMakanSiang',
+            {'sessionMakanSiang': sessionMakanSiangClosed.value, 'date': date});
       }
     } else {
       if (data.read('dataSessionMakanMalam') != null) {
-        data
-            .remove('dataSessionMakanMalam')
-            .then((_) => data.write('dataSessionMakanMalam', {
-                  'sessionMakanMalam': sessionMakanMalamClosed.value,
-                }));
+        data.remove('dataSessionMakanMalam').then((_) => data.write(
+                'dataSessionMakanMalam', {
+              'sessionMakanMalam': sessionMakanMalamClosed.value,
+              'date': date
+            }));
       } else {
-        data.write('dataSessionMakanMalam', {
-          'sessionMakanMalam': sessionMakanMalamClosed.value,
-        });
+        data.write('dataSessionMakanMalam',
+            {'sessionMakanMalam': sessionMakanMalamClosed.value, 'date': date});
       }
     }
   }
@@ -141,8 +144,8 @@ class FoodController extends GetxController {
   var hasBeenInitialized = false.obs;
 
   //date material
-  late String dateStartt;
-  late String dateEndd;
+  late String startDate;
+  late String endDate;
   late String dateNoww;
   var selectedDay = DateTime.utc(
       DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -154,12 +157,12 @@ class FoodController extends GetxController {
       '-' +
       DateTime.now().day.toString());
   void getDateTime() {
-    var dateStart = new DateTime.utc(2021, 12, 1);
+    var dateStart = new DateTime.utc(2022, 1, 1);
     final DateFormat serverFormater = DateFormat('yyyy-MM-dd');
     String formattedDate = serverFormater.format(dateStart);
     String finalDate = formattedDate.toString();
     //
-    var dateEnd = new DateTime.utc(2022, 12, 1);
+    var dateEnd = new DateTime.utc(2022, 12, 30);
 
     String formattedDateEnd = serverFormater.format(dateEnd);
     String finalDateEnd = formattedDateEnd.toString();
@@ -168,8 +171,8 @@ class FoodController extends GetxController {
     String formattedDateNow = serverFormater.format(dateNow);
     String finalDateNow = formattedDateNow.toString();
 
-    dateStartt = finalDate;
-    dateEndd = finalDateEnd;
+    startDate = finalDate;
+    endDate = finalDateEnd;
     dateNoww = finalDateNow;
   }
 
@@ -267,6 +270,34 @@ class FoodController extends GetxController {
     }
   }
 
+  Future<void> getFoodHistory() async {
+    isLoadingFoodHistory(true);
+    await authController.getUsableToken();
+    getDateTime();
+
+    try {
+      String accessToken = data.read('dataUser')['accessToken'];
+      var _res = await _provider.getFoodHistory(
+          accessToken: accessToken, endDate: endDate, startDate: startDate);
+      print(_res.statusCode);
+      if (_res.statusCode == 200) {
+        FoodHistoryResponse _foodHistoryResponse =
+            FoodHistoryResponse.fromJson(_res.body as Map<String, dynamic>);
+        if (_foodHistoryResponse.statusCode == 200) {
+          listFoodHistory.value = _foodHistoryResponse.data!;
+          listFoodHistory.forEach((element) {
+            element.isOpen = false;
+            update();
+          });
+        }
+      }
+
+      if (Get.isDialogOpen!) Get.back();
+    } finally {
+      isLoadingFoodHistory(false);
+    }
+  }
+
   Future<void> getNecessity() async {
     isLoadingNecessity(true);
     await authController.getUsableToken();
@@ -293,7 +324,7 @@ class FoodController extends GetxController {
   }
 
   //post method
-  Future<void> postFoodHistory(
+  Future<bool> postFoodHistory(
       {FoodHistoryRequest? foodHistoryRequest, String? session}) async {
     if (foodHistoryRequest!.foodDate != null &&
         foodHistoryRequest.foodTime != null &&
@@ -309,9 +340,19 @@ class FoodController extends GetxController {
           if (Get.isDialogOpen!) Get.back();
           informationController.showSuccessSnackBar('Berhasil');
 
-          // sessionSarapanClosed.value = true;
-          // saveSession(session: session);
-          // update();
+          if (session == 'Sarapan') {
+            sessionSarapanSucceed(true);
+
+            update();
+          } else if (session == 'Makan Siang') {
+            sessionMakanSiangSucceed(true);
+
+            update();
+          } else {
+            sessionMakanMalamSucceed(true);
+
+            update();
+          }
         } else {
           if (Get.isDialogOpen!) Get.back();
           informationController.showErrorSnackBar('Gagal');
@@ -327,6 +368,13 @@ class FoodController extends GetxController {
       }
     } else {
       if (Get.isDialogOpen!) Get.back();
+    }
+    if (session == 'Sarapan') {
+      return sessionSarapanSucceed.value;
+    } else if (session == 'Makan Siang') {
+      return sessionMakanSiangSucceed.value;
+    } else {
+      return sessionMakanMalamSucceed.value;
     }
   }
 }

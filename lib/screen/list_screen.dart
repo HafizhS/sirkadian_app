@@ -1,5 +1,6 @@
 import 'package:get/route_manager.dart';
 import 'package:sirkadian_app/bindings/bindings.dart';
+import 'package:sirkadian_app/screen/settings/settings_general_screen.dart';
 import 'package:sirkadian_app/screen/user/user_health_preference_screen.dart';
 import 'package:sirkadian_app/screen/home/nutrition_screen/nutrition_screen.dart';
 import 'package:sirkadian_app/screen/user/user_information_screen.dart';
@@ -53,6 +54,12 @@ class ListScreen {
         name: RouteScreens.userInformation,
         page: () => UserInformationScreen(),
         bindings: [ControllerBinding(), InitialSetupTextB()]),
+
+    //settings
+    GetPage(
+        name: RouteScreens.settingsGeneral,
+        page: () => SettingsGeneralScreen(),
+        bindings: [ControllerBinding()]),
   ];
 }
 
@@ -75,4 +82,7 @@ abstract class RouteScreens {
   //user
   static const userHealthPreference = '/userHealthPreferenceScreen';
   static const userInformation = '/userInformationScreen';
+
+  //settings
+  static const settingsGeneral = '/settingsGeneralScreen';
 }

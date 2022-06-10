@@ -1,4 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,15 +51,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
     return Scaffold(
-        backgroundColor: color.backgroundColor,
+        backgroundColor: color.bgColor,
         body: Container(
           child: Stack(
             children: [
               Container(
-                padding: EdgeInsets.only(bottom: 40),
+                padding: EdgeInsets.only(bottom: 20.h),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -66,13 +65,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     topRight: Radius.circular(50),
                   ),
                 ),
-                height: size.height,
-                width: double.infinity,
+                height: 800.h,
+                width: 360.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     NeumorphicButton(
-                        margin: EdgeInsets.only(top: 12),
+                        margin: EdgeInsets.only(top: 12.h),
                         onPressed: () {
                           Get.toNamed(RouteScreens.login);
                         },
@@ -85,18 +84,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             //border: NeumorphicBorder()
                             ),
                         padding: EdgeInsets.symmetric(
-                            vertical: 12, horizontal: size.width * 0.3),
+                            vertical: 12.h, horizontal: 120.w),
                         child: Text(
                           "Masuk",
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.primaryColor,
-                                fontSize: 14,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.normal),
                           ),
                         )),
                     SizedBox(
-                      height: size.height * 0.02,
+                      height: 18.h,
                     ),
                     TextButton(
                       style: ButtonStyle(
@@ -111,7 +110,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           style: GoogleFonts.inter(
                               textStyle: TextStyle(
                             color: color.primaryTextColor,
-                            fontSize: 14,
+                            fontSize: 14.sp,
                           )),
                           children: <TextSpan>[
                             TextSpan(
@@ -119,7 +118,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               style: GoogleFonts.inter(
                                 textStyle: TextStyle(
                                     color: color.primaryTextColor,
-                                    fontSize: 14,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -143,15 +142,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             blurRadius: 40,
                             spreadRadius: 6)
                       ]),
-                  height: size.height * 0.7,
+                  height: 500.h,
                   child: Swiper(
                     // itemCount: data.length,
                     itemCount: 5,
-                    itemWidth: size.width * 0.8,
+                    itemWidth: 300.w,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
-                        margin:
-                            EdgeInsets.only(bottom: 50, left: 10, right: 10),
+                        margin: EdgeInsets.only(
+                            bottom: 50.h, left: 10.w, right: 10.w),
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
                         decoration: BoxDecoration(
                           color: color.backgroundColor,
                         ),
@@ -160,7 +160,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(30),
-                              height: size.height * 0.3,
+                              height: 200.h,
                               width: double.infinity,
                               child: Image.asset(data[index].images!),
                             ),
@@ -170,12 +170,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                     color: color.primaryTextColor,
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 10.h,
                             ),
                             Text(
                               data[index].subtitle!,
