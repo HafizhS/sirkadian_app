@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/exercise_controller.dart';
 import 'package:sirkadian_app/model/obejctbox_model.dart/food_exercise_model.dart';
+import 'package:sirkadian_app/screen/home/exercise_screen/exercise_detail_screen.dart';
 import 'package:sirkadian_app/widget/exercise_widget/exercise_tile.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../controller/hexcolor_controller.dart';
 
 class ExerciseRecommendationScreen extends StatefulWidget {
@@ -30,8 +31,6 @@ class _ExerciseRecommendationScreenState
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
     return DefaultTabController(
       length: 4,
       initialIndex: 0,
@@ -42,7 +41,7 @@ class _ExerciseRecommendationScreenState
               child: Scaffold(
                   backgroundColor: color.bgColor,
                   body: Obx(
-                    () => exerciseController.listExercise.isEmpty
+                    () => exerciseController.isLoadingExerciseAll.isTrue
                         ? Center(
                             child: CircularProgressIndicator(
                               color: color.secondaryColor,
@@ -50,15 +49,15 @@ class _ExerciseRecommendationScreenState
                           )
                         : SafeArea(
                             child: Container(
-                              padding: EdgeInsets.only(top: 20),
-                              height: size.height,
+                              padding: EdgeInsets.only(top: 20.h),
+                              height: 800.h,
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       children: [
                                         Container(
-                                          margin: EdgeInsets.only(left: 20),
+                                          margin: EdgeInsets.only(left: 20.w),
                                           child: NeumorphicButton(
                                             onPressed: () {
                                               Navigator.pop(context);
@@ -69,10 +68,10 @@ class _ExerciseRecommendationScreenState
                                                   NeumorphicBoxShape.circle(),
                                               color: color.bgColor,
                                             ),
-                                            padding: const EdgeInsets.all(16.0),
+                                            padding: EdgeInsets.all(16.sp),
                                             child: FaIcon(
                                               FontAwesomeIcons.chevronLeft,
-                                              size: 16,
+                                              size: 16.sp,
                                               color: color.secondaryTextColor,
                                             ),
                                           ),
@@ -88,15 +87,15 @@ class _ExerciseRecommendationScreenState
                                                   BorderRadius.circular(30),
                                                 )),
                                             padding: EdgeInsets.only(
-                                                left: 20, right: 10),
+                                                left: 20.w, right: 10.w),
                                             margin: EdgeInsets.symmetric(
-                                                horizontal: 20),
+                                                horizontal: 20.w),
                                             child: TextFormField(
                                               controller: _searchTextController,
                                               decoration: InputDecoration(
                                                 icon: FaIcon(
                                                   FontAwesomeIcons.search,
-                                                  size: 16,
+                                                  size: 16.sp,
                                                   color:
                                                       color.secondaryTextColor,
                                                 ),
@@ -107,7 +106,7 @@ class _ExerciseRecommendationScreenState
                                                   textStyle: TextStyle(
                                                       color: color
                                                           .secondaryTextColor,
-                                                      fontSize: 14,
+                                                      fontSize: 14.sp,
                                                       fontWeight:
                                                           FontWeight.normal),
                                                 ),
@@ -126,7 +125,7 @@ class _ExerciseRecommendationScreenState
                                                   },
                                                   icon: FaIcon(
                                                     FontAwesomeIcons.times,
-                                                    size: 16,
+                                                    size: 16.sp,
                                                     color: color
                                                         .secondaryTextColor,
                                                   ),
@@ -139,11 +138,11 @@ class _ExerciseRecommendationScreenState
                                     ),
 
                                     SizedBox(
-                                      height: size.height * 0.03,
+                                      height: 28.h,
                                     ),
                                     //segment 2
                                     Container(
-                                        height: 30,
+                                        height: 30.h,
                                         child: TabBar(
                                             indicatorColor:
                                                 color.secondaryColor,
@@ -159,7 +158,7 @@ class _ExerciseRecommendationScreenState
                                             },
                                             tabs: [
                                               SizedBox(
-                                                width: size.width * 0.15,
+                                                width: 60.w,
                                                 child: Center(
                                                   child: Text(
                                                     'Semua',
@@ -167,7 +166,7 @@ class _ExerciseRecommendationScreenState
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: size.width * 0.15,
+                                                width: 60.w,
                                                 child: Center(
                                                   child: Text(
                                                     'Ringan',
@@ -175,7 +174,7 @@ class _ExerciseRecommendationScreenState
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: size.width * 0.15,
+                                                width: 60.w,
                                                 child: Center(
                                                   child: Text(
                                                     'Sedang',
@@ -183,7 +182,7 @@ class _ExerciseRecommendationScreenState
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: size.width * 0.15,
+                                                width: 60.w,
                                                 child: Center(
                                                   child: Text(
                                                     'Berat',
@@ -192,7 +191,7 @@ class _ExerciseRecommendationScreenState
                                               ),
                                             ])),
                                     SizedBox(
-                                      height: size.height * 0.02,
+                                      height: 18.h,
                                     ),
                                     //segment 3
                                     Expanded(
@@ -209,6 +208,21 @@ class _ExerciseRecommendationScreenState
                                                   depth: 4,
                                                   icon: FontAwesomeIcons.trash,
                                                   iconColor: color.redColor,
+                                                  containerButton: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ExerciseDetailScreen(
+                                                                  color: color,
+                                                                  exerciseController:
+                                                                      exerciseController,
+                                                                  exercise:
+                                                                      exerciseController
+                                                                              .listExercise[
+                                                                          index],
+                                                                )));
+                                                  },
                                                   onpressCheck: () {},
                                                   onpressDelete: () {},
                                                   onpressPlus: () {
@@ -224,7 +238,7 @@ class _ExerciseRecommendationScreenState
                                                           exerciseController
                                                               .listExercise[
                                                                   index]
-                                                              .imageFileName,
+                                                              .imageFilename,
                                                       date: exerciseController
                                                           .selectedDay
                                                           .toString(),
@@ -253,7 +267,7 @@ class _ExerciseRecommendationScreenState
                                                   imageFilename:
                                                       exerciseController
                                                           .listExercise[index]
-                                                          .imageFileName!,
+                                                          .imageFilename!,
                                                   color: color,
                                                   mets: exerciseController
                                                       .listExercise[index].mets!
@@ -264,7 +278,6 @@ class _ExerciseRecommendationScreenState
                                                   desc: exerciseController
                                                       .listExercise[index]
                                                       .desc!,
-                                                  size: size,
                                                   title: exerciseController
                                                       .listExercise[index]
                                                       .name!,

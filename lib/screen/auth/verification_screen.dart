@@ -5,9 +5,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/auth_controller.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../constant/hex_color.dart';
 
+import '../../controller/hexcolor_controller.dart';
 import '../../model/auth_model/activation_request_model.dart';
 
 class VerificationScreen extends StatefulWidget {
@@ -30,31 +31,30 @@ class _VerificationScreenState extends State<VerificationScreen>
   final data = GetStorage('myData');
   final authController = Get.find<AuthController>();
   final informationController = Get.find<InformationController>();
+  final color = Get.find<ColorConstantController>();
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
-      backgroundColor: HexColor.fromHex('#F0F3EC'),
+      backgroundColor: color.bgColor,
       body: SafeArea(
           child: Obx(
         () => authController.cekWebsocket.value
             ? Container(
-                margin: EdgeInsets.symmetric(vertical: 40),
-                height: size.height,
-                width: double.infinity,
+                margin: EdgeInsets.symmetric(vertical: 40.h),
+                height: 800.h,
+                width: 360.w,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       //segmen 1
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        margin: EdgeInsets.symmetric(horizontal: 20.w),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -70,13 +70,13 @@ class _VerificationScreenState extends State<VerificationScreen>
                                     style: NeumorphicStyle(
                                       shape: NeumorphicShape.flat,
                                       boxShape: NeumorphicBoxShape.circle(),
-                                      color: HexColor.fromHex('#F0F3EC'),
+                                      color: color.primaryColor,
                                     ),
-                                    padding: const EdgeInsets.all(16.0),
+                                    padding: EdgeInsets.all(16.sp),
                                     child: FaIcon(
                                       FontAwesomeIcons.chevronLeft,
-                                      size: 16,
-                                      color: HexColor.fromHex('#777B71'),
+                                      size: 16.sp,
+                                      color: color.secondaryTextColor,
                                     ),
                                   ),
                                 ),
@@ -84,28 +84,28 @@ class _VerificationScreenState extends State<VerificationScreen>
                                   'Aktivasi Akun',
                                   style: GoogleFonts.poppins(
                                     textStyle: TextStyle(
-                                        color: HexColor.fromHex('#4E5749'),
-                                        fontSize: 16,
+                                        color: color.secondaryTextColor,
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                Container(width: size.width * 0.1)
+                                Container(width: 30.h)
                               ],
                             ),
                             SizedBox(
-                              height: size.height * 0.05,
+                              height: 28.h,
                             ),
                             Text(
                               'Akun Anda Telah diverifikasi, aktivasi sekarang!',
                               style: GoogleFonts.inter(
                                 textStyle: TextStyle(
-                                    color: HexColor.fromHex('#4E5749'),
-                                    fontSize: 14,
+                                    color: color.secondaryTextColor,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.normal),
                               ),
                             ),
                             SizedBox(
-                              height: size.height * 0.01,
+                              height: 10.h,
                             ),
                           ],
                         ),
@@ -116,7 +116,7 @@ class _VerificationScreenState extends State<VerificationScreen>
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           NeumorphicButton(
-                              margin: EdgeInsets.only(top: 12),
+                              margin: EdgeInsets.only(top: 12.h),
                               onPressed: () {
                                 final _data = data.read('dataRegister');
                                 final activationRequest = ActivationRequest(
@@ -128,7 +128,7 @@ class _VerificationScreenState extends State<VerificationScreen>
                                     activationRequest, _data['id']);
                               },
                               style: NeumorphicStyle(
-                                  color: HexColor.fromHex('#F0F3EC'),
+                                  color: color.secondaryColor,
                                   depth: 4,
                                   // shadowDarkColor: HexColor.fromHex('#C3C3C3'),
                                   // shadowLightColor: HexColor.fromHex('#FFFFFF'),
@@ -139,13 +139,13 @@ class _VerificationScreenState extends State<VerificationScreen>
                                   //border: NeumorphicBorder()
                                   ),
                               padding: EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: size.width * 0.3),
+                                  vertical: 12.h, horizontal: 120.w),
                               child: Text(
                                 "Aktivasi",
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(
-                                      color: HexColor.fromHex('#4E5749'),
-                                      fontSize: 14,
+                                      color: color.primaryColor,
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.normal),
                                 ),
                               )),
@@ -154,15 +154,15 @@ class _VerificationScreenState extends State<VerificationScreen>
                     ]),
               )
             : Container(
-                margin: EdgeInsets.symmetric(vertical: 40),
-                height: size.height,
-                width: double.infinity,
+                margin: EdgeInsets.symmetric(vertical: 40.h),
+                height: 800.h,
+                width: 360.w,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       //segmen 1
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        margin: EdgeInsets.symmetric(horizontal: 20.w),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -180,10 +180,10 @@ class _VerificationScreenState extends State<VerificationScreen>
                                       boxShape: NeumorphicBoxShape.circle(),
                                       color: HexColor.fromHex('#F0F3EC'),
                                     ),
-                                    padding: const EdgeInsets.all(16.0),
+                                    padding: EdgeInsets.all(16.sp),
                                     child: FaIcon(
                                       FontAwesomeIcons.chevronLeft,
-                                      size: 16,
+                                      size: 16.sp,
                                       color: HexColor.fromHex('#777B71'),
                                     ),
                                   ),
@@ -192,28 +192,28 @@ class _VerificationScreenState extends State<VerificationScreen>
                                   'Verifikasi Akun',
                                   style: GoogleFonts.poppins(
                                     textStyle: TextStyle(
-                                        color: HexColor.fromHex('#4E5749'),
-                                        fontSize: 16,
+                                        color: color.secondaryTextColor,
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                Container(width: size.width * 0.1)
+                                Container(width: 30.w)
                               ],
                             ),
                             SizedBox(
-                              height: size.height * 0.05,
+                              height: 28.h,
                             ),
                             Text(
                               'Kami sudah mengirimkan e-mail verfikasi ke alamat e-mail Kamu! Silahkan cek akun kamu di :',
                               style: GoogleFonts.inter(
                                 textStyle: TextStyle(
-                                    color: HexColor.fromHex('#4E5749'),
-                                    fontSize: 14,
+                                    color: color.secondaryTextColor,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.normal),
                               ),
                             ),
                             SizedBox(
-                              height: size.height * 0.01,
+                              height: 10.h,
                             ),
                             Align(
                               alignment: Alignment.center,
@@ -228,8 +228,8 @@ class _VerificationScreenState extends State<VerificationScreen>
                                     : 'user@gmail.com',
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(
-                                      color: HexColor.fromHex('#6A994E'),
-                                      fontSize: 16,
+                                      color: color.tersierColor,
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),

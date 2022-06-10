@@ -3,7 +3,8 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:sirkadian_app/screen/home/nutrition_screen/food_screen/food_history_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
 import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
@@ -37,7 +38,6 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
   final color = Get.find<ColorConstantController>();
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Container(
       child: Column(
         children: [
@@ -49,7 +49,7 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(left: 20),
+                    margin: EdgeInsets.only(left: 20.w),
                     child: Row(
                       children: [
                         Text(
@@ -57,17 +57,17 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                           style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
-                        SizedBox(width: 10),
+                        SizedBox(width: 10.w),
                         Text(
                           foodController.dateNoww,
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 14,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
@@ -75,30 +75,35 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                     ),
                   ),
                   NeumorphicButton(
-                    onPressed: () {},
-                    padding: EdgeInsets.all(5),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FoodHistoryScreen()));
+                    },
+                    padding: EdgeInsets.all(5.sp),
                     style: NeumorphicStyle(
                       depth: 2,
                       color: color.bgColor,
                       boxShape: NeumorphicBoxShape.roundRect(
                           BorderRadius.circular(5)),
                     ),
-                    margin: EdgeInsets.only(right: 20),
+                    margin: EdgeInsets.only(right: 20.w),
                     child: FaIcon(
                       FontAwesomeIcons.history,
-                      size: 20,
+                      size: 20.sp,
                       color: color.secondaryTextColor,
                     ),
                   ),
                 ],
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                height: size.height * 0.2,
-                width: double.infinity,
+                margin: EdgeInsets.symmetric(vertical: 10.h),
+                height: 150.h,
+                width: 360.w,
                 child: Swiper(
                   itemCount: foodController.sessions.length,
-                  itemWidth: size.width * 0.8,
+                  itemWidth: 300.w,
                   index: 0,
                   layout: SwiperLayout.DEFAULT,
                   viewportFraction: 0.5,
@@ -107,7 +112,7 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                     switch (index) {
                       case 0:
                         return Container(
-                          margin: EdgeInsets.all(10),
+                          margin: EdgeInsets.all(10.sp),
                           child: NeumorphicButton(
                               padding: EdgeInsets.all(0),
                               onPressed: () {
@@ -130,8 +135,8 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                                   ? notEmptyChild(
                                       widget.listMealSarapan[0].imageFileName!,
                                       index,
-                                      size)
-                                  : emptySessionChild(size, index)),
+                                    )
+                                  : emptySessionChild(index)),
                         );
 
                       case 1:
@@ -160,12 +165,12 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                                       widget
                                           .listMealMakanSiang[0].imageFileName!,
                                       index,
-                                      size)
-                                  : emptySessionChild(size, index)),
+                                    )
+                                  : emptySessionChild(index)),
                         );
                       case 2:
                         return Container(
-                          margin: EdgeInsets.all(10),
+                          margin: EdgeInsets.all(10.sp),
                           child: NeumorphicButton(
                               padding: EdgeInsets.all(0),
                               onPressed: () {
@@ -189,12 +194,12 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                                       widget
                                           .listMealMakanMalam[0].imageFileName!,
                                       index,
-                                      size)
-                                  : emptySessionChild(size, index)),
+                                    )
+                                  : emptySessionChild(index)),
                         );
                       case 3:
                         return Container(
-                          margin: EdgeInsets.all(10),
+                          margin: EdgeInsets.all(10.sp),
                           child: NeumorphicButton(
                               padding: EdgeInsets.all(0),
                               onPressed: () {
@@ -217,12 +222,12 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                                   ? notEmptyChild(
                                       widget.listMealSnack[0].imageFileName!,
                                       index,
-                                      size)
-                                  : emptySessionChild(size, index)),
+                                    )
+                                  : emptySessionChild(index)),
                         );
                       default:
                         return Container(
-                            margin: EdgeInsets.all(10),
+                            margin: EdgeInsets.all(10.sp),
                             child: NeumorphicButton(
                                 onPressed: () {
                                   Navigator.push(
@@ -240,7 +245,7 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                                     boxShape: NeumorphicBoxShape.roundRect(
                                       BorderRadius.circular(20),
                                     )),
-                                child: emptySessionChild(size, index)));
+                                child: emptySessionChild(index)));
                     }
                   },
                 ),
@@ -255,13 +260,13 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(left: 20),
+                    margin: EdgeInsets.only(left: 20.w),
                     child: Text(
                       'Nutrisi Hari ini',
                       style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                             color: color.secondaryTextColor,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w600),
                       ),
                     ),
@@ -274,62 +279,53 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20),
                                 topRight: Radius.circular(20))),
-                        height: size.height * 0.5,
-                        width: size.width,
+                        height: 400.h,
+                        width: 360.w,
                         padding: EdgeInsets.all(10),
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
                               bottomSheetNecesityChild(
-                                  size,
                                   'Kalsium',
                                   foodController.calcium /
                                       foodController
                                           .necessity.value.micro!.calcium!),
                               bottomSheetNecesityChild(
-                                  size,
                                   'Zat Besi',
                                   foodController.iron /
                                       foodController
                                           .necessity.value.micro!.iron!),
                               bottomSheetNecesityChild(
-                                  size,
                                   'zinc',
                                   foodController.zinc /
                                       foodController
                                           .necessity.value.micro!.zinc!),
                               bottomSheetNecesityChild(
-                                  size,
                                   'Copper',
                                   foodController.copper /
                                       foodController
                                           .necessity.value.micro!.copper!),
                               bottomSheetNecesityChild(
-                                  size,
                                   'Vitamin C',
                                   foodController.vitaminC /
                                       foodController
                                           .necessity.value.micro!.vitaminC!),
                               bottomSheetNecesityChild(
-                                  size,
                                   'Vitamin B1',
                                   foodController.vitaminB1 /
                                       foodController
                                           .necessity.value.micro!.vitaminB1!),
                               bottomSheetNecesityChild(
-                                  size,
                                   'Vitamin B2',
                                   foodController.vitaminB2 /
                                       foodController
                                           .necessity.value.micro!.vitaminB2!),
                               bottomSheetNecesityChild(
-                                  size,
                                   'Vitamin B3',
                                   foodController.vitaminB3 /
                                       foodController
                                           .necessity.value.micro!.vitaminB3!),
                               bottomSheetNecesityChild(
-                                  size,
                                   'Retinol',
                                   foodController.retinol /
                                       foodController
@@ -339,17 +335,17 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                         ),
                       ));
                     },
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.all(5.sp),
                     style: NeumorphicStyle(
                       depth: 2,
                       color: color.bgColor,
                       boxShape: NeumorphicBoxShape.roundRect(
                           BorderRadius.circular(5)),
                     ),
-                    margin: EdgeInsets.only(right: 20),
+                    margin: EdgeInsets.only(right: 20.w),
                     child: FaIcon(
                       FontAwesomeIcons.ellipsisH,
-                      size: 20,
+                      size: 20.sp,
                       color: color.secondaryTextColor,
                     ),
                   ),
@@ -364,7 +360,6 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                   listMealSarapan: widget.listMealSarapan,
                   listMealMakanSiang: widget.listMealMakanSiang,
                   listMealMakanMalam: widget.listMealMakanMalam,
-                  size: size,
                   color: color,
                   foodController: foodController,
                 ),
@@ -373,12 +368,12 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
     );
   }
 
-  Widget notEmptyChild(String imageFilename, int index, Size size) {
+  Widget notEmptyChild(String imageFilename, int index) {
     return Container(
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Container(
-          height: size.height * 0.1,
+          height: 70.h,
           alignment: Alignment.bottomCenter,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -391,7 +386,7 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
               ? Icon(Icons.image_not_supported_rounded)
               : Image.network(
                   imageFilename,
-                  width: double.infinity,
+                  width: 360.w,
                   alignment: Alignment.topRight,
                   fit: BoxFit.cover,
                 ),
@@ -401,16 +396,16 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
           style: GoogleFonts.poppins(
             textStyle: TextStyle(
                 color: color.primaryTextColor,
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.normal),
           ),
         ),
-        SizedBox(height: size.height * 0.01),
+        SizedBox(height: 18.h),
       ]),
     );
   }
 
-  Widget emptySessionChild(Size size, int index) {
+  Widget emptySessionChild(int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -422,19 +417,19 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
               depth: 4,
               boxShape: NeumorphicBoxShape.circle(),
             ),
-            padding: const EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(12.0.sp),
             child: FaIcon(
               FontAwesomeIcons.plus,
               size: 16,
               color: color.secondaryColor,
             )),
-        SizedBox(height: size.height * 0.02),
+        SizedBox(height: 18.h),
         Text(
           foodController.sessions[index],
           style: GoogleFonts.poppins(
             textStyle: TextStyle(
                 color: color.primaryTextColor,
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.normal),
           ),
         ),
@@ -442,34 +437,28 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
     );
   }
 
-  Widget bottomSheetNecesityChild(Size size, String title, double value) {
+  Widget bottomSheetNecesityChild(String title, double value) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: EdgeInsets.symmetric(vertical: 5.h),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                    left: 20,
-                    top: size.height * 0.01,
-                    bottom: size.height * 0.01),
+                padding: EdgeInsets.only(left: 20.w, top: 10.h, bottom: 10.h),
                 child: Text(
                   title,
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
                         color: color.secondaryTextColor,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.normal),
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(
-                    right: 20,
-                    top: size.height * 0.01,
-                    bottom: size.height * 0.01),
+                padding: EdgeInsets.only(right: 20.w, top: 10.h, bottom: 10.h),
                 child: Text(
                   '${((value) * 100).round().toString()}%',
                   style: GoogleFonts.inter(
@@ -492,15 +481,15 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                   )),
               child: Stack(alignment: Alignment.centerLeft, children: [
                 Container(
-                  height: size.height * 0.02,
-                  width: size.width,
+                  height: 18.h,
+                  width: 360.w,
                 ),
                 Container(
                   decoration: BoxDecoration(
                       color: color.secondaryColor,
                       borderRadius: BorderRadius.circular(20)),
-                  height: size.height * 0.02,
-                  width: size.width * value,
+                  height: 18.h,
+                  width: 360.w * value,
                 ),
               ])),
         ],

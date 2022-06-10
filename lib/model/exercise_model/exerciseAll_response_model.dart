@@ -38,7 +38,7 @@ class DataExerciseAllResponse {
   String? difficulty;
   int? sportId;
   List<Variations>? variations;
-  String? imageFileName;
+  String? imageFilename;
 
   DataExerciseAllResponse(
       {this.name,
@@ -47,7 +47,7 @@ class DataExerciseAllResponse {
       this.difficulty,
       this.sportId,
       this.variations,
-      this.imageFileName});
+      this.imageFilename});
 
   DataExerciseAllResponse.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -55,7 +55,7 @@ class DataExerciseAllResponse {
     mets = json['mets'];
     difficulty = json['difficulty'];
     sportId = json['sportId'];
-    imageFileName = json['image_filename'];
+    imageFilename = json['imageFilename'] != null ? json['imageFilename'] : '';
     if (json['variations'] != null) {
       variations = <Variations>[];
       json['variations'].forEach((v) {
@@ -71,7 +71,7 @@ class DataExerciseAllResponse {
     data['mets'] = this.mets;
     data['difficulty'] = this.difficulty;
     data['sportId'] = this.sportId;
-    data['image_filename'] = this.imageFileName;
+    data['image_filename'] = this.imageFilename;
     if (this.variations != null) {
       data['variations'] = this.variations!.map((v) => v.toJson()).toList();
     }
@@ -86,7 +86,7 @@ class Variations {
   String? difficulty;
   double? mets;
   int? sportVariationId;
-  List<String>? subvariations;
+  List<Subvariations>? subvariations;
 
   Variations(
       {this.sportId,
@@ -105,9 +105,9 @@ class Variations {
     mets = json['mets'];
     sportVariationId = json['sportVariationId'];
     if (json['subvariations'] != null) {
-      subvariations = <String>[];
+      subvariations = [];
       json['subvariations'].forEach((v) {
-        subvariations!.add(v);
+        subvariations!.add(new Subvariations.fromJson(v));
       });
     }
   }
@@ -121,8 +121,42 @@ class Variations {
     data['mets'] = this.mets;
     data['sportVariationId'] = this.sportVariationId;
     if (this.subvariations != null) {
-      data['subvariations'] = this.subvariations!.map((v) => v).toList();
+      data['subvariations'] =
+          this.subvariations!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class Subvariations {
+  int? sportVariationId;
+  int? amount;
+  int? set;
+  int? duration;
+  int? sportSubVariationId;
+
+  Subvariations(
+      {this.sportVariationId,
+      this.amount,
+      this.set,
+      this.duration,
+      this.sportSubVariationId});
+
+  Subvariations.fromJson(Map<String, dynamic> json) {
+    sportVariationId = json['sportVariationId'];
+    amount = json['amount'];
+    set = json['set'];
+    duration = json['duration'];
+    sportSubVariationId = json['sportSubVariationId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['sportVariationId'] = this.sportVariationId;
+    data['amount'] = this.amount;
+    data['set'] = this.set;
+    data['duration'] = this.duration;
+    data['sportSubVariationId'] = this.sportSubVariationId;
     return data;
   }
 }

@@ -53,6 +53,22 @@ class FoodProvider extends GetConnect {
     return _response;
   }
 
+  Future<Response> getFoodHistory(
+      {String? accessToken, String? startDate, String? endDate}) async {
+    Response? _response;
+//2022-03-21
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+    _response = await get(
+        '$foodHistoryGetPostUrl?end_date=$endDate&start_date=$startDate',
+        headers: headers);
+
+    return _response;
+  }
+
   //post method
   Future<Response> postFoodHistory(
       accessToken, FoodHistoryRequest foodHistoryRequest) async {
@@ -63,7 +79,7 @@ class FoodProvider extends GetConnect {
       "Accept": "application/json",
       'Authorization': 'Bearer ${accessToken}'
     };
-    _response = await post(foodHistoryPostUrl, foodHistoryRequest.toJson(),
+    _response = await post(foodHistoryGetPostUrl, foodHistoryRequest.toJson(),
         headers: headers);
     print(foodHistoryRequest.toJson());
     print(_response.body);

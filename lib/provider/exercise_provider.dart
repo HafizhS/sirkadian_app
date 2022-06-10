@@ -20,7 +20,8 @@ class ExerciseProvider extends GetConnect {
     return _response;
   }
 
-  Future<Response> getHistoryExercise(accessToken, date) async {
+  Future<Response> getExerciseHistory(
+      {String? accessToken, String? startDate, String? endDate}) async {
     Response? _response;
 
     var headers = {
@@ -28,14 +29,15 @@ class ExerciseProvider extends GetConnect {
       'Accept': 'application/json',
       'Authorization': 'Bearer $accessToken',
     };
-    _response =
-        await get(exerciseHistoryGetUrl + 'start_date=$date', headers: headers);
+    _response = await get(
+        '$exerciseHistoryUrl?end_date=$endDate&start_date=$startDate',
+        headers: headers);
 
     return _response;
   }
 
   //post method
-  Future<Response> postHistoryExercise(
+  Future<Response> postExerciseHistory(
       {String? accessToken,
       ExerciseHistoryRequest? exerciseHistoryRequest}) async {
     Response? _response;
@@ -46,7 +48,7 @@ class ExerciseProvider extends GetConnect {
       'Authorization': 'Bearer $accessToken',
     };
     _response = await post(
-      exerciseHistoryPostUrl,
+      exerciseHistoryUrl,
       exerciseHistoryRequest!.toJson(),
       headers: headers,
     );

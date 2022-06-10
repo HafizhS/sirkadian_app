@@ -1,5 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -39,21 +39,42 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
   void initState() {
     super.initState();
     foodController.isOnFood(true);
-    if (data.read('dataSessionSarapan') == null) {
-      data.write('dataSessionSarapan', {
-        'sessionSarapan': false,
+
+    if (data.read('dataSessionSarapan') == null ||
+        data.read('dataSessionSarapan')['date'] !=
+            foodController.focusedDay.toString()) {
+      setState(() {
+        data.write('dataSessionSarapan', {
+          'sessionSarapan': false,
+          'date': foodController.focusedDay.toString(),
+        });
+      });
+    } else {
+      print('sama dan ada data');
+    }
+    if (data.read('dataSessionMakanSiang') == null ||
+        data.read('dataSessionSarapan')['date'] !=
+            foodController.focusedDay.toString()) {
+      setState(() {
+        data.write('dataSessionMakanSiang', {
+          'sessionMakanSiang': false,
+          'date': foodController.focusedDay.toString(),
+        });
+        foodController.foodStore.box<Food>().removeAll();
       });
     }
-    if (data.read('dataSessionMakanSiang') == null) {
-      data.write('dataSessionMakanSiang', {
-        'sessionMakanSiang': false,
+    if (data.read('dataSessionMakanMalam') == null ||
+        data.read('dataSessionSarapan')['date'] !=
+            foodController.focusedDay.toString()) {
+      setState(() {
+        data.write('dataSessionMakanMalam', {
+          'sessionMakanMalam': false,
+          'date': foodController.focusedDay.toString(),
+        });
+        foodController.foodStore.box<Food>().removeAll();
       });
     }
-    if (data.read('dataSessionMakanMalam') == null) {
-      data.write('dataSessionMakanMalam', {
-        'sessionMakanMalam': false,
-      });
-    }
+
     setState(() {
       _foodStream = foodController.foodStore
           .box<Food>()
@@ -66,223 +87,193 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    return StreamBuilder<List<Food>>(
+        initialData: [],
+        stream: _foodStream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: color.secondaryColor,
+              ),
+            );
+          }
+          return Scaffold(
+            backgroundColor: color.bgColor,
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.only(top: 20.h),
+                child: Stack(alignment: Alignment.bottomRight, children: [
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(left: 20.w),
+                              child: NeumorphicButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
 
-    return Scaffold(
-      backgroundColor: color.bgColor,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: SingleChildScrollView(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 20),
-                        child: NeumorphicButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-
-                            foodController.isOnFood(false);
-                          },
-                          style: NeumorphicStyle(
-                              shape: NeumorphicShape.flat,
-                              boxShape: NeumorphicBoxShape.circle(),
-                              color: color.bgColor),
-                          padding: const EdgeInsets.all(16.0),
-                          child: FaIcon(
-                            FontAwesomeIcons.chevronLeft,
-                            size: 16,
-                            color: color.secondaryTextColor,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        widget.session,
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                              color: color.primaryTextColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(right: 20),
-                        child: NeumorphicButton(
-                          onPressed: () {
-                            getNavigationRecomFunction();
-                          },
-                          style: NeumorphicStyle(
-                              depth: getDepth(),
-                              shape: NeumorphicShape.flat,
-                              boxShape: NeumorphicBoxShape.circle(),
-                              color: color.bgColor),
-                          padding: const EdgeInsets.all(16.0),
-                          child: FaIcon(
-                            getIconPlus(),
-                            size: 16,
-                            color: color.secondaryColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  Container(
-                      height: size.height * 0.75,
-                      child: StreamBuilder<List<Food>>(
-                          initialData: [],
-                          stream: _foodStream,
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: CircularProgressIndicator(
+                                  foodController.isOnFood(false);
+                                },
+                                style: NeumorphicStyle(
+                                    shape: NeumorphicShape.flat,
+                                    boxShape: NeumorphicBoxShape.circle(),
+                                    color: color.bgColor),
+                                padding: EdgeInsets.all(16.sp),
+                                child: FaIcon(
+                                  FontAwesomeIcons.chevronLeft,
+                                  size: 16.sp,
+                                  color: color.secondaryTextColor,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              widget.session,
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    color: color.primaryTextColor,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(right: 20.w),
+                              child: NeumorphicButton(
+                                onPressed: () {
+                                  getNavigationRecomFunction();
+                                },
+                                style: NeumorphicStyle(
+                                    depth: getDepth(),
+                                    shape: NeumorphicShape.flat,
+                                    boxShape: NeumorphicBoxShape.circle(),
+                                    color: color.bgColor),
+                                padding: EdgeInsets.all(16.sp),
+                                child: FaIcon(
+                                  getIconPlus(),
+                                  size: 16.sp,
                                   color: color.secondaryColor,
                                 ),
-                              );
-                            }
-                            return (snapshot.data!.isEmpty)
-                                ? Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'Belum ada makanan yang kamu pilih',
-                                      style: GoogleFonts.inter(
-                                        textStyle: TextStyle(
-                                            color: color.secondaryTextColor,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                  )
-                                : Stack(
-                                    alignment: Alignment.bottomRight,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 28.h,
+                        ),
+                        Expanded(
+                            // height: 600.h,
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 30.w),
+                              child: Text(
+                                snapshot.data!.length.toString() + ' item',
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      color: color.secondaryTextColor,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ),
+                            ),
+                            (snapshot.data!.isEmpty)
+                                ? Column(
                                     children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 30),
-                                              child: Text(
-                                                snapshot.data!.length
-                                                        .toString() +
-                                                    ' item',
-                                                style: GoogleFonts.inter(
-                                                  textStyle: TextStyle(
-                                                      color: color
-                                                          .secondaryTextColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: ListView.builder(
-                                                  keyboardDismissBehavior:
-                                                      ScrollViewKeyboardDismissBehavior
-                                                          .onDrag,
-                                                  itemCount:
-                                                      snapshot.data!.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return FoodTile(
-                                                      containerButton: () {},
-                                                      iconButton: () {
-                                                        getDeleteFunction(
-                                                            snapshot.data!,
-                                                            index);
-                                                      },
-                                                      icon: getIconDelete(),
-                                                      depth: getDepth(),
-                                                      size: size,
-                                                      color: color,
-                                                      imageFilename: snapshot
-                                                          .data![index]
-                                                          .imageFileName!,
-                                                      name: snapshot
-                                                          .data![index].name!,
-                                                      necessity: (snapshot
-                                                                  .data![index]
-                                                                  .energy! /
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .serving!)
-                                                          .toStringAsFixed(0),
-                                                      serving: (snapshot
-                                                                  .data![index]
-                                                                  .serving! /
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .serving!)
-                                                          .toStringAsFixed(0),
-                                                      recommendationScore: snapshot
-                                                          .data![index]
-                                                          .recommendationScore!,
-                                                      duration: snapshot
-                                                          .data![index]
-                                                          .duration!
-                                                          .toStringAsFixed(0),
-                                                    );
-                                                  }),
-                                            ),
-                                          ],
+                                      SizedBox(height: 220.h),
+                                      Center(
+                                        child: Text(
+                                          'Belum ada makanan yang kamu pilih',
+                                          style: GoogleFonts.inter(
+                                            textStyle: TextStyle(
+                                                color: color.secondaryTextColor,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.normal),
+                                          ),
                                         ),
-                                        snapshot.data!.isNotEmpty
-                                            ? Container(
-                                                margin: EdgeInsets.only(
-                                                    right: 20, bottom: 20),
-                                                child: NeumorphicButton(
-                                                    margin: EdgeInsets.only(
-                                                        top: 12),
-                                                    onPressed: () {
-                                                      getSaveSessionFunction(
-                                                          snapshot.data!);
-                                                    },
-                                                    style: NeumorphicStyle(
-                                                        color: getColor(),
-                                                        shape: NeumorphicShape
-                                                            .flat,
-                                                        boxShape:
-                                                            NeumorphicBoxShape
-                                                                .roundRect(
-                                                          BorderRadius.circular(
-                                                              20),
-                                                        )
-                                                        //border: NeumorphicBorder()
-                                                        ),
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 12,
-                                                            horizontal: 15),
-                                                    child: Text(
-                                                      getText(),
-                                                      style: GoogleFonts.inter(
-                                                        textStyle: TextStyle(
-                                                            color: color
-                                                                .primaryColor,
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal),
-                                                      ),
-                                                    )),
-                                              )
-                                            : Container(),
-                                      ]);
-                          })),
+                                      ),
+                                    ],
+                                  )
+                                : Expanded(
+                                    child: ListView.builder(
+                                        keyboardDismissBehavior:
+                                            ScrollViewKeyboardDismissBehavior
+                                                .onDrag,
+                                        itemCount: snapshot.data!.length,
+                                        itemBuilder: (context, index) {
+                                          return FoodTile(
+                                            containerButton: () {},
+                                            iconButton: () {
+                                              getDeleteFunction(
+                                                  snapshot.data!, index);
+                                            },
+                                            icon: getIconDelete(),
+                                            depth: getDepth(),
+                                            color: color,
+                                            imageFilename: snapshot
+                                                .data![index].imageFileName!,
+                                            name: snapshot.data![index].name!,
+                                            necessity:
+                                                (snapshot.data![index].energy! /
+                                                        snapshot.data![index]
+                                                            .serving!)
+                                                    .toStringAsFixed(0),
+                                            serving: (snapshot
+                                                        .data![index].serving! /
+                                                    snapshot
+                                                        .data![index].serving!)
+                                                .toStringAsFixed(0),
+                                            recommendationScore: snapshot
+                                                .data![index]
+                                                .recommendationScore!,
+                                            duration: snapshot
+                                                .data![index].duration!
+                                                .toStringAsFixed(0),
+                                          );
+                                        }),
+                                  ),
+                          ],
+                        ))
+                      ]),
+                  snapshot.data!.isNotEmpty
+                      ? Container(
+                          margin: EdgeInsets.only(right: 20.w, bottom: 20.h),
+                          child: NeumorphicButton(
+                              margin: EdgeInsets.only(top: 12.h),
+                              onPressed: () {
+                                getSaveSessionFunction(snapshot.data!);
+                              },
+                              style: NeumorphicStyle(
+                                  color: getColor(),
+                                  shape: NeumorphicShape.flat,
+                                  boxShape: NeumorphicBoxShape.roundRect(
+                                    BorderRadius.circular(20),
+                                  )
+                                  //border: NeumorphicBorder()
+                                  ),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 12.h, horizontal: 15.w),
+                              child: Text(
+                                getText(),
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      color: color.primaryColor,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              )),
+                        )
+                      : Container(),
                 ]),
-          ),
-        ),
-      ),
-    );
+              ),
+            ),
+          );
+        });
   }
 
   double getDepth() {
@@ -358,9 +349,20 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
   void getSaveSessionFunction(List<Food> food) {
     if (widget.session == "Sarapan") {
       if (data.read('dataSessionSarapan')['sessionSarapan'] == true) {
-        setState(() {
-          foodController.sessionSarapanClosed.value = false;
-          foodController.saveSession(session: widget.session);
+        final foodHistoryRequest = FoodHistoryRequest(
+            foodDate: foodController.date,
+            foodTime: foodController.getSessions(widget.session),
+            foods: []);
+        foodController
+            .postFoodHistory(
+                foodHistoryRequest: foodHistoryRequest, session: widget.session)
+            .then((_) {
+          setState(() {
+            foodController.sessionSarapanClosed.value = false;
+            foodController.saveSession(
+                session: widget.session,
+                date: foodController.focusedDay.toString());
+          });
         });
       } else {
         listFoodSarapan.clear();
@@ -371,24 +373,35 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
             foodDate: foodController.date,
             foodTime: foodController.getSessions(widget.session),
             foods: listFoodSarapan);
-        foodController.postFoodHistory(
-            foodHistoryRequest: foodHistoryRequest, session: widget.session);
-        setState(() {
-          foodController.sessionSarapanClosed.value = true;
-          foodController.saveSession(session: widget.session);
+        foodController
+            .postFoodHistory(
+                foodHistoryRequest: foodHistoryRequest, session: widget.session)
+            .then((_) {
+          setState(() {
+            foodController.sessionSarapanClosed.value = true;
+            foodController.saveSession(
+                session: widget.session,
+                date: foodController.focusedDay.toString());
+          });
         });
       }
     } else if (widget.session == 'Makan Siang') {
       if (data.read('dataSessionMakanSiang')['sessionMakanSiang'] == true) {
-        setState(() {
-          foodController.sessionMakanSiangClosed.value = false;
-          foodController.saveSession(session: widget.session);
+        final foodHistoryRequest = FoodHistoryRequest(
+            foodDate: foodController.date,
+            foodTime: foodController.getSessions(widget.session),
+            foods: []);
+        foodController
+            .postFoodHistory(foodHistoryRequest: foodHistoryRequest)
+            .then((_) {
+          setState(() {
+            foodController.sessionMakanSiangClosed.value = false;
+            foodController.saveSession(
+                session: widget.session,
+                date: foodController.focusedDay.toString());
+          });
         });
       } else {
-        setState(() {
-          foodController.sessionMakanSiangClosed.value = true;
-          foodController.saveSession(session: widget.session);
-        });
         listFoodSarapan.clear();
         food.forEach((element) {
           listFoodMakanSiang.add(Foods(foodId: element.foodId, portion: 1));
@@ -397,19 +410,34 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
             foodDate: foodController.date,
             foodTime: foodController.getSessions(widget.session),
             foods: listFoodMakanSiang);
-        foodController.postFoodHistory(foodHistoryRequest: foodHistoryRequest);
+        foodController
+            .postFoodHistory(foodHistoryRequest: foodHistoryRequest)
+            .then((_) {
+          setState(() {
+            foodController.sessionMakanSiangClosed.value = true;
+            foodController.saveSession(
+                session: widget.session,
+                date: foodController.focusedDay.toString());
+          });
+        });
       }
     } else {
       if (data.read('dataSessionMakanMalam')['sessionMakanMalam'] == true) {
-        setState(() {
-          foodController.sessionMakanMalamClosed.value = false;
-          foodController.saveSession(session: widget.session);
+        final foodHistoryRequest = FoodHistoryRequest(
+            foodDate: foodController.date,
+            foodTime: foodController.getSessions(widget.session),
+            foods: listFoodMakanMalam);
+        foodController
+            .postFoodHistory(foodHistoryRequest: foodHistoryRequest)
+            .then((_) {
+          setState(() {
+            foodController.sessionMakanMalamClosed.value = false;
+            foodController.saveSession(
+                session: widget.session,
+                date: foodController.focusedDay.toString());
+          });
         });
       } else {
-        setState(() {
-          foodController.sessionMakanMalamClosed.value = true;
-          foodController.saveSession(session: widget.session);
-        });
         listFoodSarapan.clear();
         food.forEach((element) {
           listFoodMakanMalam.add(Foods(foodId: element.foodId, portion: 1));
@@ -418,7 +446,16 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
             foodDate: foodController.date,
             foodTime: foodController.getSessions(widget.session),
             foods: listFoodMakanMalam);
-        foodController.postFoodHistory(foodHistoryRequest: foodHistoryRequest);
+        foodController
+            .postFoodHistory(foodHistoryRequest: foodHistoryRequest)
+            .then((_) {
+          setState(() {
+            foodController.sessionMakanMalamClosed.value = true;
+            foodController.saveSession(
+                session: widget.session,
+                date: foodController.focusedDay.toString());
+          });
+        });
       }
     }
   }

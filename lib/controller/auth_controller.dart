@@ -24,9 +24,11 @@ class AuthController extends GetxController {
   final _provider = Get.put(AuthProvider());
   final informationController = Get.put(InformationController());
   final data = GetStorage('myData');
-  final isLoading = false.obs;
+  var isLoading = false.obs;
+  var isLoadingAccessToken = false.obs;
   var cekGetWebsocket = false.obs;
   var cekWebsocket = false.obs;
+
   late WebSocketChannel channel;
 
   late DataWebsocketResponse websocketResponse = DataWebsocketResponse();
@@ -298,6 +300,8 @@ class AuthController extends GetxController {
           if (Get.isDialogOpen!) Get.back();
           informationController.showSuccessSnackBar('Aktivasi berhasil');
           if (_activationResponse.data!.accessToken != null) {
+            cekGetWebsocket.value = false;
+            update();
             Get.offNamed(RouteScreens.initialSetup, arguments: [
               _activationResponse.data!.accessToken,
               _registerResponseId
@@ -358,9 +362,20 @@ class AuthController extends GetxController {
 
   Future<void> postInitialSetup(
       {InitialSetupRequest? initialSetupRequest, String? accessToken}) async {
-    informationController
-        .loadingDialog('Harap menunggu, sedang memproses Data Anda');
-    if (initialSetupRequest != null) {
+    if (initialSetupRequest!.dob != 'Pilih Tanggal Lahir' &&
+        initialSetupRequest.lang != null &&
+        initialSetupRequest.gender != null &&
+        initialSetupRequest.height != 0 &&
+        initialSetupRequest.weight != 0 &&
+        initialSetupRequest.activityLevel != null &&
+        initialSetupRequest.sportDifficulty != null &&
+        initialSetupRequest.vegetarian != null &&
+        initialSetupRequest.vegan != null &&
+        initialSetupRequest.halal != null) {
+      print(initialSetupRequest);
+      informationController
+          .loadingDialog('Harap menunggu, sedang memproses Data Anda');
+
       try {
         final Response _res = await _provider.postInitialSetup(
             initialSetupRequest: initialSetupRequest, accessToken: accessToken);
@@ -388,7 +403,9 @@ class AuthController extends GetxController {
         print('error:' + e.toString());
       }
     } else {
-      // snackBarError("silakan isi ");
+      if (Get.isDialogOpen!) Get.back();
+      informationController.snackBarError("Data Tidak Lengkap",
+          "silakan isi semua data pribadi Anda terlebih dahulu");
     }
   }
 
@@ -457,27 +474,8 @@ class AuthController extends GetxController {
   }
 
   //refreshToken ------------------------------------------------------------------------------
-  Future<void> getUsableToken() async {
-    final accessToken = data.read('dataUser')['accessToken'];
-    if (accessToken != null) {
-      bool isTokenExpired = JwtDecoder.isExpired(accessToken);
-      /* getExpirationDate() - this method returns the expiration date of the token */
-      DateTime expirationDate = JwtDecoder.getExpirationDate(accessToken);
-
-      print('/refreshToken_provider.dart | Token Expiration date :' +
-          expirationDate.toString());
-      if (isTokenExpired) {
-        print('token expired otw ganti token baru');
-        getAccessToken();
-      } else {
-        print('/refreshToken_provider.dart | Token not Expired');
-      }
-    } else {
-      print('accesstokenbelomkeread');
-    }
-  }
-
   Future<void> getAccessToken() async {
+    isLoadingAccessToken(true);
     final refreshToken = data.read('dataUser')['refreshToken'];
 
     try {
@@ -499,6 +497,34 @@ class AuthController extends GetxController {
           print('tidak ada refreshTokenResponse');
         }
       }
-    } catch (e) {}
+    } finally {
+      isLoadingAccessToken(false);
+    }
+  }
+
+  Future<void> getUsableToken() async {
+    final accessToken = data.read('dataUser')['accessToken'];
+    try {
+      if (accessToken != null) {
+        bool isTokenExpired = JwtDecoder.isExpired(accessToken);
+        /* getExpirationDate() - this method returns the expiration date of the token */
+        DateTime expirationDate = JwtDecoder.getExpirationDate(accessToken);
+
+        print('/refreshToken_provider.dart | Token Expiration date :' +
+            expirationDate.toString());
+
+        if (isTokenExpired) {
+          print('token expired otw ganti token baru');
+
+          getAccessToken();
+        } else {
+          print('/refreshToken_provider.dart | Token not Expired');
+        }
+      } else {
+        print('accesstokenbelomkeread');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

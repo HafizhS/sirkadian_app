@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:sirkadian_app/model/exercise_model/exerciseAll_response_model.dart';
+import 'package:sirkadian_app/model/exercise_model/exercise_history_get_response_model.dart';
 import 'package:sirkadian_app/model/exercise_model/exercise_history_request_model.dart';
 import 'package:sirkadian_app/provider/exercise_provider.dart';
 import 'hexcolor_controller.dart';
@@ -17,7 +18,10 @@ class ExerciseController extends GetxController {
   final color = Get.put(ColorConstantController());
   final informationController = Get.put(InformationController());
   final data = GetStorage('myData');
-  final isLoadingSubscriptionAll = false.obs;
+  final isLoadingExerciseAll = false.obs;
+  final isLoadingExerciseHistory = false.obs;
+  RxList<DataExerciseHistoryGetResponse> listExerciseHistory =
+      <DataExerciseHistoryGetResponse>[].obs;
 
 //objectbox material / getstorage material
   late Store exerciseStore;
@@ -41,9 +45,9 @@ class ExerciseController extends GetxController {
   //dependencies
   var isCheckExerciseTile = false.obs;
 
-//date material
-  late String dateStartt;
-  late String dateEndd;
+  //date material
+  late String startDate;
+  late String endDate;
   late String dateNoww;
   var selectedDay = DateTime.utc(
       DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -55,12 +59,12 @@ class ExerciseController extends GetxController {
       '-' +
       DateTime.now().day.toString());
   void getDateTime() {
-    var dateStart = new DateTime.utc(2021, 12, 1);
+    var dateStart = new DateTime.utc(2022, 1, 1);
     final DateFormat serverFormater = DateFormat('yyyy-MM-dd');
     String formattedDate = serverFormater.format(dateStart);
     String finalDate = formattedDate.toString();
     //
-    var dateEnd = new DateTime.utc(2022, 12, 1);
+    var dateEnd = new DateTime.utc(2022, 12, 30);
 
     String formattedDateEnd = serverFormater.format(dateEnd);
     String finalDateEnd = formattedDateEnd.toString();
@@ -69,8 +73,8 @@ class ExerciseController extends GetxController {
     String formattedDateNow = serverFormater.format(dateNow);
     String finalDateNow = formattedDateNow.toString();
 
-    dateStartt = finalDate;
-    dateEndd = finalDateEnd;
+    startDate = finalDate;
+    endDate = finalDateEnd;
     dateNoww = finalDateNow;
   }
 
@@ -265,7 +269,7 @@ class ExerciseController extends GetxController {
 //get method
   final listExercise = <DataExerciseAllResponse>[].obs;
   Future<void> getAllExercise() async {
-    isLoadingSubscriptionAll(true);
+    isLoadingExerciseAll(true);
     await authController.getUsableToken();
     try {
       String accessToken = data.read('dataUser')['accessToken'];
@@ -282,7 +286,36 @@ class ExerciseController extends GetxController {
 
       if (Get.isDialogOpen!) Get.back();
     } finally {
-      isLoadingSubscriptionAll(false);
+      isLoadingExerciseAll(false);
+    }
+  }
+
+  Future<void> getExerciseHistory() async {
+    isLoadingExerciseHistory(true);
+    await authController.getUsableToken();
+    getDateTime();
+
+    try {
+      String accessToken = data.read('dataUser')['accessToken'];
+      var _res = await _provider.getExerciseHistory(
+          accessToken: accessToken, endDate: endDate, startDate: startDate);
+      print(_res.statusCode);
+      if (_res.statusCode == 200) {
+        ExerciseHistoryGetResponse _exerciseHistoryResponse =
+            ExerciseHistoryGetResponse.fromJson(
+                _res.body as Map<String, dynamic>);
+        if (_exerciseHistoryResponse.statusCode == 200) {
+          listExerciseHistory.value = _exerciseHistoryResponse.data!;
+          listExerciseHistory.forEach((element) {
+            element.isOpen = false;
+            update();
+          });
+        }
+      }
+
+      if (Get.isDialogOpen!) Get.back();
+    } finally {
+      isLoadingExerciseHistory(false);
     }
   }
 
@@ -291,10 +324,12 @@ class ExerciseController extends GetxController {
       {ExerciseHistoryRequest? exerciseHistoryRequest}) async {
     if (exerciseHistoryRequest!.sports!.isNotEmpty &&
         exerciseHistoryRequest.sportDate != '') {
-      informationController.loadingDialog('');
+      await authController.getUsableToken();
+      informationController.loadingDialog(
+          'Harap Menunggu, Sedang Menyimpan sesi olahraga ke Server');
       try {
         String accessToken = data.read('dataUser')['accessToken'];
-        final Response _res = await _provider.postHistoryExercise(
+        final Response _res = await _provider.postExerciseHistory(
             accessToken: accessToken,
             exerciseHistoryRequest: exerciseHistoryRequest);
         if (_res.statusCode == 200) {
@@ -305,7 +340,8 @@ class ExerciseController extends GetxController {
           if (Get.isDialogOpen!) Get.back();
 
           if (_exerciseHistoryRequest.statusCode == 200) {
-            print('post exercise success');
+            if (Get.isDialogOpen!) Get.back();
+            informationController.showSuccessSnackBar('Berhasil');
           }
         } else if (_res.statusCode == 500) {
           print('error sc 500');

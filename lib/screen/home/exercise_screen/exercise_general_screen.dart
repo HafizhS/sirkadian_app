@@ -13,7 +13,9 @@ import '../../../controller/hexcolor_controller.dart';
 import '../../../controller/information_controller.dart';
 import '../../../model/exercise_model/exercise_history_request_model.dart';
 import '../../../widget/exercise_widget/exercise_gauge.dart';
+import 'exercise_history_screen.dart';
 import 'exercise_recommendation_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ExerciseGeneralScreen extends StatefulWidget {
   const ExerciseGeneralScreen({Key? key}) : super(key: key);
@@ -43,7 +45,7 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
   late Stream<List<Exercise>> _exerciseStream;
   var hasbeeninitialized = false;
   var isExpandedOpen = false;
-  List<Sports> listSport = [];
+  List<Sports> listExercise = [];
 
   @override
   void initState() {
@@ -82,112 +84,124 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     exerciseController.getMonth();
-    return Scaffold(
-      backgroundColor: color.bgColor,
-      body: SafeArea(
-          child: !hasbeeninitialized
-              ? Center(
-                  child: CircularProgressIndicator(
-                    color: color.secondaryColor,
-                  ),
-                )
-              : StreamBuilder<List<Exercise>>(
-                  stream: _exerciseStream,
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: color.secondaryColor,
-                          ),
-                        );
-                      case ConnectionState.active:
-                        return childWidget(context, snapshot, size);
-                      case ConnectionState.done:
-                        return childWidget(context, snapshot, size);
-                    }
-                  })),
+    return !hasbeeninitialized
+        ? SafeArea(
+            child: Scaffold(
+                body: Center(
+            child: CircularProgressIndicator(
+              color: color.secondaryColor,
+            ),
+          )))
+        : StreamBuilder<List<Exercise>>(
+            stream: _exerciseStream,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: color.secondaryColor,
+                    ),
+                  );
+                case ConnectionState.active:
+                  return SafeArea(
+                      child: Scaffold(
+                          backgroundColor: color.bgColor,
+                          appBar: appBarWidget(context, snapshot),
+                          body: childWidget(context, snapshot)));
+                case ConnectionState.done:
+                  return SafeArea(
+                      child: Scaffold(
+                          appBar: appBarWidget(context, snapshot),
+                          backgroundColor: color.bgColor,
+                          body: childWidget(context, snapshot)));
+              }
+            });
+  }
+
+  PreferredSize appBarWidget(
+      BuildContext context, AsyncSnapshot<List<Exercise>> snapshot) {
+    return PreferredSize(
+      child: Padding(
+        padding: EdgeInsets.only(top: 20.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 20.w),
+              child: NeumorphicButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  exerciseController.selectedDayGauge = DateTime.utc(
+                      DateTime.now().year,
+                      DateTime.now().month,
+                      DateTime.now().day);
+                  exerciseController.getDatePerWeek();
+                },
+                style: NeumorphicStyle(
+                  shape: NeumorphicShape.flat,
+                  boxShape: NeumorphicBoxShape.circle(),
+                  color: color.bgColor,
+                ),
+                padding: EdgeInsets.all(16.sp),
+                child: FaIcon(
+                  FontAwesomeIcons.chevronLeft,
+                  size: 16.sp,
+                  color: color.secondaryTextColor,
+                ),
+              ),
+            ),
+            Text(
+              'SirkaExercise',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    color: color.primaryTextColor,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(right: 20.w),
+              child: NeumorphicButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FutureExercisePlanScreen(
+                                hasBeenInitialized: hasbeeninitialized,
+                                listExercise: snapshot.data!,
+                              )));
+                },
+                style: NeumorphicStyle(
+                  shape: NeumorphicShape.flat,
+                  boxShape: NeumorphicBoxShape.circle(),
+                  color: color.bgColor,
+                ),
+                padding: EdgeInsets.all(16.sp),
+                child: FaIcon(
+                  FontAwesomeIcons.calendarAlt,
+                  size: 16.sp,
+                  color: color.secondaryTextColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      preferredSize: Size.fromHeight(70.h),
     );
   }
 
-  SingleChildScrollView childWidget(
+  Widget childWidget(
     BuildContext context,
     AsyncSnapshot<List<Exercise>> snapshot,
-    Size size,
   ) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.only(top: 20),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                margin: EdgeInsets.only(left: 20),
-                child: NeumorphicButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    exerciseController.selectedDayGauge = DateTime.utc(
-                        DateTime.now().year,
-                        DateTime.now().month,
-                        DateTime.now().day);
-                    exerciseController.getDatePerWeek();
-                  },
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.flat,
-                    boxShape: NeumorphicBoxShape.circle(),
-                    color: color.bgColor,
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  child: FaIcon(
-                    FontAwesomeIcons.chevronLeft,
-                    size: 16,
-                    color: color.secondaryTextColor,
-                  ),
-                ),
-              ),
-              Text(
-                'SirkaExercise',
-                style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
-                      color: color.primaryTextColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(right: 20),
-                child: NeumorphicButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FutureExercisePlanScreen(
-                                  hasBeenInitialized: hasbeeninitialized,
-                                  listExercise: snapshot.data!,
-                                )));
-                  },
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.flat,
-                    boxShape: NeumorphicBoxShape.circle(),
-                    color: color.bgColor,
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  child: FaIcon(
-                    FontAwesomeIcons.calendarAlt,
-                    size: 16,
-                    color: color.secondaryTextColor,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: size.height * 0.03,
-          ),
+    return Padding(
+      padding: EdgeInsets.only(top: 10.h),
+      child: Stack(alignment: Alignment.bottomRight, children: [
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          SizedBox(height: 18.h),
           //segment 2
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,19 +214,19 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 20),
+                        margin: EdgeInsets.only(left: 20.w),
                         child: Text(
                           'Progress',
                           style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(10.sp),
                         decoration: BoxDecoration(
                             color: color.primaryTextColor.withOpacity(0.1),
                             borderRadius: isExpandedOpen
@@ -220,7 +234,7 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                                     topLeft: Radius.circular(10),
                                     topRight: Radius.circular(10))
                                 : BorderRadius.circular(10)),
-                        margin: EdgeInsets.only(right: 20),
+                        margin: EdgeInsets.only(right: 20.w),
                         child: GestureDetector(
                           onTap: () {
                             setState(() {
@@ -244,17 +258,17 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(
                                       color: color.primaryTextColor,
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.normal),
                                 ),
                               ),
-                              SizedBox(width: size.width * 0.01),
+                              SizedBox(width: 10.w),
                               FaIcon(
                                 isExpandedOpen
                                     ? FontAwesomeIcons.chevronUp
                                     : FontAwesomeIcons.chevronDown,
                                 color: color.primaryTextColor.withOpacity(0.7),
-                                size: 12,
+                                size: 12.sp,
                               )
                             ],
                           ),
@@ -270,9 +284,9 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                         opacity: isExpandedOpen ? 1 : 0,
                         child: AnimatedContainer(
                           duration: Duration(milliseconds: 100),
-                          height: isExpandedOpen ? size.height * 0.07 : 0,
+                          height: isExpandedOpen ? 50.h : 0,
                           margin: isExpandedOpen
-                              ? EdgeInsets.symmetric(horizontal: 10)
+                              ? EdgeInsets.symmetric(horizontal: 10.w)
                               : EdgeInsets.all(0),
                           padding: isExpandedOpen
                               ? EdgeInsets.all(10)
@@ -283,7 +297,7 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              weekSelectWidget(size, 'Minggu 1', () {
+                              weekSelectWidget('Minggu 1', () {
                                 setState(() {
                                   exerciseController.selectedDayGauge =
                                       DateTime.utc(DateTime.now().year,
@@ -292,7 +306,7 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                                   isExpandedOpen = false;
                                 });
                               }),
-                              weekSelectWidget(size, 'Minggu 2', () {
+                              weekSelectWidget('Minggu 2', () {
                                 setState(() {
                                   exerciseController.selectedDayGauge =
                                       DateTime.utc(DateTime.now().year,
@@ -301,7 +315,7 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                                   isExpandedOpen = false;
                                 });
                               }),
-                              weekSelectWidget(size, 'Minggu 3', () {
+                              weekSelectWidget('Minggu 3', () {
                                 setState(() {
                                   exerciseController.selectedDayGauge =
                                       DateTime.utc(DateTime.now().year,
@@ -310,7 +324,7 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                                   isExpandedOpen = false;
                                 });
                               }),
-                              weekSelectWidget(size, 'Minggu 4', () {
+                              weekSelectWidget('Minggu 4', () {
                                 setState(() {
                                   exerciseController.selectedDayGauge =
                                       DateTime.utc(DateTime.now().year,
@@ -324,7 +338,7 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: size.height * 0.03,
+                        height: 18.h,
                       )
                       // exerciseGaugeWidget(size)
                     ],
@@ -332,8 +346,8 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                 ],
               ),
               Neumorphic(
-                margin: EdgeInsets.symmetric(horizontal: 15),
-                padding: EdgeInsets.all(20),
+                margin: EdgeInsets.symmetric(horizontal: 15.w),
+                padding: EdgeInsets.all(20.sp),
                 style: NeumorphicStyle(
                     color: color.bgColor,
                     shape: NeumorphicShape.flat,
@@ -347,12 +361,12 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                       style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                             color: color.primaryTextColor,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w600),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 10, bottom: 5),
+                      margin: EdgeInsets.only(top: 10.h, bottom: 5.h),
                       child: Neumorphic(
                           style: NeumorphicStyle(
                               depth: -4,
@@ -364,28 +378,28 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                           child:
                               Stack(alignment: Alignment.centerLeft, children: [
                             Container(
-                              height: size.height * 0.02,
-                              width: size.width,
+                              height: 18.h,
+                              width: 360.w,
                             ),
                             Container(
                               decoration: BoxDecoration(
                                   color: color.secondaryColor,
                                   borderRadius: BorderRadius.circular(20)),
-                              height: size.height * 0.03,
+                              height: 28.h,
                               width: 0, // diganti sama sport history duration
                             ),
-                            Container(
-                              margin: EdgeInsets.only(left: size.width * 0.41),
-                              child: Text(
-                                '70 Menit',
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                      color: color.primaryTextColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ),
-                            ),
+                            // Container(
+                            //   margin: EdgeInsets.only(left: 150.w),
+                            //   child: Text(
+                            //     '70 Menit',
+                            //     style: GoogleFonts.inter(
+                            //       textStyle: TextStyle(
+                            //           color: color.primaryTextColor,
+                            //           fontSize: 10.sp,
+                            //           fontWeight: FontWeight.normal),
+                            //     ),
+                            //   ),
+                            // ),
                           ])),
                     ),
                     Row(
@@ -397,7 +411,7 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                   color: color.primaryTextColor,
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.normal),
                             ),
                           ),
@@ -408,7 +422,7 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                   color: color.primaryTextColor,
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.normal),
                             ),
                           ),
@@ -420,180 +434,179 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
               ),
 
               SizedBox(
-                height: size.height * 0.03,
+                height: 28.h,
               ),
             ],
           ),
 
           //segment 3
 
-          Stack(alignment: Alignment.bottomRight, children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 20),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Olahraga hari ini',
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  color: color.secondaryTextColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            exerciseController.dateNoww,
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: color.secondaryTextColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 20.w),
+                    child: Row(
                       children: [
-                        NeumorphicButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ExerciseRecommendationScreen()));
-                          },
-                          padding: EdgeInsets.all(5),
-                          style: NeumorphicStyle(
-                            depth: 2,
-                            color: color.bgColor,
-                            boxShape: NeumorphicBoxShape.roundRect(
-                                BorderRadius.circular(5)),
-                          ),
-                          margin: EdgeInsets.only(right: 20),
-                          child: FaIcon(
-                            FontAwesomeIcons.plus,
-                            size: 20,
-                            color: color.secondaryTextColor,
+                        Text(
+                          'Olahraga hari ini',
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                                color: color.secondaryTextColor,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
-                        NeumorphicButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ExerciseRecommendationScreen()));
-                          },
-                          padding: EdgeInsets.all(5),
-                          style: NeumorphicStyle(
-                            depth: 2,
-                            color: color.bgColor,
-                            boxShape: NeumorphicBoxShape.roundRect(
-                                BorderRadius.circular(5)),
-                          ),
-                          margin: EdgeInsets.only(right: 20),
-                          child: FaIcon(
-                            FontAwesomeIcons.history,
-                            size: 20,
-                            color: color.secondaryTextColor,
+                        SizedBox(width: 10.w),
+                        Text(
+                          exerciseController.dateNoww,
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                color: color.secondaryTextColor,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.normal),
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-                (snapshot.data!.isEmpty)
-                    ? Container(
-                        height: size.height * 0.4,
-                        width: size.width,
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Belum ada Olahraga yang kamu pilih',
-                          style: GoogleFonts.inter(
-                            textStyle: TextStyle(
-                                color: color.secondaryTextColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ),
-                      )
-                    : listExerciseWidget(size, snapshot),
-              ],
-            ),
-            snapshot.data!.isNotEmpty
-                ? Container(
-                    margin: EdgeInsets.only(right: 20, bottom: 20),
-                    child: NeumorphicButton(
-                        margin: EdgeInsets.only(top: 12),
+                  ),
+                  Row(
+                    children: [
+                      NeumorphicButton(
                         onPressed: () {
-                          if (exerciseController.sessionExerciseClosed ==
-                              false) {
-                            setState(() {
-                              exerciseController.sessionExerciseClosed.value =
-                                  true;
-                              exerciseController.saveSession();
-                            });
-                          } else {
-                            setState(() {
-                              exerciseController.sessionExerciseClosed.value =
-                                  false;
-                              exerciseController.saveSession();
-                            });
-                          }
-
-                          // snapshot.data!.forEach((element) {
-                          //   listSport.add(Sports(sportId: element.sportId, duration: .));
-                          // });
-                          // final exerciseHistoryRequest = ExerciseHistoryRequest(
-                          //     sportDate:
-                          //         '${exerciseController.selectedDay.year}-${exerciseController.selectedDay.month}-${exerciseController.selectedDay.day}',
-                          //     sports: []);
-                          // exerciseController.postExerciseHistory(
-                          //     exerciseHistoryRequest: exerciseHistoryRequest);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ExerciseRecommendationScreen()));
                         },
+                        padding: EdgeInsets.all(5.sp),
                         style: NeumorphicStyle(
-                            color:
-                                exerciseController.sessionExerciseClosed == true
-                                    ? color.redColor
-                                    : color.secondaryColor,
-                            shape: NeumorphicShape.flat,
-                            boxShape: NeumorphicBoxShape.roundRect(
-                              BorderRadius.circular(20),
-                            )
-                            //border: NeumorphicBorder()
-                            ),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-                        child: Text(
-                          exerciseController.sessionExerciseClosed == true
-                              ? 'Batalkan Sesi'
-                              : 'Selesaikan Sesi',
-                          style: GoogleFonts.inter(
-                            textStyle: TextStyle(
-                                color: color.primaryColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        )),
-                  )
-                : Container()
-          ])
+                          depth: 2,
+                          color: color.bgColor,
+                          boxShape: NeumorphicBoxShape.roundRect(
+                              BorderRadius.circular(5)),
+                        ),
+                        margin: EdgeInsets.only(right: 20.w),
+                        child: FaIcon(
+                          FontAwesomeIcons.plus,
+                          size: 20.sp,
+                          color: color.secondaryTextColor,
+                        ),
+                      ),
+                      NeumorphicButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ExerciseHistoryScreen()));
+                        },
+                        padding: EdgeInsets.all(5.sp),
+                        style: NeumorphicStyle(
+                          depth: 2,
+                          color: color.bgColor,
+                          boxShape: NeumorphicBoxShape.roundRect(
+                              BorderRadius.circular(5)),
+                        ),
+                        margin: EdgeInsets.only(right: 20.w),
+                        child: FaIcon(
+                          FontAwesomeIcons.history,
+                          size: 20.sp,
+                          color: color.secondaryTextColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+          (snapshot.data!.isEmpty)
+              ? Expanded(
+                  child: Center(
+                    child: Text(
+                      'Belum ada Olahraga yang kamu pilih',
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            color: color.secondaryTextColor,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                )
+              : listExerciseWidget(snapshot),
         ]),
-      ),
+        snapshot.data!.isNotEmpty
+            ? Container(
+                margin: EdgeInsets.only(right: 20.w, bottom: 20.h),
+                child: NeumorphicButton(
+                    margin: EdgeInsets.only(top: 12.h),
+                    onPressed: () {
+                      if (exerciseController.sessionExerciseClosed == false) {
+                        setState(() {
+                          exerciseController.sessionExerciseClosed.value = true;
+                          exerciseController.saveSession();
+                        });
+                      } else {
+                        setState(() {
+                          exerciseController.sessionExerciseClosed.value =
+                              false;
+                          exerciseController.saveSession();
+                        });
+                      }
+
+                      // snapshot.data!.forEach((element) {
+                      //   listExercise.add(Sports(
+                      //     sportId: element.sportId,
+                      //     duration: 10,
+                      //     amount: 10,
+                      //     set: 2,
+                      //   ));
+                      // });
+                      // final exerciseHistoryRequest = ExerciseHistoryRequest(
+                      //     sportDate:
+                      //         '${exerciseController.selectedDay.year}-${exerciseController.selectedDay.month}-${exerciseController.selectedDay.day}',
+                      //     sports: listExercise);
+                      // exerciseController.postExerciseHistory(
+                      //     exerciseHistoryRequest: exerciseHistoryRequest);
+                    },
+                    style: NeumorphicStyle(
+                        color: exerciseController.sessionExerciseClosed == true
+                            ? color.redColor
+                            : color.secondaryColor,
+                        shape: NeumorphicShape.flat,
+                        boxShape: NeumorphicBoxShape.roundRect(
+                          BorderRadius.circular(20),
+                        )
+                        //border: NeumorphicBorder()
+                        ),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 12.h, horizontal: 15.w),
+                    child: Text(
+                      exerciseController.sessionExerciseClosed == true
+                          ? 'Batalkan Sesi'
+                          : 'Selesaikan Sesi',
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            color: color.primaryColor,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    )),
+              )
+            : Container()
+      ]),
     );
   }
 
-  Container weekSelectWidget(Size size, String week, Function() onPress) {
+  Container weekSelectWidget(String week, Function() onPress) {
     return Container(
-      padding: EdgeInsets.all(5),
+      padding: EdgeInsets.all(5.sp),
       decoration: BoxDecoration(
           color: color.primaryTextColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(10)),
@@ -604,7 +617,7 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
           style: GoogleFonts.inter(
             textStyle: TextStyle(
                 color: color.primaryTextColor,
-                fontSize: 12,
+                fontSize: 12.sp,
                 fontWeight: FontWeight.normal),
           ),
         ),
@@ -612,11 +625,11 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
     );
   }
 
-  Container exerciseGaugeWidget(Size size) {
+  Container exerciseGaugeWidget() {
     return Container(
-        height: size.height * 0.4,
-        width: size.width,
-        margin: EdgeInsets.all(20),
+        height: 320.h,
+        width: 360.w,
+        margin: EdgeInsets.all(20.sp),
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
             physics: NeverScrollableScrollPhysics(),
@@ -624,35 +637,33 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
             itemBuilder: (context, index) {
               return Container(
                 margin: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.035, vertical: 5),
+                    horizontal: 360.w * 0.035, vertical: 5.h),
                 child: ExerciseGauge(
-                    textColor: DateTime.now().day.toString() ==
-                            exerciseController.weekDays[index].day
-                        ? color.secondaryColor
-                        : color.secondaryTextColor,
-                    backgroundColor: color.backgroundColor,
-                    foregroundColor: exerciseController.weekDays[index].color,
-                    value: exerciseController.weekDays[index].value,
-                    day: exerciseController.weekDays[index].day,
-                    stringValue: exerciseController.weekDays[index].stringValue
-                        .toString(),
-                    size: size),
+                  textColor: DateTime.now().day.toString() ==
+                          exerciseController.weekDays[index].day
+                      ? color.secondaryColor
+                      : color.secondaryTextColor,
+                  backgroundColor: color.backgroundColor,
+                  foregroundColor: exerciseController.weekDays[index].color,
+                  value: exerciseController.weekDays[index].value,
+                  day: exerciseController.weekDays[index].day,
+                  stringValue:
+                      exerciseController.weekDays[index].stringValue.toString(),
+                ),
               );
             }));
   }
 
   Widget listExerciseWidget(
-    Size size,
     AsyncSnapshot<List<Exercise>> snapshot,
   ) {
-    return Container(
-      height: size.height * 0.45,
-      width: size.width,
+    return Expanded(
       child: ListView.builder(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemCount: snapshot.data!.length,
           itemBuilder: (context, index) {
             return ExerciseTile(
+              containerButton: () {},
               onpressPlus: () {},
               onpressDelete: () {
                 if (exerciseController.sessionExerciseClosed == true) {
@@ -694,7 +705,6 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
               difficulty: snapshot.data![index].difficulty!,
               depth: exerciseController.sessionExerciseClosed == true ? 0 : 4,
               desc: snapshot.data![index].desc!,
-              size: size,
               title: snapshot.data![index].name!,
             );
           }),

@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/model/food_model/food_recommendation_response_model.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
 import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
@@ -53,15 +53,12 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
     return Scaffold(
       body: Obx(
         () => widget.foodController.isLoadingOtherFoodRecommendation.isTrue
@@ -75,15 +72,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                   SingleChildScrollView(
                     controller: scrollController,
                     child: Container(
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20.sp),
                       color: widget.color.bgColor,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Stack(children: [
                               Container(
-                                  height: size.height * 0.3,
-                                  width: size.width,
+                                  height: 200.h,
+                                  width: 360.w,
                                   decoration: BoxDecoration(
                                       color: widget.color.primaryColor,
                                       borderRadius: BorderRadius.circular(20)),
@@ -102,7 +99,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(left: 5),
+                                    margin: EdgeInsets.only(left: 5.w),
                                     child: NeumorphicButton(
                                       onPressed: () {
                                         Navigator.pop(context);
@@ -113,16 +110,16 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                         boxShape: NeumorphicBoxShape.circle(),
                                         color: widget.color.primaryColor,
                                       ),
-                                      padding: const EdgeInsets.all(16.0),
+                                      padding: EdgeInsets.all(16.sp),
                                       child: FaIcon(
                                         FontAwesomeIcons.chevronLeft,
-                                        size: 16,
+                                        size: 20.sp,
                                         color: widget.color.secondaryTextColor,
                                       ),
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(right: 5),
+                                    margin: EdgeInsets.only(right: 5.w),
                                     child: NeumorphicButton(
                                       onPressed: () {},
                                       style: NeumorphicStyle(
@@ -131,10 +128,10 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                         boxShape: NeumorphicBoxShape.circle(),
                                         color: widget.color.primaryColor,
                                       ),
-                                      padding: const EdgeInsets.all(14.0),
+                                      padding: EdgeInsets.all(14.sp),
                                       child: FaIcon(
                                         FontAwesomeIcons.solidHeart,
-                                        size: 16,
+                                        size: 20.sp,
                                         color: widget.color.secondaryTextColor,
                                       ),
                                     ),
@@ -142,16 +139,16 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                 ],
                               ),
                             ]),
-                            SizedBox(height: size.height * 0.01),
+                            SizedBox(height: 10.h),
                             Neumorphic(
-                              padding: EdgeInsets.all(10),
+                              padding: EdgeInsets.all(15.sp),
                               style: NeumorphicStyle(
                                 shape: NeumorphicShape.flat,
                                 color: widget.color.primaryColor,
                                 boxShape: NeumorphicBoxShape.roundRect(
                                     BorderRadius.circular(20)),
                               ),
-                              margin: EdgeInsets.symmetric(vertical: 10),
+                              margin: EdgeInsets.symmetric(vertical: 10.h),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -160,26 +157,26 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Container(
-                                        width: size.width * 0.8,
+                                        width: 300.w,
                                         child: Text(
                                           widget.food.foodName!,
                                           style: GoogleFonts.poppins(
                                             textStyle: TextStyle(
                                                 color: widget
                                                     .color.primaryTextColor,
-                                                fontSize: 20,
+                                                fontSize: 20.sp,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: size.height * 0.01),
+                                  SizedBox(height: 10.h),
                                   Row(
                                     children: [
                                       FaIcon(
                                         FontAwesomeIcons.fireAlt,
-                                        size: 14,
+                                        size: 14.sp,
                                         color: widget.color.tersierTextColor,
                                       ),
                                       Text(
@@ -194,10 +191,10 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.normal),
                                           )),
-                                      SizedBox(width: size.width * 0.03),
+                                      SizedBox(width: 20.w),
                                       FaIcon(
                                         FontAwesomeIcons.clock,
-                                        size: 14,
+                                        size: 14.sp,
                                         color: widget.color.tersierTextColor,
                                       ),
                                       Text(
@@ -212,7 +209,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.normal),
                                           )),
-                                      SizedBox(width: size.width * 0.03),
+                                      SizedBox(width: 20.w),
                                       Text(
                                         (widget.food.serving!)
                                                 .toStringAsFixed(0) +
@@ -221,29 +218,29 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                           textStyle: TextStyle(
                                               color:
                                                   widget.color.tersierTextColor,
-                                              fontSize: 14,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.normal),
                                         ),
                                       ),
-                                      SizedBox(width: size.width * 0.03),
+                                      SizedBox(width: 20.w),
                                       Text(widget.food.foodTypes!.first,
                                           style: GoogleFonts.inter(
                                             textStyle: TextStyle(
                                                 color: widget
                                                     .color.tersierTextColor,
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.normal),
                                           )),
                                     ],
                                   ),
-                                  SizedBox(height: size.height * 0.02),
+                                  SizedBox(height: 10.h),
                                   Row(children: [
                                     FaIcon(
                                       FontAwesomeIcons.solidStar,
                                       color: Colors.yellow.shade600,
-                                      size: 16,
+                                      size: 16.sp,
                                     ),
-                                    SizedBox(width: size.width * 0.02),
+                                    SizedBox(width: 5.w),
                                     Text(
                                       widget.food.recommendationScore!
                                           .toStringAsFixed(2),
@@ -251,18 +248,18 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                         textStyle: TextStyle(
                                             color:
                                                 widget.color.primaryTextColor,
-                                            fontSize: 16,
+                                            fontSize: 16.sp,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
-                                    SizedBox(width: size.width * 0.02),
+                                    SizedBox(width: 20.w),
                                     Text(
                                       ' By : Abiyyuda Naufal P.',
                                       style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
                                             color: widget.color.tersierColor
                                                 .withOpacity(0.6),
-                                            fontSize: 14,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
@@ -271,14 +268,14 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                               ),
                             ),
                             Neumorphic(
-                              padding: EdgeInsets.all(10),
+                              padding: EdgeInsets.all(15.sp),
                               style: NeumorphicStyle(
                                 shape: NeumorphicShape.flat,
                                 color: widget.color.primaryColor,
                                 boxShape: NeumorphicBoxShape.roundRect(
                                     BorderRadius.circular(20)),
                               ),
-                              margin: EdgeInsets.symmetric(vertical: 10),
+                              margin: EdgeInsets.symmetric(vertical: 10.h),
                               child: Column(
                                 children: [
                                   Row(
@@ -295,17 +292,17 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               textStyle: TextStyle(
                                                   color: widget
                                                       .color.secondaryTextColor,
-                                                  fontSize: 18,
+                                                  fontSize: 18.sp,
                                                   fontWeight: FontWeight.w600),
                                             ),
                                           ),
-                                          SizedBox(width: size.width * 0.02),
+                                          SizedBox(width: 20.w),
                                           Row(
                                             children: [
                                               FaIcon(
                                                 FontAwesomeIcons
                                                     .solidCheckCircle,
-                                                size: 14,
+                                                size: 14.sp,
                                                 color: widget.color.blueColor,
                                               ),
                                               Text(
@@ -314,7 +311,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                   textStyle: TextStyle(
                                                       color: widget.color
                                                           .tersierTextColor,
-                                                      fontSize: 14,
+                                                      fontSize: 14.sp,
                                                       fontWeight:
                                                           FontWeight.normal),
                                                 ),
@@ -324,23 +321,23 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                         ],
                                       ),
                                       NeumorphicButton(
-                                        margin: EdgeInsets.all(10),
+                                        margin: EdgeInsets.all(10.sp),
                                         onPressed: () {},
                                         style: NeumorphicStyle(
                                           shape: NeumorphicShape.flat,
                                           boxShape: NeumorphicBoxShape.circle(),
                                           color: widget.color.primaryColor,
                                         ),
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: EdgeInsets.all(8.sp),
                                         child: FaIcon(
                                           FontAwesomeIcons.ellipsisH,
-                                          size: 16,
+                                          size: 16.sp,
                                           color: widget.color.secondaryColor,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: size.height * 0.02),
+                                  SizedBox(height: 18.h),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
@@ -353,15 +350,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               textStyle: TextStyle(
                                                   color: widget
                                                       .color.primaryTextColor,
-                                                  fontSize: 14,
+                                                  fontSize: 14.sp,
                                                   fontWeight:
                                                       FontWeight.normal),
                                             ),
                                           ),
                                           CustomPaint(
                                             child: Container(
-                                              height: size.width * 0.2,
-                                              width: size.width * 0.2,
+                                              height: 70.h,
+                                              width: 60.w,
                                             ),
                                             foregroundPainter:
                                                 CircleProgressBarPainter(
@@ -390,9 +387,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                           .value
                                                           .energy!
                                                           .dinner!),
-                                              sizeContainer: Size(
-                                                  size.width * 0.2,
-                                                  size.width * 0.2),
+                                              sizeContainer: Size(60.w, 60.h),
                                             ),
                                           ),
                                           Text(
@@ -405,7 +400,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               textStyle: TextStyle(
                                                   color: widget
                                                       .color.primaryTextColor,
-                                                  fontSize: 14,
+                                                  fontSize: 14.sp,
                                                   fontWeight:
                                                       FontWeight.normal),
                                             ),
@@ -420,15 +415,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               textStyle: TextStyle(
                                                   color: widget
                                                       .color.primaryTextColor,
-                                                  fontSize: 14,
+                                                  fontSize: 14.sp,
                                                   fontWeight:
                                                       FontWeight.normal),
                                             ),
                                           ),
                                           CustomPaint(
                                             child: Container(
-                                              height: size.width * 0.2,
-                                              width: size.width * 0.2,
+                                              height: 70.h,
+                                              width: 60.w,
                                             ),
                                             foregroundPainter:
                                                 CircleProgressBarPainter(
@@ -461,9 +456,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                           .macro!
                                                           .dinner!
                                                           .protein!),
-                                              sizeContainer: Size(
-                                                  size.width * 0.2,
-                                                  size.width * 0.2),
+                                              sizeContainer: Size(60.w, 60.h),
                                             ),
                                           ),
                                           Text(
@@ -476,7 +469,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               textStyle: TextStyle(
                                                   color: widget
                                                       .color.primaryTextColor,
-                                                  fontSize: 14,
+                                                  fontSize: 14.sp,
                                                   fontWeight:
                                                       FontWeight.normal),
                                             ),
@@ -491,15 +484,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               textStyle: TextStyle(
                                                   color: widget
                                                       .color.primaryTextColor,
-                                                  fontSize: 14,
+                                                  fontSize: 14.sp,
                                                   fontWeight:
                                                       FontWeight.normal),
                                             ),
                                           ),
                                           CustomPaint(
                                             child: Container(
-                                              height: size.width * 0.2,
-                                              width: size.width * 0.2,
+                                              height: 70.h,
+                                              width: 60.w,
                                             ),
                                             foregroundPainter:
                                                 CircleProgressBarPainter(
@@ -532,9 +525,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                           .macro!
                                                           .dinner!
                                                           .carbohydrate!),
-                                              sizeContainer: Size(
-                                                  size.width * 0.2,
-                                                  size.width * 0.2),
+                                              sizeContainer: Size(60.w, 60.h),
                                             ),
                                           ),
                                           Text(
@@ -547,7 +538,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               textStyle: TextStyle(
                                                   color: widget
                                                       .color.primaryTextColor,
-                                                  fontSize: 14,
+                                                  fontSize: 14.sp,
                                                   fontWeight:
                                                       FontWeight.normal),
                                             ),
@@ -562,15 +553,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               textStyle: TextStyle(
                                                   color: widget
                                                       .color.primaryTextColor,
-                                                  fontSize: 14,
+                                                  fontSize: 14.sp,
                                                   fontWeight:
                                                       FontWeight.normal),
                                             ),
                                           ),
                                           CustomPaint(
                                             child: Container(
-                                              height: size.width * 0.2,
-                                              width: size.width * 0.2,
+                                              height: 70.h,
+                                              width: 60.w,
                                             ),
                                             foregroundPainter:
                                                 CircleProgressBarPainter(
@@ -603,9 +594,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                           .macro!
                                                           .dinner!
                                                           .fat!),
-                                              sizeContainer: Size(
-                                                  size.width * 0.2,
-                                                  size.width * 0.2),
+                                              sizeContainer: Size(60.w, 60.h),
                                             ),
                                           ),
                                           Text(
@@ -618,7 +607,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               textStyle: TextStyle(
                                                   color: widget
                                                       .color.primaryTextColor,
-                                                  fontSize: 14,
+                                                  fontSize: 14.sp,
                                                   fontWeight:
                                                       FontWeight.normal),
                                             ),
@@ -642,15 +631,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                               ),
                             ),
                             Container(
-                              height: size.height * 0.27,
-                              width: size.width,
+                              height: 200.h,
+                              width: 360.w,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount:
                                     widget.foodController.listOtherFood.length,
                                 itemBuilder: (context, index) {
                                   return Container(
-                                    margin: EdgeInsets.all(10),
+                                    margin: EdgeInsets.all(10.sp),
                                     child: OtherFoodRecommendationTile(
                                       productOld: widget.food,
                                       session: widget.session,
@@ -672,7 +661,8 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                       boxShape: NeumorphicBoxShape.roundRect(
                                           BorderRadius.circular(20)),
                                     ),
-                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    margin:
+                                        EdgeInsets.symmetric(vertical: 10.h),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -689,14 +679,14 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                   textStyle: TextStyle(
                                                       color: widget.color
                                                           .secondaryTextColor,
-                                                      fontSize: 18,
+                                                      fontSize: 18.sp,
                                                       fontWeight:
                                                           FontWeight.w600),
                                                 ),
                                               ),
                                             ),
                                             NeumorphicButton(
-                                              margin: EdgeInsets.all(10),
+                                              margin: EdgeInsets.all(10.sp),
                                               onPressed: () {
                                                 setState(() {
                                                   isBahanOpen = false;
@@ -710,11 +700,10 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                 color:
                                                     widget.color.primaryColor,
                                               ),
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
+                                              padding: EdgeInsets.all(10.sp),
                                               child: FaIcon(
                                                 FontAwesomeIcons.chevronUp,
-                                                size: 16,
+                                                size: 16.sp,
                                                 color:
                                                     widget.color.secondaryColor,
                                               ),
@@ -722,36 +711,36 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                           ],
                                         ),
                                         Column(
-                                            children: widget
-                                                .food.foodIngredientInfo!
-                                                .map(
-                                                  (e) => Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                          alignment: Alignment
-                                                              .bottomCenter,
-                                                          margin: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical: 10),
-                                                          child: FaIcon(
-                                                            FontAwesomeIcons
-                                                                .solidCircle,
-                                                            size: 8,
-                                                          )),
-                                                      Expanded(
-                                                          child:
-                                                              e.ingredientDescription ==
+                                            children:
+                                                widget.food.foodIngredientInfo!
+                                                    .map(
+                                                      (e) => Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Container(
+                                                              alignment: Alignment
+                                                                  .bottomCenter,
+                                                              margin: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          10.h),
+                                                              child: FaIcon(
+                                                                FontAwesomeIcons
+                                                                    .solidCircle,
+                                                                size: 8.sp,
+                                                              )),
+                                                          Expanded(
+                                                              child: e.ingredientDescription ==
                                                                       null
                                                                   ? Container(
                                                                       padding: EdgeInsets.only(
                                                                           left:
-                                                                              20),
+                                                                              20.w),
                                                                       margin: EdgeInsets.symmetric(
                                                                           vertical:
-                                                                              5),
+                                                                              5.h),
                                                                       child:
                                                                           Column(
                                                                         crossAxisAlignment:
@@ -765,7 +754,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                                 TextAlign.justify,
                                                                             style:
                                                                                 GoogleFonts.inter(
-                                                                              textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14, fontWeight: FontWeight.normal),
+                                                                              textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14.sp, fontWeight: FontWeight.normal),
                                                                             ),
                                                                           ),
                                                                           Column(
@@ -777,20 +766,20 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                                     children: [
                                                                                       Container(
                                                                                           alignment: Alignment.bottomCenter,
-                                                                                          padding: const EdgeInsets.only(right: 5, top: 5),
-                                                                                          margin: EdgeInsets.symmetric(vertical: 5),
+                                                                                          padding: EdgeInsets.only(top: 5.h),
+                                                                                          margin: EdgeInsets.symmetric(vertical: 5.h),
                                                                                           child: FaIcon(
                                                                                             FontAwesomeIcons.circle,
-                                                                                            size: 8,
+                                                                                            size: 8.sp,
                                                                                           )),
                                                                                       Padding(
-                                                                                        padding: EdgeInsets.only(left: 10),
+                                                                                        padding: EdgeInsets.only(left: 10.w),
                                                                                         child: Text(
                                                                                           '${e.ingredientDescription}.',
                                                                                           softWrap: true,
                                                                                           textAlign: TextAlign.justify,
                                                                                           style: GoogleFonts.inter(
-                                                                                            textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14, fontWeight: FontWeight.normal),
+                                                                                            textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14.sp, fontWeight: FontWeight.normal),
                                                                                           ),
                                                                                         ),
                                                                                       ),
@@ -805,10 +794,10 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                   : Container(
                                                                       padding: EdgeInsets.only(
                                                                           left:
-                                                                              20),
+                                                                              20.w),
                                                                       margin: EdgeInsets.symmetric(
                                                                           vertical:
-                                                                              5),
+                                                                              5.h),
                                                                       alignment:
                                                                           Alignment
                                                                               .centerLeft,
@@ -823,15 +812,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                             .inter(
                                                                           textStyle: TextStyle(
                                                                               color: widget.color.primaryTextColor,
-                                                                              fontSize: 14,
+                                                                              fontSize: 14.sp,
                                                                               fontWeight: FontWeight.normal),
                                                                         ),
                                                                       ),
                                                                     ))
-                                                    ],
-                                                  ),
-                                                )
-                                                .toList()),
+                                                        ],
+                                                      ),
+                                                    )
+                                                    .toList()),
 
                                         ///
                                       ],
@@ -843,7 +832,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                       });
                                     },
                                     child: Neumorphic(
-                                        padding: EdgeInsets.all(10),
+                                        padding: EdgeInsets.all(10.sp),
                                         style: NeumorphicStyle(
                                           shape: NeumorphicShape.flat,
                                           color: widget.color.primaryColor,
@@ -851,8 +840,8 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               NeumorphicBoxShape.roundRect(
                                                   BorderRadius.circular(20)),
                                         ),
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 10),
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: 10.h),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -864,14 +853,14 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                   textStyle: TextStyle(
                                                       color: widget.color
                                                           .secondaryTextColor,
-                                                      fontSize: 18,
+                                                      fontSize: 18.sp,
                                                       fontWeight:
                                                           FontWeight.w600),
                                                 ),
                                               ),
                                             ),
                                             NeumorphicButton(
-                                              margin: EdgeInsets.all(10),
+                                              margin: EdgeInsets.all(10.sp),
                                               onPressed: () {
                                                 setState(() {
                                                   isBahanOpen = true;
@@ -885,11 +874,10 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                 color:
                                                     widget.color.primaryColor,
                                               ),
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: EdgeInsets.all(8.sp),
                                               child: FaIcon(
                                                 FontAwesomeIcons.chevronDown,
-                                                size: 16,
+                                                size: 16.sp,
                                                 color:
                                                     widget.color.secondaryColor,
                                               ),
@@ -899,14 +887,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                   ),
                             isLangkahOpen
                                 ? Neumorphic(
-                                    padding: EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(10.sp),
                                     style: NeumorphicStyle(
                                       shape: NeumorphicShape.flat,
                                       color: widget.color.primaryColor,
                                       boxShape: NeumorphicBoxShape.roundRect(
                                           BorderRadius.circular(20)),
                                     ),
-                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    margin:
+                                        EdgeInsets.symmetric(vertical: 10.h),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -922,14 +911,14 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                   textStyle: TextStyle(
                                                       color: widget.color
                                                           .secondaryTextColor,
-                                                      fontSize: 18,
+                                                      fontSize: 18.sp,
                                                       fontWeight:
                                                           FontWeight.w600),
                                                 ),
                                               ),
                                             ),
                                             NeumorphicButton(
-                                              margin: EdgeInsets.all(10),
+                                              margin: EdgeInsets.all(10.sp),
                                               onPressed: () {
                                                 setState(() {
                                                   isLangkahOpen = false;
@@ -943,11 +932,10 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                 color:
                                                     widget.color.primaryColor,
                                               ),
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
+                                              padding: EdgeInsets.all(10.sp),
                                               child: FaIcon(
                                                 FontAwesomeIcons.chevronUp,
-                                                size: 16,
+                                                size: 16.sp,
                                                 color:
                                                     widget.color.secondaryColor,
                                               ),
@@ -966,7 +954,8 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                         Container(
                                                           margin: EdgeInsets
                                                               .symmetric(
-                                                                  vertical: 10),
+                                                                  vertical:
+                                                                      10.h),
                                                           child: Text(
                                                               '${e.step}.',
                                                               style: GoogleFonts
@@ -976,7 +965,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                         .color
                                                                         .primaryTextColor,
                                                                     fontSize:
-                                                                        14,
+                                                                        14.sp,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .normal),
@@ -988,13 +977,12 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                             e.instruction ==
                                                                     null
                                                                 ? Container(
-                                                                    padding: EdgeInsets
-                                                                        .only(
-                                                                            left:
-                                                                                10),
+                                                                    padding: EdgeInsets.only(
+                                                                        left: 10
+                                                                            .w),
                                                                     margin: EdgeInsets.symmetric(
                                                                         vertical:
-                                                                            10),
+                                                                            10.h),
                                                                     child:
                                                                         Column(
                                                                       crossAxisAlignment:
@@ -1011,7 +999,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                               GoogleFonts.inter(
                                                                             textStyle: TextStyle(
                                                                                 color: widget.color.primaryTextColor,
-                                                                                fontSize: 14,
+                                                                                fontSize: 14.sp,
                                                                                 fontWeight: FontWeight.normal),
                                                                           ),
                                                                         ),
@@ -1025,26 +1013,26 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                                                       children: [
                                                                                         Container(
-                                                                                          margin: EdgeInsets.symmetric(vertical: 10),
+                                                                                          margin: EdgeInsets.symmetric(vertical: 10.h),
                                                                                           child: Text(
                                                                                             '${e.step}.',
                                                                                             softWrap: true,
                                                                                             textAlign: TextAlign.justify,
                                                                                             style: GoogleFonts.inter(
-                                                                                              textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14, fontWeight: FontWeight.normal),
+                                                                                              textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14.sp, fontWeight: FontWeight.normal),
                                                                                             ),
                                                                                           ),
                                                                                         ),
                                                                                         Expanded(
                                                                                           child: Container(
-                                                                                            padding: EdgeInsets.only(left: 10),
-                                                                                            margin: EdgeInsets.symmetric(vertical: 10),
+                                                                                            padding: EdgeInsets.only(left: 10.w),
+                                                                                            margin: EdgeInsets.symmetric(vertical: 10.h),
                                                                                             child: Text(
                                                                                               '${e.instruction}.',
                                                                                               softWrap: true,
                                                                                               textAlign: TextAlign.justify,
                                                                                               style: GoogleFonts.inter(
-                                                                                                textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14, fontWeight: FontWeight.normal),
+                                                                                                textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14.sp, fontWeight: FontWeight.normal),
                                                                                               ),
                                                                                             ),
                                                                                           ),
@@ -1052,9 +1040,9 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                                       ],
                                                                                     ),
                                                                                     Container(
-                                                                                        height: size.height * 0.2,
-                                                                                        width: size.width,
-                                                                                        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                                                                        height: 150.h,
+                                                                                        width: 360.w,
+                                                                                        margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                                                                                         child: widget.food.imageFilename == ''
                                                                                             ? Icon(Icons.image_not_supported_rounded)
                                                                                             : ClipRRect(
@@ -1073,13 +1061,12 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                     ),
                                                                   )
                                                                 : Container(
-                                                                    padding: EdgeInsets
-                                                                        .only(
-                                                                            left:
-                                                                                10),
+                                                                    padding: EdgeInsets.only(
+                                                                        left: 10
+                                                                            .w),
                                                                     margin: EdgeInsets.symmetric(
                                                                         vertical:
-                                                                            10),
+                                                                            10.h),
                                                                     alignment:
                                                                         Alignment
                                                                             .centerLeft,
@@ -1093,12 +1080,10 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                       style: GoogleFonts
                                                                           .inter(
                                                                         textStyle: TextStyle(
-                                                                            color: widget
-                                                                                .color.primaryTextColor,
-                                                                            fontSize:
-                                                                                14,
-                                                                            fontWeight:
-                                                                                FontWeight.normal),
+                                                                            color:
+                                                                                widget.color.primaryTextColor,
+                                                                            fontSize: 14.sp,
+                                                                            fontWeight: FontWeight.normal),
                                                                       ),
                                                                     ),
                                                                   ),
@@ -1107,15 +1092,14 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                 ? Container()
                                                                 : Container(
                                                                     height:
-                                                                        size.height *
-                                                                            0.2,
-                                                                    width: size
-                                                                        .width,
+                                                                        150.h,
+                                                                    width:
+                                                                        360.w,
                                                                     margin: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            20,
-                                                                        vertical:
-                                                                            10),
+                                                                        horizontal: 20
+                                                                            .w,
+                                                                        vertical: 10
+                                                                            .h),
                                                                     decoration: BoxDecoration(
                                                                         color: widget
                                                                             .color
@@ -1150,7 +1134,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                       });
                                     },
                                     child: Neumorphic(
-                                        padding: EdgeInsets.all(10),
+                                        padding: EdgeInsets.all(10.sp),
                                         style: NeumorphicStyle(
                                           shape: NeumorphicShape.flat,
                                           color: widget.color.primaryColor,
@@ -1158,8 +1142,8 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               NeumorphicBoxShape.roundRect(
                                                   BorderRadius.circular(20)),
                                         ),
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 10),
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: 10.h),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -1171,14 +1155,14 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                   textStyle: TextStyle(
                                                       color: widget.color
                                                           .secondaryTextColor,
-                                                      fontSize: 18,
+                                                      fontSize: 18.sp,
                                                       fontWeight:
                                                           FontWeight.w600),
                                                 ),
                                               ),
                                             ),
                                             NeumorphicButton(
-                                              margin: EdgeInsets.all(10),
+                                              margin: EdgeInsets.all(10.sp),
                                               onPressed: () {
                                                 setState(() {
                                                   isLangkahOpen = true;
@@ -1192,11 +1176,10 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                 color:
                                                     widget.color.primaryColor,
                                               ),
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: EdgeInsets.all(8.sp),
                                               child: FaIcon(
                                                 FontAwesomeIcons.chevronDown,
-                                                size: 16,
+                                                size: 16.sp,
                                                 color:
                                                     widget.color.secondaryColor,
                                               ),
@@ -1213,7 +1196,8 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                     children: [
                       isOnBottom
                           ? NeumorphicButton(
-                              margin: EdgeInsets.only(right: 10, bottom: 10),
+                              margin:
+                                  EdgeInsets.only(right: 10.w, bottom: 10.h),
                               onPressed: () {
                                 //1800an offsetnya
 
@@ -1232,16 +1216,16 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                 boxShape: NeumorphicBoxShape.circle(),
                                 color: widget.color.secondaryColor,
                               ),
-                              padding: const EdgeInsets.all(12.0),
+                              padding: EdgeInsets.all(12.sp),
                               child: FaIcon(
                                 FontAwesomeIcons.chevronUp,
-                                size: 16,
+                                size: 16.sp,
                                 color: widget.color.primaryColor,
                               ),
                             )
                           : Container(),
                       NeumorphicButton(
-                        margin: EdgeInsets.only(right: 10, bottom: 10),
+                        margin: EdgeInsets.only(right: 10.w, bottom: 10.h),
                         onPressed: () {
                           final food = Food(
                               imageFileName: widget.food.imageFilename,
@@ -1294,10 +1278,10 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                           boxShape: NeumorphicBoxShape.circle(),
                           color: widget.color.secondaryColor,
                         ),
-                        padding: const EdgeInsets.all(12.0),
+                        padding: EdgeInsets.all(12.sp),
                         child: FaIcon(
                           FontAwesomeIcons.plus,
-                          size: 16,
+                          size: 16.sp,
                           color: widget.color.primaryColor,
                         ),
                       ),

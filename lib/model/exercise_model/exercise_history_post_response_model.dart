@@ -137,7 +137,7 @@ class Sport {
         // variations!.add(new Null.fromJson(v));
       });
     }
-    imageFilename = json['image_filename'];
+    imageFilename = json['imageFilename'] != null ? json['imageFilename'] : '';
   }
 
   Map<String, dynamic> toJson() {
@@ -150,7 +150,7 @@ class Sport {
     if (this.variations != null) {
       // data['variations'] = this.variations!.map((v) => v.toJson()).toList();
     }
-    data['image_filename'] = this.imageFilename;
+    data['imageFilename'] = this.imageFilename;
     return data;
   }
 }
