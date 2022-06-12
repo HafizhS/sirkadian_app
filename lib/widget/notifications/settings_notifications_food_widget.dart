@@ -1,7 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sirkadian_app/controller/information_controller.dart';
 import '../../../controller/hexcolor_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,8 +10,12 @@ import '../../controller/notification_controller.dart';
 class SettingsNotificationsFoodWidget extends StatefulWidget {
   final ColorConstantController color;
   final NotificationController notificationController;
+  final InformationController informationController;
   const SettingsNotificationsFoodWidget(
-      {Key? key, required this.color, required this.notificationController})
+      {Key? key,
+      required this.color,
+      required this.notificationController,
+      required this.informationController})
       : super(key: key);
 
   @override
@@ -21,74 +25,56 @@ class SettingsNotificationsFoodWidget extends StatefulWidget {
 
 class _SettingsNotificationsFoodWidgetState
     extends State<SettingsNotificationsFoodWidget> {
-  final data = GetStorage('myData');
   bool isOpen = false;
-  bool isMuteSarapan = false;
-  bool isMuteMakanSiang = false;
-  bool isMuteMakanMalam = false;
-  TimeOfDay timeOfDaySarapan = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay timeOfDayMakanSiang = TimeOfDay(hour: 14, minute: 00);
-  TimeOfDay timeOfDayMakanMalam = TimeOfDay(hour: 17, minute: 00);
-  @override
-  void initState() {
-    getToD();
-    super.initState();
-  }
 
-  void getToD() {
-    if (data.read('dataNotificationFoodSarapan') != null) {
-      timeOfDaySarapan = TimeOfDay(
-          hour: data.read('dataNotificationFoodSarapan')['hour'],
-          minute: data.read('dataNotificationFoodSarapan')['minute']);
-    }
-    if (data.read('dataNotificationFoodMakanSiang') != null) {
-      timeOfDayMakanSiang = TimeOfDay(
-          hour: data.read('dataNotificationFoodMakanSiang')['hour'],
-          minute: data.read('dataNotificationFoodMakanSiang')['minute']);
-    }
-    if (data.read('dataNotificationFoodMakanMalam') != null) {
-      timeOfDayMakanMalam = TimeOfDay(
-          hour: data.read('dataNotificationFoodMakanMalam')['hour'],
-          minute: data.read('dataNotificationFoodMakanMalam')['minute']);
-    }
-  }
-
-  void _showTimePicker(session, initialTime) {
-    showTimePicker(
+  Future<void> _showTimePicker(session, initialTime) async {
+    await showTimePicker(
       context: context,
       initialTime: initialTime,
     ).then((value) {
-      if (session == 'Sarapan') {
-        setState(() {
-          timeOfDaySarapan = value!;
-          widget.notificationController.hourSarapan = timeOfDaySarapan.hour;
-          widget.notificationController.minuteSarapan = timeOfDaySarapan.minute;
-        });
-        widget.notificationController.cancel(1);
-        widget.notificationController.rememberNotificationFood('Sarapan');
-        widget.notificationController.notificationFoodSarapan(1);
-      } else if (session == 'Makan Siang') {
-        setState(() {
-          timeOfDayMakanSiang = value!;
-          widget.notificationController.hourMakanSiang =
-              timeOfDayMakanSiang.hour;
-          widget.notificationController.minuteMakanSiang =
-              timeOfDayMakanSiang.minute;
-        });
-        widget.notificationController.cancel(2);
-        widget.notificationController.rememberNotificationFood('Makan Siang');
-        widget.notificationController.notificationFoodMakanSiang(2);
+      if (value != null) {
+        if (session == 'Sarapan') {
+          setState(() {
+            widget.notificationController.timeOfDaySarapan = value;
+            widget.notificationController.hourSarapan =
+                widget.notificationController.timeOfDaySarapan.hour;
+            widget.notificationController.minuteSarapan =
+                widget.notificationController.timeOfDaySarapan.minute;
+          });
+
+          widget.notificationController.rememberNotificationFood('Sarapan');
+
+          widget.notificationController.notificationFoodSarapan(
+              1, widget.notificationController.isSoundSarapan);
+        } else if (session == 'Makan Siang') {
+          setState(() {
+            widget.notificationController.timeOfDayMakanSiang = value;
+            widget.notificationController.hourMakanSiang =
+                widget.notificationController.timeOfDayMakanSiang.hour;
+            widget.notificationController.minuteMakanSiang =
+                widget.notificationController.timeOfDayMakanSiang.minute;
+          });
+
+          widget.notificationController.rememberNotificationFood('Makan Siang');
+
+          widget.notificationController.notificationFoodMakanSiang(
+              2, widget.notificationController.isSoundMakanSiang);
+        } else {
+          setState(() {
+            widget.notificationController.timeOfDayMakanMalam = value;
+            widget.notificationController.hourMakanMalam =
+                widget.notificationController.timeOfDayMakanMalam.hour;
+            widget.notificationController.minuteMakanMalam =
+                widget.notificationController.timeOfDayMakanMalam.minute;
+          });
+
+          widget.notificationController.rememberNotificationFood('Makan Malam');
+
+          widget.notificationController.notificationFoodMakanMalam(
+              3, widget.notificationController.isSoundMakanMalam);
+        }
       } else {
-        setState(() {
-          timeOfDayMakanMalam = value!;
-          widget.notificationController.hourMakanMalam =
-              timeOfDayMakanMalam.hour;
-          widget.notificationController.minuteMakanMalam =
-              timeOfDayMakanMalam.minute;
-        });
-        widget.notificationController.cancel(3);
-        widget.notificationController.rememberNotificationFood('Makan Malam');
-        widget.notificationController.notificationFoodMakanMalam(3);
+        print('timepicker value null');
       }
     });
   }
@@ -106,7 +92,7 @@ class _SettingsNotificationsFoodWidgetState
                 )),
             margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
             child: Container(
-              height: 400.h,
+              height: 380.h,
               width: 360.w,
               alignment: Alignment.center,
               child: Column(
@@ -170,7 +156,11 @@ class _SettingsNotificationsFoodWidgetState
                       ),
                       NeumorphicButton(
                           margin: EdgeInsets.only(top: 8.h, right: 10.w),
-                          onPressed: () {},
+                          onPressed: () {
+                            widget.informationController.snackBarError(
+                                'Fitur Belum Tersedia',
+                                'Kami sedang mengerjakan fitur tersebut.');
+                          },
                           style: NeumorphicStyle(
                               color: widget.color.secondaryColor,
                               shape: NeumorphicShape.flat,
@@ -180,7 +170,7 @@ class _SettingsNotificationsFoodWidgetState
                               //border: NeumorphicBorder()
                               ),
                           padding: EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 30.w),
+                              vertical: 8.h, horizontal: 30.w),
                           child: Text(
                             "Ganti Ringtones",
                             style: GoogleFonts.inter(
@@ -196,14 +186,124 @@ class _SettingsNotificationsFoodWidgetState
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Jadwal Makan',
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                              color: widget.color.secondaryTextColor,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Jadwal Makan',
+                            style: GoogleFonts.inter(
+                              textStyle: TextStyle(
+                                  color: widget.color.secondaryTextColor,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          NeumorphicButton(
+                            onPressed: () {
+                              setState(() {
+                                //Sarapan
+                                widget.notificationController.hourSarapan = 7;
+                                widget.notificationController.minuteSarapan =
+                                    00;
+                                widget.notificationController.timeOfDaySarapan =
+                                    TimeOfDay(
+                                        hour: widget.notificationController
+                                            .hourSarapan!,
+                                        minute: widget.notificationController
+                                            .minuteSarapan!);
+                                widget.notificationController.isSoundSarapan =
+                                    true;
+
+                                //Makan Siang
+                                widget.notificationController.hourMakanSiang =
+                                    14;
+                                widget.notificationController.minuteMakanSiang =
+                                    00;
+
+                                widget.notificationController
+                                        .timeOfDayMakanSiang =
+                                    TimeOfDay(
+                                        hour: widget.notificationController
+                                            .hourMakanSiang!,
+                                        minute: widget.notificationController
+                                            .minuteMakanSiang!);
+                                widget.notificationController
+                                    .isSoundMakanSiang = true;
+
+                                //Makan Malam
+                                widget.notificationController.hourMakanMalam =
+                                    19;
+                                widget.notificationController.minuteMakanMalam =
+                                    00;
+                                widget.notificationController
+                                        .timeOfDayMakanMalam =
+                                    TimeOfDay(
+                                        hour: widget.notificationController
+                                            .hourMakanMalam!,
+                                        minute: widget.notificationController
+                                            .minuteMakanMalam!);
+                                widget.notificationController
+                                    .isSoundMakanMalam = true;
+                              });
+                              widget.notificationController
+                                  .rememberNotificationFood('Sarapan');
+
+                              widget.notificationController
+                                  .notificationFoodSarapan(
+                                      1,
+                                      widget.notificationController
+                                          .isSoundSarapan);
+
+                              widget.notificationController
+                                  .rememberNotificationFood('Makan Siang');
+
+                              widget.notificationController
+                                  .notificationFoodMakanSiang(
+                                      2,
+                                      widget.notificationController
+                                          .isSoundMakanSiang);
+
+                              widget.notificationController
+                                  .rememberNotificationFood('Makan Malam');
+
+                              widget.notificationController
+                                  .notificationFoodMakanMalam(
+                                      3,
+                                      widget.notificationController
+                                          .isSoundMakanMalam);
+                            },
+                            style: NeumorphicStyle(
+                                color: widget.color.bgColor,
+                                shape: NeumorphicShape.flat,
+                                boxShape: NeumorphicBoxShape.roundRect(
+                                  BorderRadius.circular(20),
+                                )),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.w, vertical: 5.h),
+                            margin: EdgeInsets.only(right: 8.w),
+                            child: RichText(
+                              text: TextSpan(
+                                text: ' ',
+                                style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                  color: widget.color.primaryTextColor,
+                                  fontSize: 12.sp,
+                                )),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: 'Reset',
+                                    style: GoogleFonts.inter(
+                                      textStyle: TextStyle(
+                                          color: widget.color.secondaryColor,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 8.h),
                       Neumorphic(
@@ -221,7 +321,9 @@ class _SettingsNotificationsFoodWidgetState
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              timeOfDaySarapan.format(context).toString(),
+                              widget.notificationController.timeOfDaySarapan
+                                  .format(context)
+                                  .toString(),
                               style: GoogleFonts.inter(
                                 textStyle: TextStyle(
                                     color: widget.color.secondaryTextColor,
@@ -234,7 +336,9 @@ class _SettingsNotificationsFoodWidgetState
                                 NeumorphicButton(
                                   onPressed: () {
                                     _showTimePicker(
-                                        'Sarapan', timeOfDaySarapan);
+                                        'Sarapan',
+                                        widget.notificationController
+                                            .timeOfDaySarapan);
                                   },
                                   margin: EdgeInsets.all(5.sp),
                                   style: NeumorphicStyle(
@@ -253,8 +357,18 @@ class _SettingsNotificationsFoodWidgetState
                                 NeumorphicButton(
                                   onPressed: () {
                                     setState(() {
-                                      isMuteSarapan = !isMuteSarapan;
+                                      widget.notificationController
+                                              .isSoundSarapan =
+                                          !widget.notificationController
+                                              .isSoundSarapan;
                                     });
+                                    widget.notificationController
+                                        .rememberNotificationFood('Sarapan');
+                                    widget.notificationController
+                                        .notificationFoodSarapan(
+                                            1,
+                                            widget.notificationController
+                                                .isSoundSarapan);
                                   },
                                   margin: EdgeInsets.symmetric(
                                       horizontal: 5.w, vertical: 10.h),
@@ -266,9 +380,9 @@ class _SettingsNotificationsFoodWidgetState
                                   ),
                                   padding: EdgeInsets.all(8.sp),
                                   child: FaIcon(
-                                    isMuteSarapan
-                                        ? FontAwesomeIcons.volumeMute
-                                        : FontAwesomeIcons.volumeUp,
+                                    widget.notificationController.isSoundSarapan
+                                        ? FontAwesomeIcons.volumeUp
+                                        : FontAwesomeIcons.volumeMute,
                                     size: 16.sp,
                                     color: widget.color.secondaryColor,
                                   ),
@@ -294,7 +408,9 @@ class _SettingsNotificationsFoodWidgetState
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              timeOfDayMakanSiang.format(context).toString(),
+                              widget.notificationController.timeOfDayMakanSiang
+                                  .format(context)
+                                  .toString(),
                               style: GoogleFonts.inter(
                                 textStyle: TextStyle(
                                     color: widget.color.secondaryTextColor,
@@ -307,7 +423,9 @@ class _SettingsNotificationsFoodWidgetState
                                 NeumorphicButton(
                                   onPressed: () {
                                     _showTimePicker(
-                                        'Makan Siang', timeOfDayMakanSiang);
+                                        'Makan Siang',
+                                        widget.notificationController
+                                            .timeOfDayMakanSiang);
                                   },
                                   margin: EdgeInsets.all(5.sp),
                                   style: NeumorphicStyle(
@@ -326,8 +444,19 @@ class _SettingsNotificationsFoodWidgetState
                                 NeumorphicButton(
                                   onPressed: () {
                                     setState(() {
-                                      isMuteMakanSiang = !isMuteMakanSiang;
+                                      widget.notificationController
+                                              .isSoundMakanSiang =
+                                          !widget.notificationController
+                                              .isSoundMakanSiang;
                                     });
+                                    widget.notificationController
+                                        .rememberNotificationFood(
+                                            'Makan Siang');
+                                    widget.notificationController
+                                        .notificationFoodMakanSiang(
+                                            2,
+                                            widget.notificationController
+                                                .isSoundMakanSiang);
                                   },
                                   margin: EdgeInsets.symmetric(
                                       horizontal: 5.w, vertical: 10.h),
@@ -339,9 +468,10 @@ class _SettingsNotificationsFoodWidgetState
                                   ),
                                   padding: EdgeInsets.all(8.sp),
                                   child: FaIcon(
-                                    isMuteMakanSiang
-                                        ? FontAwesomeIcons.volumeMute
-                                        : FontAwesomeIcons.volumeUp,
+                                    widget.notificationController
+                                            .isSoundMakanSiang
+                                        ? FontAwesomeIcons.volumeUp
+                                        : FontAwesomeIcons.volumeMute,
                                     size: 16.sp,
                                     color: widget.color.secondaryColor,
                                   ),
@@ -367,7 +497,9 @@ class _SettingsNotificationsFoodWidgetState
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              timeOfDayMakanMalam.format(context).toString(),
+                              widget.notificationController.timeOfDayMakanMalam
+                                  .format(context)
+                                  .toString(),
                               style: GoogleFonts.inter(
                                 textStyle: TextStyle(
                                     color: widget.color.secondaryTextColor,
@@ -380,7 +512,9 @@ class _SettingsNotificationsFoodWidgetState
                                 NeumorphicButton(
                                   onPressed: () {
                                     _showTimePicker(
-                                        'Makan Malam', timeOfDayMakanMalam);
+                                        'Makan Malam',
+                                        widget.notificationController
+                                            .timeOfDayMakanMalam);
                                   },
                                   margin: EdgeInsets.all(5.sp),
                                   style: NeumorphicStyle(
@@ -399,8 +533,19 @@ class _SettingsNotificationsFoodWidgetState
                                 NeumorphicButton(
                                   onPressed: () {
                                     setState(() {
-                                      isMuteMakanMalam = !isMuteMakanMalam;
+                                      widget.notificationController
+                                              .isSoundMakanMalam =
+                                          !widget.notificationController
+                                              .isSoundMakanMalam;
                                     });
+                                    widget.notificationController
+                                        .rememberNotificationFood(
+                                            'Makan Malam');
+                                    widget.notificationController
+                                        .notificationFoodMakanMalam(
+                                            3,
+                                            widget.notificationController
+                                                .isSoundMakanMalam);
                                   },
                                   margin: EdgeInsets.symmetric(
                                       horizontal: 5.w, vertical: 10.h),
@@ -412,9 +557,10 @@ class _SettingsNotificationsFoodWidgetState
                                   ),
                                   padding: EdgeInsets.all(8.sp),
                                   child: FaIcon(
-                                    isMuteMakanMalam
-                                        ? FontAwesomeIcons.volumeMute
-                                        : FontAwesomeIcons.volumeUp,
+                                    widget.notificationController
+                                            .isSoundMakanMalam
+                                        ? FontAwesomeIcons.volumeUp
+                                        : FontAwesomeIcons.volumeMute,
                                     size: 16.sp,
                                     color: widget.color.secondaryColor,
                                   ),
