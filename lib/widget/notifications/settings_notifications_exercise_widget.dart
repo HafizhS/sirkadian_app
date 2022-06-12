@@ -61,7 +61,7 @@ class _SettingsNotificationsExerciseWidgetState
                       ),
                       SizedBox(width: 18.w),
                       Text(
-                        'Notifikasi SirkaExercise',
+                        'SirkaExercise',
                         style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               color: widget.color.primaryTextColor,
@@ -122,7 +122,7 @@ class _SettingsNotificationsExerciseWidgetState
                                 padding: EdgeInsets.symmetric(
                                     vertical: 8, horizontal: 30.w),
                                 child: Text(
-                                  "Ganti Ringtones",
+                                  "Ubah",
                                   style: GoogleFonts.inter(
                                     textStyle: TextStyle(
                                         color: widget.color.primaryColor,
@@ -393,7 +393,7 @@ class _SettingsNotificationsExerciseWidgetState
                   ),
                   SizedBox(width: 18.w),
                   Text(
-                    'Notifikasi SirkaExercise',
+                    'SirkaExercise',
                     style: GoogleFonts.poppins(
                       textStyle: TextStyle(
                           color: widget.color.primaryTextColor,

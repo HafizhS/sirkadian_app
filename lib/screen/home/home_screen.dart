@@ -99,12 +99,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             Stack(alignment: Alignment.center, children: [
                               CircleAvatar(
                                 backgroundColor: color.primaryColor,
-                                radius: 25.sp,
+                                radius: 22.sp,
                               ),
                               CircleAvatar(
                                 backgroundImage:
                                     AssetImage('assets/images/user_male.jpg'),
-                                radius: 20.sp,
+                                radius: 18.sp,
                               ),
                             ]),
                           ],
@@ -350,12 +350,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Stack(alignment: Alignment.center, children: [
                                   CircleAvatar(
                                     backgroundColor: color.primaryColor,
-                                    radius: 25.sp,
+                                    radius: 22.sp,
                                   ),
                                   CircleAvatar(
                                     backgroundImage: AssetImage(
                                         'assets/images/user_male.jpg'),
-                                    radius: 20.sp,
+                                    radius: 18.sp,
                                   ),
                                 ]),
                               ],

@@ -110,7 +110,7 @@ class _SettingsNotificationsFoodWidgetState
                       ),
                       SizedBox(width: 18.w),
                       Text(
-                        'Notifikasi SirkaDiet',
+                        'SirkaDiet',
                         style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               color: widget.color.primaryTextColor,
@@ -172,7 +172,7 @@ class _SettingsNotificationsFoodWidgetState
                           padding: EdgeInsets.symmetric(
                               vertical: 8.h, horizontal: 30.w),
                           child: Text(
-                            "Ganti Ringtones",
+                            "Ubah",
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                   color: widget.color.primaryColor,
@@ -605,7 +605,7 @@ class _SettingsNotificationsFoodWidgetState
                   ),
                   SizedBox(width: 18.w),
                   Text(
-                    'Notifikasi SirkaDiet',
+                    'SirkaDiet',
                     style: GoogleFonts.poppins(
                       textStyle: TextStyle(
                           color: widget.color.primaryTextColor,

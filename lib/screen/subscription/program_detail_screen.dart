@@ -43,7 +43,7 @@ class _ProgramDetailScreenState extends State<ProgramDetailScreen> {
           width: double.infinity,
           height: 290.h,
           decoration:
-              BoxDecoration(color: color.secondaryColor, boxShadow: <BoxShadow>[
+              BoxDecoration(color: color.tersierColor, boxShadow: <BoxShadow>[
             BoxShadow(
                 color: color.blackColor.withOpacity(0.2),
                 blurRadius: 20,
