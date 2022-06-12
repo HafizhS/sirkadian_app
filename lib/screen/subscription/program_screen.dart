@@ -223,7 +223,7 @@ class _ProgramScreenState extends State<ProgramScreen> {
                         : CrossFadeState.showSecond,
                     firstChild: Container(
                       padding:
-                          EdgeInsets.only(top: 40.h, right: 20.w, left: 20.w),
+                          EdgeInsets.only(top: 60.h, right: 20.w, left: 20.w),
                       width: double.infinity,
                       height: 290.h,
                       decoration: BoxDecoration(
@@ -288,148 +288,153 @@ class _ProgramScreenState extends State<ProgramScreen> {
                                             blurRadius: 20,
                                             spreadRadius: 6)
                                       ]),
-                                  child: PageView.builder(
-                                      itemCount: subscriptionController
-                                          .listSubscriptionActiveUser.length,
-                                      itemBuilder: (context, index) {
-                                        return Container(
-                                          padding: EdgeInsets.only(
-                                              top: 10.h,
-                                              left: 10.w,
-                                              right: 10.w),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
+                                  child: subscriptionController
+                                          .listSubscriptionActiveUser.isEmpty
+                                      ? Text(
+                                          "Belum ada program yang Anda pilih",
+                                          style: GoogleFonts.inter(
+                                            textStyle: TextStyle(
+                                                color: color.secondaryTextColor,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                        )
+                                      : PageView.builder(
+                                          itemCount: subscriptionController
+                                              .listSubscriptionActiveUser
+                                              .length,
+                                          itemBuilder: (context, index) {
+                                            return Container(
+                                              padding: EdgeInsets.only(
+                                                  top: 10.h,
+                                                  left: 10.w,
+                                                  right: 10.w),
+                                              child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Program Kesehatan Anda",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          textStyle: TextStyle(
+                                                              color: color
+                                                                  .primaryTextColor,
+                                                              fontSize: 16.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      NeumorphicButton(
+                                                        onPressed: () {},
+                                                        style: NeumorphicStyle(
+                                                          depth: 4,
+                                                          shape: NeumorphicShape
+                                                              .flat,
+                                                          boxShape:
+                                                              NeumorphicBoxShape
+                                                                  .circle(),
+                                                          color: Colors
+                                                              .transparent,
+                                                        ),
+                                                        padding: EdgeInsets.all(
+                                                            8.0.sp),
+                                                        child: Center(
+                                                          child: FaIcon(
+                                                            FontAwesomeIcons
+                                                                .history,
+                                                            size: 18.sp,
+                                                            color: color
+                                                                .primaryTextColor,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                   Text(
-                                                    "Program Kesehatan Anda",
-                                                    style: GoogleFonts.poppins(
+                                                    subscriptionController
+                                                            .listSubscriptionActiveUser[
+                                                                index]
+                                                            .subscriptionPackageName! +
+                                                        ' (' +
+                                                        subscriptionController
+                                                            .listSubscriptionActiveUser[
+                                                                index]
+                                                            .subscriptionTypeName! +
+                                                        ')',
+                                                    style: GoogleFonts.inter(
                                                       textStyle: TextStyle(
                                                           color: color
-                                                              .primaryTextColor,
-                                                          fontSize: 16.sp,
+                                                              .secondaryTextColor,
+                                                          fontSize: 14.sp,
                                                           fontWeight:
-                                                              FontWeight.bold),
+                                                              FontWeight.w600),
                                                     ),
                                                   ),
-                                                  NeumorphicButton(
-                                                    onPressed: () {},
-                                                    style: NeumorphicStyle(
-                                                      depth: 4,
-                                                      shape:
-                                                          NeumorphicShape.flat,
-                                                      boxShape:
-                                                          NeumorphicBoxShape
-                                                              .circle(),
-                                                      color: Colors.transparent,
-                                                    ),
-                                                    padding:
-                                                        EdgeInsets.all(8.0.sp),
-                                                    child: Center(
-                                                      child: FaIcon(
-                                                        FontAwesomeIcons
-                                                            .history,
-                                                        size: 18.sp,
-                                                        color: color
-                                                            .primaryTextColor,
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  // Text(
+                                                  //   "Status Kesehatan User (BMI) dan target",
+                                                  //   style: GoogleFonts.inter(
+                                                  //     textStyle: TextStyle(
+                                                  //         color: color
+                                                  //             .secondaryTextColor,
+                                                  //         fontSize: 14.sp,
+                                                  //         fontWeight:
+                                                  //             FontWeight.normal),
+                                                  //   ),
+                                                  // ),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: List<
+                                                              Widget>.generate(
+                                                          subscriptionController
+                                                              .listSubscriptionActiveUser
+                                                              .length,
+                                                          (int index) {
+                                                        return AnimatedContainer(
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    300),
+                                                            height: 8.h,
+                                                            width: 6.w,
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    left: 5.w,
+                                                                    right: 5.w,
+                                                                    bottom:
+                                                                        10.h),
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5),
+                                                                color: (index ==
+                                                                        pageActive)
+                                                                    ? color
+                                                                        .tersierColor
+                                                                    : color
+                                                                        .secondaryColor
+                                                                        .withOpacity(
+                                                                            0.4)));
+                                                      })),
                                                 ],
                                               ),
-                                              subscriptionController
-                                                      .listSubscriptionActiveUser
-                                                      .isEmpty
-                                                  ? Text(
-                                                      "Belum ada program yang Anda pilih",
-                                                      style: GoogleFonts.inter(
-                                                        textStyle: TextStyle(
-                                                            color: color
-                                                                .secondaryTextColor,
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal),
-                                                      ),
-                                                    )
-                                                  : Text(
-                                                      subscriptionController
-                                                              .listSubscriptionActiveUser[
-                                                                  index]
-                                                              .subscriptionPackageName! +
-                                                          ' (' +
-                                                          subscriptionController
-                                                              .listSubscriptionActiveUser[
-                                                                  index]
-                                                              .subscriptionTypeName! +
-                                                          ')',
-                                                      style: GoogleFonts.inter(
-                                                        textStyle: TextStyle(
-                                                            color: color
-                                                                .secondaryTextColor,
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
-                                                      ),
-                                                    ),
-                                              // Text(
-                                              //   "Status Kesehatan User (BMI) dan target",
-                                              //   style: GoogleFonts.inter(
-                                              //     textStyle: TextStyle(
-                                              //         color: color
-                                              //             .secondaryTextColor,
-                                              //         fontSize: 14.sp,
-                                              //         fontWeight:
-                                              //             FontWeight.normal),
-                                              //   ),
-                                              // ),
-                                              Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: List<
-                                                          Widget>.generate(
-                                                      subscriptionController
-                                                          .listSubscriptionActiveUser
-                                                          .length, (int index) {
-                                                    return AnimatedContainer(
-                                                        duration: Duration(
-                                                            milliseconds: 300),
-                                                        height: 8.h,
-                                                        width: 6.w,
-                                                        margin: EdgeInsets.only(
-                                                            left: 5.w,
-                                                            right: 5.w,
-                                                            bottom: 10.h),
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            color: (index ==
-                                                                    pageActive)
-                                                                ? color
-                                                                    .tersierColor
-                                                                : color
-                                                                    .secondaryColor
-                                                                    .withOpacity(
-                                                                        0.4)));
-                                                  })),
-                                            ],
-                                          ),
-                                        );
-                                      })),
+                                            );
+                                          })),
                             ),
                           ]),
                     ),
                     secondChild: Container(
                         padding:
-                            EdgeInsets.only(top: 40.h, right: 20.w, left: 20.w),
+                            EdgeInsets.only(top: 60.h, right: 20.w, left: 20.w),
                         width: 360.w,
                         decoration: BoxDecoration(
                             color: color.secondaryColor,
@@ -515,7 +520,7 @@ class _ProgramScreenState extends State<ProgramScreen> {
                                         ),
                                       ),
                                       Container(
-                                        height: 400.h,
+                                        height: 340.h,
                                         width: 360.w,
                                         margin: EdgeInsets.symmetric(
                                             vertical: 10.h, horizontal: 10.w),
@@ -623,7 +628,7 @@ class _ProgramScreenState extends State<ProgramScreen> {
                                   ))
                               .toList(),
                         ),
-                        SizedBox(height: 50.h),
+                        SizedBox(height: 100.h),
                       ],
                     ),
                   )),
