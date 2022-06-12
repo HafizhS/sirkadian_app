@@ -24,7 +24,13 @@ final String userInfromationGetUrl = '$rootUser/info';
 
 //subscription
 final String rootSubscription = '$root/subscription';
+final String rootUserSubscription = '$root/user_subscription';
 final String subscriptionAllGetUrl = '$rootSubscription/all';
+final String subscriptionClaimCouponPostUrl = '$rootSubscription/claim_coupon';
+final String subscriptionActiveUserGetUrl =
+    '$rootUserSubscription/active_subscription';
+final String subscriptionHistoryUserGetUrl =
+    '$rootUserSubscription/subscription_history';
 
 //foods
 final String rootFood = '$root/food';

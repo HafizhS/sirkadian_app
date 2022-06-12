@@ -36,7 +36,7 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
   String selectedValueVegetarian = 'ya';
   String selectedValueVegan = 'ya';
   String selectedValueHalal = 'ya';
-  int pageChanged = 0;
+  int pageActive = 0;
   String selectedDate = 'Pilih Tanggal Lahir';
   PageController _controller = PageController(initialPage: 0);
 
@@ -61,7 +61,7 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
                 controller: _controller,
                 onPageChanged: (index) {
                   setState(() {
-                    pageChanged = index;
+                    pageActive = index;
                   });
                 },
                 children: [
@@ -88,7 +88,7 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
                                     left: 5.w, right: 5.w, bottom: 10.h),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
-                                    color: (index == pageChanged)
+                                    color: (index == pageActive)
                                         ? color.tersierColor
                                         : color.secondaryColor
                                             .withOpacity(0.4)));
@@ -130,7 +130,7 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
                                 if (!currentFocus.hasPrimaryFocus) {
                                   currentFocus.unfocus();
                                 }
-                                if (pageChanged == 1) {
+                                if (pageActive == 1) {
                                   final initialSetupRequest =
                                       InitialSetupRequest(
                                           activityLevel:
@@ -177,7 +177,7 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
                               padding: EdgeInsets.symmetric(
                                   vertical: 12.h, horizontal: 50.w),
                               child: Text(
-                                pageChanged == 1 ? 'Submit' : "Lanjut",
+                                pageActive == 1 ? 'Submit' : "Lanjut",
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(
                                       color: color.primaryColor,

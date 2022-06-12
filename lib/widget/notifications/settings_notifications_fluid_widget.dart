@@ -123,7 +123,7 @@ class _SettingsNotificationsFluidWidgetState
                       ),
                       SizedBox(width: 18.w),
                       Text(
-                        'Notifikasi SirkaFluid',
+                        'SirkaFluid',
                         style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               color: widget.color.primaryTextColor,
@@ -185,7 +185,7 @@ class _SettingsNotificationsFluidWidgetState
                           padding: EdgeInsets.symmetric(
                               vertical: 8.h, horizontal: 30.w),
                           child: Text(
-                            "Ganti Ringtones",
+                            "Ubah",
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                   color: widget.color.primaryColor,
@@ -713,7 +713,7 @@ class _SettingsNotificationsFluidWidgetState
                   ),
                   SizedBox(width: 18.w),
                   Text(
-                    'Notifikasi SirkaFluid',
+                    'SirkaFluid',
                     style: GoogleFonts.poppins(
                       textStyle: TextStyle(
                           color: widget.color.primaryTextColor,

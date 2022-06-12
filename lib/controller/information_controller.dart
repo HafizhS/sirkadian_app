@@ -7,7 +7,7 @@ import '../constant/hex_color.dart';
 class InformationController extends GetxController {
   void loadingDialog(String text) {
     Get.dialog(Scaffold(
-      backgroundColor: HexColor.fromHex('#FFFFFF').withOpacity(0.3),
+      backgroundColor: HexColor.fromHex('#4E5749').withOpacity(0.3),
       body: Align(
         alignment: Alignment.center,
         child: Container(
