@@ -92,7 +92,10 @@ class _SettingsGeneralScreenState extends State<SettingsGeneralScreen> {
                   informationController: informationController,
                   notificationController: notificationController,
                 ),
-                SettingsNotificationsExerciseWidget(color: color),
+                SettingsNotificationsExerciseWidget(
+                  color: color,
+                  informationController: informationController,
+                ),
               ],
             ),
           ),
