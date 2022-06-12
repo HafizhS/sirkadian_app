@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       : CrossFadeState.showSecond,
                   firstChild: Container(
                     padding:
-                        EdgeInsets.only(top: 40.h, right: 20.w, left: 20.w),
+                        EdgeInsets.only(top: 60.h, right: 20.w, left: 20.w),
                     height: 290.h,
                     width: double.infinity,
                     decoration: BoxDecoration(color: color.secondaryColor,
@@ -111,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         //
 
-                        SizedBox(height: 18.h),
+                        SizedBox(height: 8.h),
 
                         RichText(
                           text: TextSpan(
@@ -322,7 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   secondChild: Container(
                       padding:
-                          EdgeInsets.only(top: 40.h, right: 20.w, left: 20.w),
+                          EdgeInsets.only(top: 60.h, right: 20.w, left: 20.w),
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: color.secondaryColor,

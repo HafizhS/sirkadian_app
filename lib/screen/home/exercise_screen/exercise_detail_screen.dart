@@ -111,15 +111,18 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        width: 300.w,
-                        child: Text(
-                          widget.exercise.name!,
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                color: widget.color.primaryTextColor,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.bold),
+                      Flexible(
+                        child: Container(
+                          // width: 300.w,
+                          child: Text(
+                            widget.exercise.name!,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  color: widget.color.primaryTextColor,
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ),

@@ -156,16 +156,19 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        width: 300.w,
-                                        child: Text(
-                                          widget.food.foodName!,
-                                          style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                                color: widget
-                                                    .color.primaryTextColor,
-                                                fontSize: 20.sp,
-                                                fontWeight: FontWeight.bold),
+                                      Flexible(
+                                        child: Container(
+                                          // width: 300.w,
+                                          child: Text(
+                                            widget.food.foodName!,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                  color: widget
+                                                      .color.primaryTextColor,
+                                                  fontSize: 20.sp,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -772,14 +775,16 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                                             FontAwesomeIcons.circle,
                                                                                             size: 8.sp,
                                                                                           )),
-                                                                                      Padding(
-                                                                                        padding: EdgeInsets.only(left: 10.w),
-                                                                                        child: Text(
-                                                                                          '${e.ingredientDescription}.',
-                                                                                          softWrap: true,
-                                                                                          textAlign: TextAlign.justify,
-                                                                                          style: GoogleFonts.inter(
-                                                                                            textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14.sp, fontWeight: FontWeight.normal),
+                                                                                      Flexible(
+                                                                                        child: Padding(
+                                                                                          padding: EdgeInsets.only(left: 10.w),
+                                                                                          child: Text(
+                                                                                            '${e.ingredientDescription}.',
+                                                                                            softWrap: true,
+                                                                                            textAlign: TextAlign.justify,
+                                                                                            style: GoogleFonts.inter(
+                                                                                              textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14.sp, fontWeight: FontWeight.normal),
+                                                                                            ),
                                                                                           ),
                                                                                         ),
                                                                                       ),

@@ -160,7 +160,7 @@ class _DrawerSideBarState extends State<DrawerSideBar> {
                       height: 30.h,
                     ),
                     DrawerItem(
-                      name: 'Notifications',
+                      name: 'Notifikasi',
                       icon: Icons.notifications,
                       onPressed: () => onItemPressed(context,
                           index: 3, authController: widget.authController),
