@@ -1,6 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:sirkadian_app/constant/hex_color.dart';
@@ -22,6 +23,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final data = GetStorage('myData');
   final authController = Get.find<AuthController>();
 
   final userController = Get.find<UserController>();
@@ -56,7 +58,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    super.initState();
     InternetConnectionChecker().onStatusChange.listen((status) {
       final hasInternet = status == InternetConnectionStatus.connected;
       print(hasInternet);
@@ -64,19 +65,30 @@ class _MainScreenState extends State<MainScreen> {
         this.hasInternet = hasInternet;
       });
     });
-
+    notificationController.getToData();
     listenNotifications();
 
     authController.getUsableToken();
+    super.initState();
   }
 
   void listenNotifications() {
     NotificationController().initNotification().then((value) {
       //notification setup
-      // notificationController.notificationFoodSarapan(1);
-      // notificationController.notificationFoodMakanSiang(2);
-      // notificationController.notificationFoodMakanMalam(3);
-      notificationController.notificationFluidList();
+      notificationController.notificationFoodSarapan(
+          1, notificationController.isSoundSarapan);
+      notificationController.notificationFoodMakanSiang(
+          2, notificationController.isSoundMakanSiang);
+      notificationController.notificationFoodMakanMalam(
+          3, notificationController.isSoundMakanMalam);
+      notificationController.notificationFluidMinum1(
+          4, notificationController.isSoundMinum1);
+      notificationController.notificationFluidMinum2(
+          5, notificationController.isSoundMinum2);
+      notificationController.notificationFluidMinum3(
+          6, notificationController.isSoundMinum3);
+      notificationController.notificationFluidMinum4(
+          7, notificationController.isSoundMinum4);
     });
     NotificationController.onNotifications.stream.listen(onClickedNotification);
   }
@@ -105,14 +117,13 @@ class _MainScreenState extends State<MainScreen> {
                   NeumorphicButton(
                       onPressed: () async {
                         try {
-                          informationController.loadingDialog(
-                              'Harap Menunggu, Sedang memeriksa koneksi');
                           hasInternet =
                               await InternetConnectionChecker().hasConnection;
                           if (hasInternet) {
                             setState(() {
                               this.hasInternet = hasInternet;
                             });
+
                             if (Get.isDialogOpen!) Get.back();
                             informationController
                                 .showSuccessSnackBar('Koneksi telah ditemukan');

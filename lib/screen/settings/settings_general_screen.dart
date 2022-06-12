@@ -2,14 +2,15 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sirkadian_app/widget/notifications/settings_notifications_food_screen.dart';
+import 'package:sirkadian_app/controller/information_controller.dart';
+import 'package:sirkadian_app/widget/notifications/settings_notifications_food_widget.dart';
 import '../../controller/hexcolor_controller.dart';
 import '../../controller/notification_controller.dart';
 import '../../controller/user_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../widget/notifications/settings_notifications_exercise_screen.dart';
-import '../../widget/notifications/settings_notifications_fluid_screen.dart';
+import '../../widget/notifications/settings_notifications_exercise_widget.dart';
+import '../../widget/notifications/settings_notifications_fluid_widget.dart';
 
 class SettingsGeneralScreen extends StatefulWidget {
   const SettingsGeneralScreen({Key? key}) : super(key: key);
@@ -22,18 +23,12 @@ class _SettingsGeneralScreenState extends State<SettingsGeneralScreen> {
   final userController = Get.find<UserController>();
   final color = Get.find<ColorConstantController>();
   final notificationController = Get.find<NotificationController>();
+  final informationController = Get.find<InformationController>();
   // TimeOfDay timeOfDay = TimeOfDay.now();
   @override
   void initState() {
     super.initState();
   }
-
-  // void _showTimePicker() {
-  //   showTimePicker(
-  //     context: context,
-  //     initialTime: TimeOfDay.now(),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +84,14 @@ class _SettingsGeneralScreenState extends State<SettingsGeneralScreen> {
                 SizedBox(height: 30.h),
                 SettingsNotificationsFoodWidget(
                   color: color,
+                  informationController: informationController,
                   notificationController: notificationController,
                 ),
-                SettingsNotificationsFluidWidget(color: color),
+                SettingsNotificationsFluidWidget(
+                  color: color,
+                  informationController: informationController,
+                  notificationController: notificationController,
+                ),
                 SettingsNotificationsExerciseWidget(color: color),
               ],
             ),

@@ -437,6 +437,7 @@ class AuthController extends GetxController {
                     channel.sink.add(id.toString());
 
                     cekWebsocket(true);
+                    update();
                     print(cekWebsocket);
                   }
                 } else if (purpose == 'forgot password') {
@@ -444,6 +445,7 @@ class AuthController extends GetxController {
                     channel.sink.add(id.toString());
 
                     cekWebsocket(true);
+                    update();
                     print(cekWebsocket);
                   }
                 }
@@ -456,6 +458,7 @@ class AuthController extends GetxController {
                 print('udah di close');
 
                 cekGetWebsocket(true);
+                update();
                 print('cekGet: $cekGetWebsocket');
               } else if (websocketResponse.purpose == 'forgot password') {}
             } else {
