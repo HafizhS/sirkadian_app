@@ -4,10 +4,16 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../controller/hexcolor_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../controller/information_controller.dart';
+
 class SettingsNotificationsExerciseWidget extends StatefulWidget {
   final ColorConstantController color;
-  const SettingsNotificationsExerciseWidget({Key? key, required this.color})
-      : super(key: key);
+  final InformationController informationController;
+  const SettingsNotificationsExerciseWidget({
+    Key? key,
+    required this.color,
+    required this.informationController,
+  }) : super(key: key);
 
   @override
   _SettingsNotificationsExerciseWidgetState createState() =>
@@ -357,9 +363,11 @@ class _SettingsNotificationsExerciseWidgetState
             ))
         : NeumorphicButton(
             onPressed: () {
-              setState(() {
-                isOpen = true;
-              });
+              // setState(() {
+              // isOpen = true;
+              // });
+              widget.informationController.snackBarError('Fitur belum tersedia',
+                  'Notifikasi Olahraga sedang kami kerjakan');
             },
             padding: EdgeInsets.all(10.sp),
             style: NeumorphicStyle(
