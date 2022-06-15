@@ -36,15 +36,16 @@ final String subscriptionHistoryUserGetUrl =
 final String rootFood = '$root/food';
 final String rootUserFood = '$root/user_food';
 final String foodAllGetUrl = '$rootFood/all';
+final String foodItemGetUrl = '$rootFood';
 final String foodRecommendationGetUrl = '$rootUserFood/recommendation?';
 final String necessityGetUrl = '$rootUserFood/necessity';
 final String foodHistoryGetPostUrl = '$rootUserFood/history';
-// final String foodHistoryGetUrl = '$root/food/history?';
 
 //exercise
 final String rootExercise = '$root/sport';
 final String rootUserExercise = '$root/user_sport';
 final String exerciseAllGetUrl = '$rootExercise/all';
+final String exerciseItemGetUrl = '$rootExercise';
 final String exerciseHistoryUrl = '$rootUserExercise/history';
 
 

@@ -20,6 +20,19 @@ class ExerciseProvider extends GetConnect {
     return _response;
   }
 
+  Future<Response> getExerciseItem(accessToken, id) async {
+    Response? _response;
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+    _response = await get('$exerciseItemGetUrl/$id', headers: headers);
+
+    return _response;
+  }
+
   Future<Response> getExerciseHistory(
       {String? accessToken, String? startDate, String? endDate}) async {
     Response? _response;

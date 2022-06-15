@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:sirkadian_app/model/exercise_model/exerciseAll_response_model.dart';
 import 'package:sirkadian_app/model/exercise_model/exercise_history_get_response_model.dart';
 import 'package:sirkadian_app/model/exercise_model/exercise_history_request_model.dart';
+import 'package:sirkadian_app/model/exercise_model/exercise_item_response_model.dart';
 import 'package:sirkadian_app/provider/exercise_provider.dart';
 import 'hexcolor_controller.dart';
 import '../model/exercise_model/exercise_history_post_response_model.dart';
@@ -18,10 +19,12 @@ class ExerciseController extends GetxController {
   final color = Get.put(ColorConstantController());
   final informationController = Get.put(InformationController());
   final data = GetStorage('myData');
-  final isLoadingExerciseAll = false.obs;
-  final isLoadingExerciseHistory = false.obs;
+  var isLoadingExerciseAll = false.obs;
+  var isLoadingExerciseHistory = false.obs;
+  var isLoadingExerciseItem = false.obs;
   RxList<DataExerciseHistoryGetResponse> listExerciseHistory =
       <DataExerciseHistoryGetResponse>[].obs;
+  Rx<DataExerciseItemResponse> exerciseItem = DataExerciseItemResponse().obs;
 
 //objectbox material / getstorage material
   late Store exerciseStore;
@@ -287,6 +290,28 @@ class ExerciseController extends GetxController {
       if (Get.isDialogOpen!) Get.back();
     } finally {
       isLoadingExerciseAll(false);
+    }
+  }
+
+  Future<void> getExerciseItem(id) async {
+    isLoadingExerciseItem(true);
+    await authController.getUsableToken();
+    try {
+      String accessToken = data.read('dataUser')['accessToken'];
+      var _res = await _provider.getExerciseItem(accessToken, id);
+
+      if (_res.statusCode == 200) {
+        ExerciseItemResponse _exerciseItemResponse =
+            ExerciseItemResponse.fromJson(_res.body as Map<String, dynamic>);
+
+        if (_exerciseItemResponse.statusCode == 200) {
+          exerciseItem.value = _exerciseItemResponse.data!;
+        }
+      }
+
+      if (Get.isDialogOpen!) Get.back();
+    } finally {
+      isLoadingExerciseItem(false);
     }
   }
 

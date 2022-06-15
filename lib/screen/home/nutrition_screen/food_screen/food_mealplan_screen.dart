@@ -13,6 +13,7 @@ import '../../../../controller/hexcolor_controller.dart';
 import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
 import '../../../../objectbox.g.dart';
 import '../../../../widget/food_widget/food_tile.dart';
+import 'food_detail_screen.dart';
 import 'food_recommendation_screen.dart';
 
 class FoodMealScreen extends StatefulWidget {
@@ -207,7 +208,27 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
                                         itemCount: snapshot.data!.length,
                                         itemBuilder: (context, index) {
                                           return FoodTile(
-                                            containerButton: () {},
+                                            containerButton: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          FoodDetailScreen(
+                                                            session:
+                                                                widget.session,
+                                                            foodController:
+                                                                foodController,
+                                                            color: color,
+                                                            recommendationScore:
+                                                                snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .recommendationScore!,
+                                                            foodId: snapshot
+                                                                .data![index]
+                                                                .foodId!,
+                                                          )));
+                                            },
                                             iconButton: () {
                                               getDeleteFunction(
                                                   snapshot.data!, index);

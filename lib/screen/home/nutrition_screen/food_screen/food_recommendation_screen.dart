@@ -302,7 +302,10 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                       session: widget.session,
                                       foodController: foodController,
                                       color: color,
-                                      food: _searchResult[index],
+                                      recommendationScore: _searchResult[index]
+                                          .recommendationScore!
+                                          .toStringAsFixed(2),
+                                      foodId: _searchResult[index].foodId!,
                                     )));
                       },
                       iconButton: () {
@@ -335,12 +338,6 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                             vitaminC: _searchResult[index].vitaminC,
                             water: _searchResult[index].water,
                             zinc: _searchResult[index].zinc,
-                            // instruction: foodController
-                            //     .listFood[index]
-                            //     .foodInstructionInfo!
-                            //     .map((e) =>
-                            //         e.instruction!)
-                            //     .toList(),
                             instruction: [],
                             recommendationScore: foodController
                                 .listFood[index].recommendationScore!
@@ -387,7 +384,11 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                       session: widget.session,
                                       foodController: foodController,
                                       color: color,
-                                      food: foodController.listFood[index],
+                                      recommendationScore: foodController
+                                          .listFood[index].recommendationScore!
+                                          .toStringAsFixed(2),
+                                      foodId: foodController
+                                          .listFood[index].foodId!,
                                     )));
                       },
                       iconButton: () {
