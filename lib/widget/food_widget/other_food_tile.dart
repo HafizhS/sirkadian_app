@@ -2,6 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/hexcolor_controller.dart';
+import 'package:sirkadian_app/model/food_model/food_item_response_model.dart';
 import 'package:sirkadian_app/model/food_model/food_recommendation_response_model.dart';
 
 import '../../controller/food_controller.dart';
@@ -174,7 +175,7 @@ class ListRekomendasi extends StatelessWidget {
 
 class OtherFoodRecommendationTile extends StatelessWidget {
   final DataFoodRecommendationResponse product;
-  final DataFoodRecommendationResponse productOld;
+  final DataFoodItemResponse productOld;
   final ColorConstantController color;
   final FoodController foodController;
   final String session;
@@ -201,8 +202,10 @@ class OtherFoodRecommendationTile extends StatelessWidget {
                 builder: (context) => FoodDetailScreen(
                       foodController: foodController,
                       color: color,
-                      food: product,
+                      recommendationScore:
+                          product.recommendationScore!.toStringAsFixed(2),
                       session: session,
+                      foodId: product.foodId!,
                     ))).then((_) {
           foodController.getOtherFoodRecommendation(productOld.foodId, session);
         });

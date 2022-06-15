@@ -39,9 +39,9 @@ class _ProgramDetailScreenState extends State<ProgramDetailScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(130.h),
         child: Container(
-          padding: EdgeInsets.only(top: 40.h, right: 20.w, left: 20.w),
+          padding:
+              EdgeInsets.only(top: 40.h, right: 20.w, left: 20.w, bottom: 20.h),
           width: double.infinity,
-          height: 290.h,
           decoration:
               BoxDecoration(color: color.tersierColor, boxShadow: <BoxShadow>[
             BoxShadow(
@@ -87,99 +87,99 @@ class _ProgramDetailScreenState extends State<ProgramDetailScreen> {
         ),
       ),
       //
-      body: Container(
-        margin: EdgeInsets.only(top: 40.h, left: 20.w, right: 20.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Column(
-              children: [
-                Text(
-                  'Mulailah perjalanan penurunan berat badanmu dan dapatkan hasil yang diinginkan dengan rekomendasi program diet berlangganan yang telah Sirkadian rencanakan sehari-hari khusus untukmu.',
-                  style: GoogleFonts.inter(
-                    textStyle: TextStyle(
-                        color: color.tersierTextColor,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 18.h),
-            Text(
-              'Ini waktumu untuk memulainya!',
-              style: GoogleFonts.inter(
-                textStyle: TextStyle(
-                    color: color.tersierTextColor,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.normal),
-              ),
-            ),
-            SizedBox(height: 30.h),
-            Text(
-              'Dapatkan:',
-              style: GoogleFonts.inter(
-                textStyle: TextStyle(
-                    color: color.primaryTextColor,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Column(
-                children: listDapatkan
-                    .map((e) => Padding(
-                          padding: EdgeInsets.all(5.sp),
-                          child: Row(
-                            children: [
-                              FaIcon(
-                                FontAwesomeIcons.check,
-                                size: 12.sp,
-                                color: color.secondaryColor,
-                              ),
-                              SizedBox(width: 10.w),
-                              Text(
-                                e,
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                      color: color.tersierTextColor,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              )
-                            ],
-                          ),
-                        ))
-                    .toList()),
-            Center(
-              child: NeumorphicButton(
-                  margin: EdgeInsets.only(top: 160.h),
-                  onPressed: () {
-                    informationController.snackBarError('Fitur belum tersedia',
-                        'Anda bisa mulai berlangganan setelah dilakukan uji versi beta');
-                  },
-                  style: NeumorphicStyle(
-                      color: color.secondaryColor,
-                      shape: NeumorphicShape.flat,
-                      boxShape: NeumorphicBoxShape.roundRect(
-                        BorderRadius.circular(20),
-                      )
-                      //border: NeumorphicBorder()
+      body: SafeArea(
+        child: Stack(alignment: Alignment.bottomCenter, children: [
+          Container(
+              margin: EdgeInsets.only(top: 40.h, left: 20.w, right: 20.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        'Mulailah perjalanan penurunan berat badanmu dan dapatkan hasil yang diinginkan dengan rekomendasi program diet berlangganan yang telah Sirkadian rencanakan sehari-hari khusus untukmu.',
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                              color: color.tersierTextColor,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.normal),
+                        ),
                       ),
-                  padding:
-                      EdgeInsets.symmetric(vertical: 12, horizontal: 100.w),
-                  child: Text(
-                    "Mulai Berlangganan",
+                    ],
+                  ),
+                  SizedBox(height: 18.h),
+                  Text(
+                    'Ini waktumu untuk memulainya!',
                     style: GoogleFonts.inter(
                       textStyle: TextStyle(
-                          color: color.primaryColor,
+                          color: color.tersierTextColor,
                           fontSize: 14.sp,
                           fontWeight: FontWeight.normal),
                     ),
-                  )),
-            ),
-          ],
-        ),
+                  ),
+                  SizedBox(height: 30.h),
+                  Text(
+                    'Dapatkan:',
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                          color: color.primaryTextColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Column(
+                      children: listDapatkan
+                          .map((e) => Padding(
+                                padding: EdgeInsets.all(5.sp),
+                                child: Row(
+                                  children: [
+                                    FaIcon(
+                                      FontAwesomeIcons.check,
+                                      size: 12.sp,
+                                      color: color.secondaryColor,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      e,
+                                      style: GoogleFonts.inter(
+                                        textStyle: TextStyle(
+                                            color: color.tersierTextColor,
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ))
+                          .toList()),
+                ],
+              )),
+          NeumorphicButton(
+              margin: EdgeInsets.only(bottom: 20.h),
+              onPressed: () {
+                informationController.snackBarError('Fitur belum tersedia',
+                    'Anda bisa mulai berlangganan setelah dilakukan uji versi beta');
+              },
+              style: NeumorphicStyle(
+                  color: color.secondaryColor,
+                  shape: NeumorphicShape.flat,
+                  boxShape: NeumorphicBoxShape.roundRect(
+                    BorderRadius.circular(20),
+                  )
+                  //border: NeumorphicBorder()
+                  ),
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 100.w),
+              child: Text(
+                "Mulai Berlangganan",
+                style: GoogleFonts.inter(
+                  textStyle: TextStyle(
+                      color: color.primaryColor,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.normal),
+                ),
+              )),
+        ]),
       ),
     );
   }

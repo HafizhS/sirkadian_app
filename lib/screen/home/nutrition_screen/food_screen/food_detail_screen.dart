@@ -2,7 +2,6 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sirkadian_app/model/food_model/food_recommendation_response_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
@@ -13,17 +12,20 @@ import '../../../../widget/food_widget/other_food_tile.dart';
 class FoodDetailScreen extends StatefulWidget {
   const FoodDetailScreen({
     Key? key,
-    required this.food,
+    // required this.food,
     required this.color,
     required this.foodController,
     required this.session,
+    required this.foodId,
+    required this.recommendationScore,
   }) : super(key: key);
 
-  final DataFoodRecommendationResponse food;
+  // final DataFoodRecommendationResponse food;
   final String session;
-
+  final String foodId;
   final FoodController foodController;
   final ColorConstantController color;
+  final String recommendationScore;
 
   @override
   State<FoodDetailScreen> createState() => _FoodDetailScreenState();
@@ -36,8 +38,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
   bool isLangkahOpen = false;
 
   void initState() {
-    super.initState();
-
+    widget.foodController.getFoodItem(widget.foodId);
     scrollController.addListener(() {
       if (scrollController.offset > 1000) {
         setState(() {
@@ -49,6 +50,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
         });
       }
     });
+    super.initState();
   }
 
   @override
@@ -61,7 +63,8 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-        () => widget.foodController.isLoadingOtherFoodRecommendation.isTrue
+        () => widget.foodController.isLoadingOtherFoodRecommendation.isTrue ||
+                widget.foodController.isLoadingFoodItem.isTrue
             ? Center(
                 child: CircularProgressIndicator(
                   color: widget.color.secondaryColor,
@@ -84,13 +87,19 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                   decoration: BoxDecoration(
                                       color: widget.color.primaryColor,
                                       borderRadius: BorderRadius.circular(20)),
-                                  child: widget.food.imageFilename == ''
+                                  child: widget.foodController.foodItemResponse
+                                              .value.imageFilename ==
+                                          ''
                                       ? Icon(Icons.image_not_supported_rounded)
                                       : ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           child: Image.network(
-                                            widget.food.imageFilename!,
+                                            widget
+                                                .foodController
+                                                .foodItemResponse
+                                                .value
+                                                .imageFilename!,
                                             fit: BoxFit.cover,
                                           ),
                                         )),
@@ -160,7 +169,11 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                         child: Container(
                                           // width: 300.w,
                                           child: Text(
-                                            widget.food.foodName!,
+                                            widget
+                                                .foodController
+                                                .foodItemResponse
+                                                .value
+                                                .foodName!,
                                             overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.poppins(
                                               textStyle: TextStyle(
@@ -184,7 +197,11 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                       ),
                                       Text(
                                           ' ' +
-                                              (widget.food.energy!)
+                                              (widget
+                                                      .foodController
+                                                      .foodItemResponse
+                                                      .value
+                                                      .energy!)
                                                   .toStringAsFixed(0) +
                                               ' kkal',
                                           style: GoogleFonts.inter(
@@ -202,7 +219,11 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                       ),
                                       Text(
                                           ' ' +
-                                              widget.food.duration!
+                                              widget
+                                                  .foodController
+                                                  .foodItemResponse
+                                                  .value
+                                                  .duration!
                                                   .toStringAsFixed(0) +
                                               ' min',
                                           style: GoogleFonts.inter(
@@ -214,7 +235,8 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                           )),
                                       SizedBox(width: 20.w),
                                       Text(
-                                        (widget.food.serving!)
+                                        (widget.foodController.foodItemResponse
+                                                    .value.serving!)
                                                 .toStringAsFixed(0) +
                                             ' Porsi',
                                         style: GoogleFonts.inter(
@@ -226,7 +248,9 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 20.w),
-                                      Text(widget.food.foodTypes!.first,
+                                      Text(
+                                          widget.foodController.foodItemResponse
+                                              .value.foodTypes!.first,
                                           style: GoogleFonts.inter(
                                             textStyle: TextStyle(
                                                 color: widget
@@ -245,8 +269,9 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                     ),
                                     SizedBox(width: 5.w),
                                     Text(
-                                      widget.food.recommendationScore!
-                                          .toStringAsFixed(2),
+                                      // widget.foodController.foodItemResponse.value.recommendationScore!
+                                      // .toStringAsFixed(2) ??,
+                                      widget.recommendationScore,
                                       style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
                                             color:
@@ -325,7 +350,147 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                       ),
                                       NeumorphicButton(
                                         margin: EdgeInsets.all(10.sp),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Get.bottomSheet(Container(
+                                            decoration: BoxDecoration(
+                                                color:
+                                                    widget.color.primaryColor,
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(20),
+                                                    topRight:
+                                                        Radius.circular(20))),
+                                            height: 400.h,
+                                            width: 360.w,
+                                            padding: EdgeInsets.all(10),
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                children: [
+                                                  bottomSheetNecesityChild(
+                                                      'Serat',
+                                                      widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .fiber! /
+                                                          widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .serving!),
+                                                  bottomSheetNecesityChild(
+                                                      'Kalsium',
+                                                      widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .calcium! /
+                                                          widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .serving!),
+                                                  bottomSheetNecesityChild(
+                                                      'Zat Besi',
+                                                      widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .iron! /
+                                                          widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .serving!),
+                                                  bottomSheetNecesityChild(
+                                                      'zinc',
+                                                      widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .zinc! /
+                                                          widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .serving!),
+                                                  bottomSheetNecesityChild(
+                                                      'Copper',
+                                                      widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .copper! /
+                                                          widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .serving!),
+                                                  bottomSheetNecesityChild(
+                                                      'Vitamin C',
+                                                      widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .vitaminC! /
+                                                          widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .serving!),
+                                                  bottomSheetNecesityChild(
+                                                      'Vitamin B1',
+                                                      widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .vitaminB1! /
+                                                          widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .serving!),
+                                                  bottomSheetNecesityChild(
+                                                      'Vitamin B2',
+                                                      widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .vitaminB2! /
+                                                          widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .serving!),
+                                                  bottomSheetNecesityChild(
+                                                      'Vitamin B3',
+                                                      widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .vitaminB3! /
+                                                          widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .serving!),
+                                                  bottomSheetNecesityChild(
+                                                      'Retinol',
+                                                      widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .retinol! /
+                                                          widget
+                                                              .foodController
+                                                              .foodItemResponse
+                                                              .value
+                                                              .serving!),
+                                                ],
+                                              ),
+                                            ),
+                                          ));
+                                        },
                                         style: NeumorphicStyle(
                                           shape: NeumorphicShape.flat,
                                           boxShape: NeumorphicBoxShape.circle(),
@@ -370,8 +535,16 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               backgroundColor: widget
                                                   .color.secondaryTextColor
                                                   .withOpacity(0.3),
-                                              percentage: (widget.food.energy! /
-                                                      widget.food.serving!) /
+                                              percentage: (widget
+                                                          .foodController
+                                                          .foodItemResponse
+                                                          .value
+                                                          .energy! /
+                                                      widget
+                                                          .foodController
+                                                          .foodItemResponse
+                                                          .value
+                                                          .serving!) /
                                                   (widget
                                                           .foodController
                                                           .necessity
@@ -394,11 +567,19 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                             ),
                                           ),
                                           Text(
-                                            (widget.food.energy! /
-                                                        widget.food.serving!)
+                                            (widget
+                                                            .foodController
+                                                            .foodItemResponse
+                                                            .value
+                                                            .energy! /
+                                                        widget
+                                                            .foodController
+                                                            .foodItemResponse
+                                                            .value
+                                                            .serving!)
                                                     .toStringAsFixed(0) +
                                                 // 'kkal' +
-                                                ' (${(((widget.food.energy! / widget.food.serving!) / (widget.foodController.necessity.value.energy!.breakfast! + widget.foodController.necessity.value.energy!.lunch! + widget.foodController.necessity.value.energy!.dinner!)) * 100).round()}%)',
+                                                '(${(((widget.foodController.foodItemResponse.value.energy! / widget.foodController.foodItemResponse.value.serving!) / (widget.foodController.necessity.value.energy!.breakfast! + widget.foodController.necessity.value.energy!.lunch! + widget.foodController.necessity.value.energy!.dinner!)) * 100).round()}%)',
                                             style: GoogleFonts.inter(
                                               textStyle: TextStyle(
                                                   color: widget
@@ -436,8 +617,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                   .color.secondaryTextColor
                                                   .withOpacity(0.3),
                                               percentage: (widget
-                                                          .food.protein! /
-                                                      widget.food.serving!) /
+                                                          .foodController
+                                                          .foodItemResponse
+                                                          .value
+                                                          .protein! /
+                                                      widget
+                                                          .foodController
+                                                          .foodItemResponse
+                                                          .value
+                                                          .serving!) /
                                                   (widget
                                                           .foodController
                                                           .necessity
@@ -463,11 +651,19 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                             ),
                                           ),
                                           Text(
-                                            (widget.food.protein! /
-                                                        widget.food.serving!)
+                                            (widget
+                                                            .foodController
+                                                            .foodItemResponse
+                                                            .value
+                                                            .protein! /
+                                                        widget
+                                                            .foodController
+                                                            .foodItemResponse
+                                                            .value
+                                                            .serving!)
                                                     .toStringAsFixed(0) +
                                                 'g' +
-                                                ' (${(((widget.food.protein! / widget.food.serving!) / (widget.foodController.necessity.value.macro!.breakfast!.protein! + widget.foodController.necessity.value.macro!.lunch!.protein! + widget.foodController.necessity.value.macro!.dinner!.protein!)) * 100).round()}%)',
+                                                '(${(((widget.foodController.foodItemResponse.value.protein! / widget.foodController.foodItemResponse.value.serving!) / (widget.foodController.necessity.value.macro!.breakfast!.protein! + widget.foodController.necessity.value.macro!.lunch!.protein! + widget.foodController.necessity.value.macro!.dinner!.protein!)) * 100).round()}%)',
                                             style: GoogleFonts.inter(
                                               textStyle: TextStyle(
                                                   color: widget
@@ -505,8 +701,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                   .color.secondaryTextColor
                                                   .withOpacity(0.3),
                                               percentage: (widget
-                                                          .food.carbohydrate! /
-                                                      widget.food.serving!) /
+                                                          .foodController
+                                                          .foodItemResponse
+                                                          .value
+                                                          .carbohydrate! /
+                                                      widget
+                                                          .foodController
+                                                          .foodItemResponse
+                                                          .value
+                                                          .serving!) /
                                                   (widget
                                                           .foodController
                                                           .necessity
@@ -532,11 +735,19 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                             ),
                                           ),
                                           Text(
-                                            (widget.food.carbohydrate! /
-                                                        widget.food.serving!)
+                                            (widget
+                                                            .foodController
+                                                            .foodItemResponse
+                                                            .value
+                                                            .carbohydrate! /
+                                                        widget
+                                                            .foodController
+                                                            .foodItemResponse
+                                                            .value
+                                                            .serving!)
                                                     .toStringAsFixed(0) +
                                                 'g' +
-                                                ' (${(((widget.food.carbohydrate! / widget.food.serving!) / (widget.foodController.necessity.value.macro!.breakfast!.carbohydrate! + widget.foodController.necessity.value.macro!.lunch!.carbohydrate! + widget.foodController.necessity.value.macro!.dinner!.carbohydrate!)) * 100).round()}%)',
+                                                '(${(((widget.foodController.foodItemResponse.value.carbohydrate! / widget.foodController.foodItemResponse.value.serving!) / (widget.foodController.necessity.value.macro!.breakfast!.carbohydrate! + widget.foodController.necessity.value.macro!.lunch!.carbohydrate! + widget.foodController.necessity.value.macro!.dinner!.carbohydrate!)) * 100).round()}%)',
                                             style: GoogleFonts.inter(
                                               textStyle: TextStyle(
                                                   color: widget
@@ -574,8 +785,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                   .color.secondaryTextColor
                                                   .withOpacity(0.3),
                                               percentage: (widget
-                                                          .food.fat! /
-                                                      widget.food.serving!) /
+                                                          .foodController
+                                                          .foodItemResponse
+                                                          .value
+                                                          .fat! /
+                                                      widget
+                                                          .foodController
+                                                          .foodItemResponse
+                                                          .value
+                                                          .serving!) /
                                                   (widget
                                                           .foodController
                                                           .necessity
@@ -601,11 +819,19 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                             ),
                                           ),
                                           Text(
-                                            (widget.food.fat! /
-                                                        widget.food.serving!)
+                                            (widget
+                                                            .foodController
+                                                            .foodItemResponse
+                                                            .value
+                                                            .fat! /
+                                                        widget
+                                                            .foodController
+                                                            .foodItemResponse
+                                                            .value
+                                                            .serving!)
                                                     .toStringAsFixed(0) +
                                                 'g' +
-                                                ' (${(((widget.food.fat! / widget.food.serving!) / (widget.foodController.necessity.value.macro!.breakfast!.fat! + widget.foodController.necessity.value.macro!.lunch!.fat! + widget.foodController.necessity.value.macro!.dinner!.fat!)) * 100).round()}%)',
+                                                '(${(((widget.foodController.foodItemResponse.value.fat! / widget.foodController.foodItemResponse.value.serving!) / (widget.foodController.necessity.value.macro!.breakfast!.fat! + widget.foodController.necessity.value.macro!.lunch!.fat! + widget.foodController.necessity.value.macro!.dinner!.fat!)) * 100).round()}%)',
                                             style: GoogleFonts.inter(
                                               textStyle: TextStyle(
                                                   color: widget
@@ -644,7 +870,8 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                   return Container(
                                     margin: EdgeInsets.all(10.sp),
                                     child: OtherFoodRecommendationTile(
-                                      productOld: widget.food,
+                                      productOld: widget.foodController
+                                          .foodItemResponse.value,
                                       session: widget.session,
                                       foodController: widget.foodController,
                                       product: widget
@@ -714,28 +941,32 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                           ],
                                         ),
                                         Column(
-                                            children:
-                                                widget.food.foodIngredientInfo!
-                                                    .map(
-                                                      (e) => Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Container(
-                                                              alignment: Alignment
-                                                                  .bottomCenter,
-                                                              margin: EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          10.h),
-                                                              child: FaIcon(
-                                                                FontAwesomeIcons
-                                                                    .solidCircle,
-                                                                size: 8.sp,
-                                                              )),
-                                                          Expanded(
-                                                              child: e.ingredientDescription ==
+                                            children: widget
+                                                .foodController
+                                                .foodItemResponse
+                                                .value
+                                                .foodIngredientInfo!
+                                                .map(
+                                                  (e) => Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                          alignment: Alignment
+                                                              .bottomCenter,
+                                                          margin: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical:
+                                                                      10.h),
+                                                          child: FaIcon(
+                                                            FontAwesomeIcons
+                                                                .solidCircle,
+                                                            size: 8.sp,
+                                                          )),
+                                                      Expanded(
+                                                          child:
+                                                              e.ingredientDescription ==
                                                                       null
                                                                   ? Container(
                                                                       padding: EdgeInsets.only(
@@ -822,10 +1053,10 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                         ),
                                                                       ),
                                                                     ))
-                                                        ],
-                                                      ),
-                                                    )
-                                                    .toList()),
+                                                    ],
+                                                  ),
+                                                )
+                                                .toList()),
 
                                         ///
                                       ],
@@ -949,7 +1180,11 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                         ),
                                         Column(
                                           children:
-                                              widget.food.foodInstructionInfo!
+                                              widget
+                                                  .foodController
+                                                  .foodItemResponse
+                                                  .value
+                                                  .foodInstructionInfo!
                                                   .map(
                                                     (e) => Row(
                                                       crossAxisAlignment:
@@ -1048,12 +1283,12 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                                         height: 150.h,
                                                                                         width: 360.w,
                                                                                         margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                                                                                        child: widget.food.imageFilename == ''
+                                                                                        child: widget.foodController.foodItemResponse.value.imageFilename == ''
                                                                                             ? Icon(Icons.image_not_supported_rounded)
                                                                                             : ClipRRect(
                                                                                                 borderRadius: BorderRadius.circular(20),
                                                                                                 child: Image.network(
-                                                                                                  widget.food.imageFilename!,
+                                                                                                  widget.foodController.foodItemResponse.value.imageFilename!,
                                                                                                   fit: BoxFit.cover,
                                                                                                 ),
                                                                                               )),
@@ -1112,7 +1347,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                         borderRadius:
                                                                             BorderRadius.circular(
                                                                                 20)),
-                                                                    child: widget.food.imageFilename ==
+                                                                    child: widget.foodController.foodItemResponse.value.imageFilename ==
                                                                             ''
                                                                         ? Icon(Icons
                                                                             .image_not_supported_rounded)
@@ -1120,7 +1355,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                             borderRadius:
                                                                                 BorderRadius.circular(20),
                                                                             child: Image.network(
-                                                                              widget.food.imageFilename!,
+                                                                              widget.foodController.foodItemResponse.value.imageFilename!,
                                                                               fit: BoxFit.cover,
                                                                             ))),
                                                           ],
@@ -1233,35 +1468,51 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                         margin: EdgeInsets.only(right: 10.w, bottom: 10.h),
                         onPressed: () {
                           final food = Food(
-                              imageFileName: widget.food.imageFilename,
+                              imageFileName: widget.foodController
+                                  .foodItemResponse.value.imageFilename,
                               session: widget.session,
                               date:
                                   widget.foodController.selectedDay.toString(),
-                              name: widget.food.foodName,
-                              calcium: widget.food.calcium,
-                              carbohydrate: widget.food.carbohydrate,
-                              copper: widget.food.copper,
-                              difficulty: widget.food.difficulty,
-                              duration: widget.food.duration,
-                              energy: widget.food.energy,
-                              fat: widget.food.fat,
-                              fiber: widget.food.fiber,
-                              foodId: widget.food.foodId,
-                              foodTypes: widget.food.foodTypes,
-                              iron: widget.food.iron,
-                              phosphor: widget.food.phosphor,
-                              potassium: widget.food.potassium,
-                              protein: widget.food.protein,
-                              retinol: widget.food.retinol,
-                              serving: widget.food.serving,
-                              sodium: widget.food.sodium,
-                              tags: widget.food.tags,
-                              vitaminB1: widget.food.vitaminB1,
-                              vitaminB2: widget.food.vitaminB2,
-                              vitaminB3: widget.food.vitaminB3,
-                              vitaminC: widget.food.vitaminC,
-                              water: widget.food.water,
-                              zinc: widget.food.zinc,
+                              name: widget.foodController.foodItemResponse.value
+                                  .foodName,
+                              calcium: widget.foodController.foodItemResponse
+                                  .value.calcium,
+                              carbohydrate: widget.foodController
+                                  .foodItemResponse.value.carbohydrate,
+                              copper: widget
+                                  .foodController.foodItemResponse.value.copper,
+                              difficulty: widget.foodController.foodItemResponse
+                                  .value.difficulty,
+                              duration: widget.foodController.foodItemResponse
+                                  .value.duration,
+                              energy: widget
+                                  .foodController.foodItemResponse.value.energy,
+                              fat: widget
+                                  .foodController.foodItemResponse.value.fat,
+                              fiber: widget
+                                  .foodController.foodItemResponse.value.fiber,
+                              foodId: widget
+                                  .foodController.foodItemResponse.value.foodId,
+                              foodTypes: widget.foodController.foodItemResponse
+                                  .value.foodTypes,
+                              iron: widget
+                                  .foodController.foodItemResponse.value.iron,
+                              phosphor: widget.foodController.foodItemResponse
+                                  .value.phosphor,
+                              potassium: widget.foodController.foodItemResponse
+                                  .value.potassium,
+                              protein:
+                                  widget.foodController.foodItemResponse.value.protein,
+                              retinol: widget.foodController.foodItemResponse.value.retinol,
+                              serving: widget.foodController.foodItemResponse.value.serving,
+                              sodium: widget.foodController.foodItemResponse.value.sodium,
+                              tags: widget.foodController.foodItemResponse.value.tags,
+                              vitaminB1: widget.foodController.foodItemResponse.value.vitaminB1,
+                              vitaminB2: widget.foodController.foodItemResponse.value.vitaminB2,
+                              vitaminB3: widget.foodController.foodItemResponse.value.vitaminB3,
+                              vitaminC: widget.foodController.foodItemResponse.value.vitaminC,
+                              water: widget.foodController.foodItemResponse.value.water,
+                              zinc: widget.foodController.foodItemResponse.value.zinc,
                               // instruction: foodController
                               //     .listFood[index]
                               //     .foodInstructionInfo!
@@ -1269,9 +1520,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                               //         e.instruction!)
                               //     .toList(),
                               instruction: [],
-                              recommendationScore: widget
-                                  .food.recommendationScore!
-                                  .toStringAsFixed(2));
+                              recommendationScore: widget.foodController.foodItemResponse.value.recommendationScore!.toStringAsFixed(2));
                           widget.foodController.foodStore.box<Food>().put(food);
 
                           Navigator.of(context)
@@ -1294,6 +1543,66 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                   ),
                 ]),
               ),
+      ),
+    );
+  }
+
+  Widget bottomSheetNecesityChild(String title, double value) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 5.h),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 20.w, top: 10.h, bottom: 10.h),
+                child: Text(
+                  title,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        color: widget.color.secondaryTextColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 20.w, top: 10.h, bottom: 10.h),
+                child: Text(
+                  '${((value) * 100).round().toString()}%',
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        color: widget.color.secondaryTextColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Neumorphic(
+              style: NeumorphicStyle(
+                  depth: -4,
+                  color: widget.color.backgroundColor,
+                  shape: NeumorphicShape.flat,
+                  boxShape: NeumorphicBoxShape.roundRect(
+                    BorderRadius.circular(20),
+                  )),
+              child: Stack(alignment: Alignment.centerLeft, children: [
+                Container(
+                  height: 18.h,
+                  width: 360.w,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: widget.color.secondaryColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  height: 18.h,
+                  width: 360.w * value,
+                ),
+              ])),
+        ],
       ),
     );
   }

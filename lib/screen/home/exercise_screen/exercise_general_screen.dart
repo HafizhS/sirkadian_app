@@ -13,6 +13,7 @@ import '../../../controller/hexcolor_controller.dart';
 import '../../../controller/information_controller.dart';
 import '../../../model/exercise_model/exercise_history_request_model.dart';
 import '../../../widget/exercise_widget/exercise_gauge.dart';
+import 'exercise_detail_screen.dart';
 import 'exercise_history_screen.dart';
 import 'exercise_recommendation_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -168,6 +169,8 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
+                          settings:
+                              RouteSettings(name: "/exerciseGeneralScreen"),
                           builder: (context) => FutureExercisePlanScreen(
                                 hasBeenInitialized: hasbeeninitialized,
                                 listExercise: snapshot.data!,
@@ -663,7 +666,16 @@ class _ExerciseGeneralScreenState extends State<ExerciseGeneralScreen> {
           itemCount: snapshot.data!.length,
           itemBuilder: (context, index) {
             return ExerciseTile(
-              containerButton: () {},
+              containerButton: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ExerciseDetailScreen(
+                              color: color,
+                              exerciseController: exerciseController,
+                              exerciseId: snapshot.data![index].sportId!,
+                            )));
+              },
               onpressPlus: () {},
               onpressDelete: () {
                 if (exerciseController.sessionExerciseClosed == true) {

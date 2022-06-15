@@ -217,10 +217,10 @@ class _ExerciseRecommendationScreenState
                                                                   color: color,
                                                                   exerciseController:
                                                                       exerciseController,
-                                                                  exercise:
-                                                                      exerciseController
-                                                                              .listExercise[
-                                                                          index],
+                                                                  exerciseId: exerciseController
+                                                                      .listExercise[
+                                                                          index]
+                                                                      .sportId!,
                                                                 )));
                                                   },
                                                   onpressCheck: () {},

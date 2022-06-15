@@ -6,6 +6,7 @@ import 'package:sirkadian_app/controller/auth_controller.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/model/food_model/food_history_request_model.dart';
 import 'package:sirkadian_app/model/food_model/food_history_response_model.dart';
+import 'package:sirkadian_app/model/food_model/food_item_response_model.dart';
 import 'package:sirkadian_app/model/food_model/food_recommendation_response_model.dart';
 import 'package:sirkadian_app/model/food_model/necessity_response_model.dart';
 import 'package:sirkadian_app/provider/food_provider.dart';
@@ -21,11 +22,13 @@ class FoodController extends GetxController {
   //foods material
   RxList<DataFoodRecommendationResponse> listFood =
       <DataFoodRecommendationResponse>[].obs;
+  Rx<DataFoodItemResponse> foodItemResponse = DataFoodItemResponse().obs;
   RxList<DataFoodRecommendationResponse> listOtherFood =
       <DataFoodRecommendationResponse>[].obs;
   RxList<DataFoodHistoryResponse> listFoodHistory =
       <DataFoodHistoryResponse>[].obs;
   var isLoadingFoodRecommendation = false.obs;
+  var isLoadingFoodItem = false.obs;
   var isLoadingOtherFoodRecommendation = false.obs;
   var isLoadingNecessity = false.obs;
   var isLoadingFoodHistory = false.obs;
@@ -206,6 +209,30 @@ class FoodController extends GetxController {
     }
   }
 
+  Future<void> getFoodItem(id) async {
+    isLoadingFoodItem(true);
+    await authController.getUsableToken();
+
+    try {
+      String accessToken = data.read('dataUser')['accessToken'];
+      var _res = await _provider.getFoodItem(accessToken, id);
+
+      if (_res.statusCode == 200) {
+        FoodItemResponse _foodItemResponse =
+            FoodItemResponse.fromJson(_res.body as Map<String, dynamic>);
+
+        if (_foodItemResponse.statusCode == 200) {
+          foodItemResponse.value = _foodItemResponse.data!;
+          // print(foodItemResponse);
+        }
+      }
+
+      if (Get.isDialogOpen!) Get.back();
+    } finally {
+      isLoadingFoodItem(false);
+    }
+  }
+
   Future<void> getOtherFoodRecommendation(foodId, session) async {
     isLoadingOtherFoodRecommendation(true);
     await authController.getUsableToken();
@@ -305,14 +332,12 @@ class FoodController extends GetxController {
     try {
       String accessToken = data.read('dataUser')['accessToken'];
       var _res = await _provider.getNecessity(accessToken);
-      print(_res.statusCode);
+
       if (_res.statusCode == 200) {
-        print(_res.body);
         NecessityResponse _necessityResponse =
             NecessityResponse.fromJson(_res.body as Map<String, dynamic>);
 
         if (_necessityResponse.statusCode == 200) {
-          print(_necessityResponse.data);
           necessity.value = _necessityResponse.data!;
         }
       }

@@ -24,6 +24,19 @@ class FoodProvider extends GetConnect {
     return _response;
   }
 
+  Future<Response> getFoodItem(accessToken, id) async {
+    Response? _response;
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+    _response = await get('$foodItemGetUrl/$id', headers: headers);
+
+    return _response;
+  }
+
   Future<Response> getNecessity(accessToken) async {
     Response? _response;
 
