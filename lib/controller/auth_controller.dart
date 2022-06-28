@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:sirkadian_app/constant/error_code.dart';
+import 'package:sirkadian_app/screen/auth/verification_screen.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../screen/list_screen.dart';
@@ -28,8 +29,6 @@ class AuthController extends GetxController {
   var isLoadingAccessToken = false.obs;
   var cekGetWebsocket = false.obs;
   var cekWebsocket = false.obs;
-
-  late WebSocketChannel channel;
 
   late DataWebsocketResponse websocketResponse = DataWebsocketResponse();
 
@@ -183,8 +182,11 @@ class AuthController extends GetxController {
 
                 if (cekGetWebsocket.value == false) {
                   Future.delayed(Duration(seconds: 3), () {
-                    getWebsocket(getWebsocketUrl, _data['id'], 'register');
-                    Get.toNamed(RouteScreens.verification);
+                    // getWebsocket(getWebsocketUrl, _data['id'], 'register');
+                    Get.to(VerificationScreen(
+                        id: _data['id'],
+                        websocketUrl: getWebsocketUrl,
+                        purpose: 'register'));
                   });
                 } else {
                   //websocket udah true
@@ -234,18 +236,22 @@ class AuthController extends GetxController {
             final String getWebsocketUrl =
                 '$root/websocket/open/${_registerResponse.data!.id}';
 
-            if (cekGetWebsocket.value == false) {
-              Future.delayed(Duration(seconds: 3), () {
-                if (Get.isDialogOpen!) Get.back();
-                informationController.showSuccessSnackBar('register berhasil');
-                getWebsocket(
-                    getWebsocketUrl, _registerResponse.data!.id, 'register');
-                Get.toNamed(RouteScreens.verification);
-              });
-            } else {
-              //websocket udah true
-              print('cekwebsocekttrue');
-            }
+            // if (cekGetWebsocket.value == false) {
+            Future.delayed(Duration(seconds: 1), () {
+              if (Get.isDialogOpen!) Get.back();
+              informationController.showSuccessSnackBar('register berhasil');
+              // getWebsocket(
+              //     getWebsocketUrl, _registerResponse.data!.id, 'register');
+              Get.to(VerificationScreen(
+                purpose: 'register',
+                id: _registerResponse.data!.id!,
+                websocketUrl: getWebsocketUrl,
+              ));
+            });
+            // } else {
+            //websocket udah true
+            // print('cekwebsocekttrue');
+            // }
           }
         } else if (_res.statusCode == 400) {
           RegisterResponse _registerResponse =
@@ -364,6 +370,7 @@ class AuthController extends GetxController {
       {InitialSetupRequest? initialSetupRequest, String? accessToken}) async {
     if (initialSetupRequest!.dob != 'Pilih Tanggal Lahir' &&
         initialSetupRequest.lang != null &&
+        initialSetupRequest.displayName != null &&
         initialSetupRequest.gender != null &&
         initialSetupRequest.height != 0 &&
         initialSetupRequest.weight != 0 &&
@@ -383,12 +390,9 @@ class AuthController extends GetxController {
         if (_res.statusCode == 200) {
           if (Get.isDialogOpen!) Get.back();
           informationController.showSuccessSnackBar('Initial Setup berhasil');
-          final username = data.read('dataRegister')['username'];
-          final password = data.read('dataRegister')['password'];
-          Future.delayed(Duration(seconds: 2), () {
-            postLogin(
-                loginRequest:
-                    LoginRequest(username: username, password: password));
+
+          Future.delayed(Duration(seconds: 1), () {
+            Get.toNamed(RouteScreens.greeting);
           });
         } else {
           if (Get.isDialogOpen!) Get.back();
@@ -409,63 +413,62 @@ class AuthController extends GetxController {
     }
   }
 
+  var successGetWebsocket = false;
   //websocket ------------------------------------------------------------------------------
   Future<void> getWebsocket(getWebsocketUrl, id, purpose) async {
     try {
       final Response _res = await _provider.getWebsocket(getWebsocketUrl);
       print(_res.statusCode);
       if (_res.statusCode == 200) {
-        channel =
-            IOWebSocketChannel.connect(Uri.parse('$wssRoot/websocket/$id'));
+        successGetWebsocket = true;
+        // channel.stream.listen((data) {
+        //   Map<String, dynamic> myMap = json.decode(data);
+        // print(data);
+        //   if (cekWebsocket.value == false) {
+        //     myMap.forEach((key, value) {
+        //       print('udah ke mymap');
+        //       print(key.toString());
 
-        channel.stream.listen((data) {
-          Map<String, dynamic> myMap = json.decode(data);
-          print(data);
-          if (cekWebsocket.value == false) {
-            myMap.forEach((key, value) {
-              print('udah ke mymap');
-              print(key.toString());
+        //       if (key.toString() == id.toString()) {
+        //         print('udah dicocokin');
+        //         DataWebsocketResponse _websocketResponse =
+        //             DataWebsocketResponse.fromJson(value);
+        //         websocketResponse = _websocketResponse;
 
-              if (key.toString() == id.toString()) {
-                print('udah dicocokin');
-                DataWebsocketResponse _websocketResponse =
-                    DataWebsocketResponse.fromJson(value);
-                websocketResponse = _websocketResponse;
+        //         if (purpose == 'register') {
+        //           if (websocketResponse.purpose == 'register') {
+        //             channel.sink.add(id.toString());
 
-                if (purpose == 'register') {
-                  if (websocketResponse.purpose == 'register') {
-                    channel.sink.add(id.toString());
+        //             cekWebsocket.value = true;
 
-                    cekWebsocket(true);
-                    update();
-                    print(cekWebsocket);
-                  }
-                } else if (purpose == 'forgot password') {
-                  if (websocketResponse.purpose == 'forgot password') {
-                    channel.sink.add(id.toString());
+        //             print(cekWebsocket);
+        //           }
+        //         } else if (purpose == 'forgot password') {
+        //           if (websocketResponse.purpose == 'forgot password') {
+        //             channel.sink.add(id.toString());
 
-                    cekWebsocket(true);
-                    update();
-                    print(cekWebsocket);
-                  }
-                }
-              }
-            });
-          } else {
-            if (!myMap.containsKey(id)) {
-              if (websocketResponse.purpose == 'register') {
-                channel.sink.close();
-                print('udah di close');
+        //             cekWebsocket.value = true;
 
-                cekGetWebsocket(true);
-                update();
-                print('cekGet: $cekGetWebsocket');
-              } else if (websocketResponse.purpose == 'forgot password') {}
-            } else {
-              print('masih ada isinya');
-            }
-          }
-        });
+        //             print(cekWebsocket);
+        //           }
+        //         }
+        //       }
+        //     });
+        //   } else {
+        //     if (!myMap.containsKey(id)) {
+        //       if (websocketResponse.purpose == 'register') {
+        //         channel.sink.close();
+        //         print('udah di close');
+
+        //         cekGetWebsocket.value = true;
+
+        //         print('cekGet: $cekGetWebsocket');
+        //       } else if (websocketResponse.purpose == 'forgot password') {}
+        //     } else {
+        //       print('masih ada isinya');
+        //     }
+        //   }
+        // });
       } else if (_res.statusCode == 500) {}
     } catch (e) {
       if (Get.isDialogOpen!) Get.back();

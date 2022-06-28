@@ -10,7 +10,6 @@ import 'package:sirkadian_app/screen/subscription/program_detail_screen.dart';
 import '../../controller/auth_controller.dart';
 import '../../controller/hexcolor_controller.dart';
 import '../../controller/user_controller.dart';
-import '../../widget/drawer_sidebar.dart';
 
 class ProgramScreen extends StatefulWidget {
   ProgramScreen({
@@ -161,8 +160,13 @@ class _ProgramScreenState extends State<ProgramScreen> {
                         }
                         if (Get.isDialogOpen!) Get.back();
 
-                        subscriptionController.postSubscriptionClaimCoupon(
-                            couponCode: _couponTextController.text);
+                        subscriptionController
+                            .postSubscriptionClaimCoupon(
+                                couponCode: _couponTextController.text)
+                            .then((_) {
+                          subscriptionController.getSubscriptionActiveUser();
+                          subscriptionController.getSubscriptionHistoryUser();
+                        });
                         _couponTextController.clear();
                       },
                       margin: EdgeInsets.only(top: 10.h),
@@ -208,11 +212,7 @@ class _ProgramScreenState extends State<ProgramScreen> {
             )
           : Scaffold(
               backgroundColor: color.backgroundColor,
-              drawer: DrawerSideBar(
-                authController: authController,
-                userController: userController,
-                color: color,
-              ),
+
               appBar: PreferredSize(
                   preferredSize:
                       Size.fromHeight(!closeTopContainer.value ? 290.h : 80.h),
@@ -291,7 +291,8 @@ class _ProgramScreenState extends State<ProgramScreen> {
                                   child: subscriptionController
                                           .listSubscriptionActiveUser.isEmpty
                                       ? Text(
-                                          "Belum ada program yang Anda pilih",
+                                          "Anda sedang mengikuti program default Sirkadian (Maintain Health)",
+                                          textAlign: TextAlign.center,
                                           style: GoogleFonts.inter(
                                             textStyle: TextStyle(
                                                 color: color.secondaryTextColor,
@@ -520,19 +521,13 @@ class _ProgramScreenState extends State<ProgramScreen> {
                                         ),
                                       ),
                                       Container(
-                                        height: 340.h,
+                                        height: 200.h,
                                         width: 360.w,
                                         margin: EdgeInsets.symmetric(
                                             vertical: 10.h, horizontal: 10.w),
-                                        child: GridView.builder(
-                                            // scrollDirection: Axis.horizontal,
-
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
-                                                    crossAxisCount: 2,
-                                                    crossAxisSpacing: 10.w),
+                                        child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            physics: BouncingScrollPhysics(),
                                             itemCount: listSubscription
                                                 .subscriptionPackages!.length,
                                             itemBuilder: (context, idx) {
@@ -628,7 +623,7 @@ class _ProgramScreenState extends State<ProgramScreen> {
                                   ))
                               .toList(),
                         ),
-                        SizedBox(height: 100.h),
+                        SizedBox(height: 200.h),
                       ],
                     ),
                   )),

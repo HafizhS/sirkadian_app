@@ -1,7 +1,7 @@
 class ExerciseHistoryPostResponse {
   int? statusCode;
   String? message;
-  Null? errorCode;
+  Null errorCode;
   List<ExerciseHistoryPostResponse>? data;
 
   ExerciseHistoryPostResponse(

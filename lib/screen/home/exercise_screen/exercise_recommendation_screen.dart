@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/exercise_controller.dart';
-import 'package:sirkadian_app/model/obejctbox_model.dart/food_exercise_model.dart';
+import 'package:sirkadian_app/model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import 'package:sirkadian_app/screen/home/exercise_screen/exercise_detail_screen.dart';
 import 'package:sirkadian_app/widget/exercise_widget/exercise_tile.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

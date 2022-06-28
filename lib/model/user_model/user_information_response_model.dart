@@ -37,13 +37,18 @@ class DataUserInformationResponse {
   String? dob;
   String? gender;
   String? lang;
+  String? displayName;
+  String? imageFilename;
 
-  DataUserInformationResponse({this.dob, this.gender, this.lang});
+  DataUserInformationResponse(
+      {this.dob, this.gender, this.lang, this.displayName, this.imageFilename});
 
   DataUserInformationResponse.fromJson(Map<String, dynamic> json) {
     dob = json['dob'];
     gender = json['gender'];
     lang = json['lang'];
+    displayName = json['display_name'];
+    imageFilename = json['image_filename'];
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +56,8 @@ class DataUserInformationResponse {
     data['dob'] = this.dob;
     data['gender'] = this.gender;
     data['lang'] = this.lang;
+    data['display_name'] = this.displayName;
+    data['image_filename'] = this.imageFilename;
     return data;
   }
 }

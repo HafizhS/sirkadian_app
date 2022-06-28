@@ -1,5 +1,6 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -10,16 +11,20 @@ import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/model/food_model/food_history_request_model.dart';
 
 import '../../../../controller/hexcolor_controller.dart';
-import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
+import '../../../../controller/user_controller.dart';
+import '../../../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import '../../../../objectbox.g.dart';
 import '../../../../widget/food_widget/food_tile.dart';
 import 'food_detail_screen.dart';
 import 'food_recommendation_screen.dart';
 
 class FoodMealScreen extends StatefulWidget {
-  const FoodMealScreen({Key? key, required this.session}) : super(key: key);
+  const FoodMealScreen(
+      {Key? key, required this.session, required this.isFromFutureMealplan})
+      : super(key: key);
 
   final String session;
+  final bool isFromFutureMealplan;
 
   @override
   State<FoodMealScreen> createState() => _FoodMealScreenState();
@@ -29,12 +34,14 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
   final authController = Get.find<AuthController>();
   final foodController = Get.find<FoodController>();
   final informationController = Get.find<InformationController>();
+  final userController = Get.find<UserController>();
   final color = Get.find<ColorConstantController>();
   late Stream<List<Food>> _foodStream;
   final data = GetStorage('myData');
   List<Foods> listFoodSarapan = [];
   List<Foods> listFoodMakanSiang = [];
   List<Foods> listFoodMakanMalam = [];
+  bool isGanti = true;
 
   @override
   void initState() {
@@ -49,6 +56,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
           'sessionSarapan': false,
           'date': foodController.focusedDay.toString(),
         });
+        // foodController.foodStore.box<Food>().removeAll();
       });
     } else {
       print('sama dan ada data');
@@ -61,7 +69,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
           'sessionMakanSiang': false,
           'date': foodController.focusedDay.toString(),
         });
-        foodController.foodStore.box<Food>().removeAll();
+        // foodController.foodStore.box<Food>().removeAll();
       });
     }
     if (data.read('dataSessionMakanMalam') == null ||
@@ -72,7 +80,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
           'sessionMakanMalam': false,
           'date': foodController.focusedDay.toString(),
         });
-        foodController.foodStore.box<Food>().removeAll();
+        // foodController.foodStore.box<Food>().removeAll();
       });
     }
 
@@ -92,6 +100,17 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
         initialData: [],
         stream: _foodStream,
         builder: (context, snapshot) {
+          //
+          foodController.foodEaten = '';
+          foodController.listFoodId = [];
+          foodController.listFoodName = [];
+          snapshot.data!.forEach((e) {
+            foodController.listFoodId.add(e.id);
+            foodController.listFoodName.add(e.name);
+            foodController.foodEaten =
+                foodController.foodEaten + '&food_eaten=' + e.foodId!;
+          });
+
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(
@@ -207,61 +226,128 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
                                                 .onDrag,
                                         itemCount: snapshot.data!.length,
                                         itemBuilder: (context, index) {
-                                          return FoodTile(
-                                            containerButton: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          FoodDetailScreen(
-                                                            session:
-                                                                widget.session,
-                                                            foodController:
-                                                                foodController,
-                                                            color: color,
-                                                            recommendationScore:
-                                                                snapshot
+                                          return Slidable(
+                                              closeOnScroll: true,
+                                              key: UniqueKey(),
+                                              endActionPane: ActionPane(
+                                                motion: DrawerMotion(),
+                                                children: [
+                                                  SlidableAction(
+                                                    flex: 1,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            bottomLeft: Radius
+                                                                .circular(30),
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    30)),
+                                                    onPressed:
+                                                        (BuildContext context) {
+                                                      setState(() {
+                                                        isGanti = true;
+                                                      });
+                                                      getSlidableSession(
+                                                          snapshot.data!,
+                                                          index);
+                                                    },
+                                                    backgroundColor:
+                                                        color.secondaryColor,
+                                                    foregroundColor:
+                                                        color.primaryColor,
+                                                    icon: FontAwesomeIcons
+                                                        .solidEdit,
+                                                    label: 'Ganti',
+                                                  ),
+                                                  SlidableAction(
+                                                    flex: 1,
+                                                    onPressed:
+                                                        (BuildContext context) {
+                                                      setState(() {
+                                                        isGanti = false;
+                                                      });
+                                                      getSlidableSession(
+                                                          snapshot.data!,
+                                                          index);
+                                                    },
+                                                    backgroundColor:
+                                                        color.tersierColor,
+                                                    foregroundColor:
+                                                        color.primaryColor,
+                                                    icon: FontAwesomeIcons.plus,
+                                                    label: 'Tambah',
+                                                  ),
+                                                ],
+                                              ),
+                                              child: FoodTile(
+                                                containerButton: () {
+                                                  foodController
+                                                      .getOtherFoodRecommendation(
+                                                          snapshot.data![index]
+                                                              .foodId,
+                                                          widget.session);
+                                                  foodController.getFoodItem(
+                                                      snapshot
+                                                          .data![index].foodId);
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              FoodDetailScreen(
+                                                                isFromFoodMeal:
+                                                                    true,
+                                                                session: widget
+                                                                    .session,
+                                                                foodController:
+                                                                    foodController,
+                                                                color: color,
+                                                                recommendationScore:
+                                                                    snapshot
+                                                                        .data![
+                                                                            index]
+                                                                        .recommendationScore!,
+                                                                foodId: snapshot
                                                                     .data![
                                                                         index]
-                                                                    .recommendationScore!,
-                                                            foodId: snapshot
-                                                                .data![index]
-                                                                .foodId!,
-                                                          )));
-                                            },
-                                            iconButton: () {
-                                              getDeleteFunction(
-                                                  snapshot.data!, index);
-                                            },
-                                            icon: getIconDelete(),
-                                            depth: getDepth(),
-                                            color: color,
-                                            imageFilename: snapshot
-                                                .data![index].imageFileName!,
-                                            name: snapshot.data![index].name!,
-                                            necessity:
-                                                (snapshot.data![index].energy! /
+                                                                    .foodId!,
+                                                              )));
+                                                },
+                                                iconButton: () {
+                                                  getDeleteFunction(
+                                                      snapshot.data!, index);
+                                                },
+                                                icon: getIconDelete(),
+                                                depth: getDepth(),
+                                                color: color,
+                                                imageFilename: snapshot
+                                                    .data![index]
+                                                    .imageFileName!,
+                                                name:
+                                                    snapshot.data![index].name!,
+                                                necessity: (snapshot
+                                                            .data![index]
+                                                            .energy! /
                                                         snapshot.data![index]
                                                             .serving!)
                                                     .toStringAsFixed(0),
-                                            serving: (snapshot
-                                                        .data![index].serving! /
-                                                    snapshot
-                                                        .data![index].serving!)
-                                                .toStringAsFixed(0),
-                                            recommendationScore: snapshot
-                                                .data![index]
-                                                .recommendationScore!,
-                                            duration: snapshot
-                                                .data![index].duration!
-                                                .toStringAsFixed(0),
-                                          );
+                                                serving: (snapshot.data![index]
+                                                            .serving! /
+                                                        snapshot.data![index]
+                                                            .serving!)
+                                                    .toStringAsFixed(0),
+                                                recommendationScore: snapshot
+                                                    .data![index]
+                                                    .recommendationScore!,
+                                                duration: snapshot
+                                                    .data![index].duration!
+                                                    .toStringAsFixed(0),
+                                              ));
                                         }),
                                   ),
                           ],
                         ))
                       ]),
-                  snapshot.data!.isNotEmpty
+                  snapshot.data!.isNotEmpty &&
+                          widget.isFromFutureMealplan == false
                       ? Container(
                           margin: EdgeInsets.only(right: 20.w, bottom: 20.h),
                           child: NeumorphicButton(
@@ -295,6 +381,43 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
             ),
           );
         });
+  }
+
+  void getSlidableSession(List<Food> foods, index) {
+    if (widget.session == 'Sarapan') {
+      if (data.read('dataSessionSarapan')['sessionSarapan'] == true) {
+        informationController.snackBarError(
+            'Sesi Sudah Ditutup', 'Batalkan sesi untuk mengubah mealplan');
+      } else {
+        foodController
+            .getFoodRecommendationByFood(widget.session, foods[index].foodId!)
+            .then((_) {
+          recommendationByFoodBottomSheet(foods, index, isGanti);
+        });
+      }
+    } else if (widget.session == 'Makan Siang') {
+      if (data.read('dataSessionMakanSiang')['sessionMakanSiang'] == true) {
+        informationController.snackBarError(
+            'Sesi Sudah Ditutup', 'Batalkan sesi untuk mengubah mealplan');
+      } else {
+        foodController
+            .getFoodRecommendationByFood(widget.session, foods[index].foodId!)
+            .then((_) {
+          recommendationByFoodBottomSheet(foods, index, isGanti);
+        });
+      }
+    } else {
+      if (data.read('dataSessionMakanMalam')['sessionMakanMalam'] == true) {
+        informationController.snackBarError(
+            'Sesi Sudah Ditutup', 'Batalkan sesi untuk mengubah mealplan');
+      } else {
+        foodController
+            .getFoodRecommendationByFood(widget.session, foods[index].foodId!)
+            .then((_) {
+          recommendationByFoodBottomSheet(foods, index, isGanti);
+        });
+      }
+    }
   }
 
   double getDepth() {
@@ -507,10 +630,16 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
             'Sesi Sudah Ditutup', 'Batalkan sesi untuk mengubah mealplan');
       } else {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    FoodRecommendationScreen(session: widget.session)));
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        FoodRecommendationScreen(session: widget.session)))
+            .then((_) {
+          setState(() {
+            foodController.isStopFoodMenu = false;
+            foodController.isStopFood = false;
+          });
+        });
       }
     } else if (widget.session == 'Makan Siang') {
       if (data.read('dataSessionMakanSiang')['sessionMakanSiang'] == true) {
@@ -518,10 +647,16 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
             'Sesi Sudah Ditutup', 'Batalkan sesi untuk mengubah mealplan');
       } else {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    FoodRecommendationScreen(session: widget.session)));
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        FoodRecommendationScreen(session: widget.session)))
+            .then((_) {
+          setState(() {
+            foodController.isStopFoodMenu = false;
+            foodController.isStopFood = false;
+          });
+        });
       }
     } else {
       if (data.read('dataSessionMakanMalam')['sessionMakanMalam'] == true) {
@@ -529,11 +664,115 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
             'Sesi Sudah Ditutup', 'Batalkan sesi untuk mengubah mealplan');
       } else {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    FoodRecommendationScreen(session: widget.session)));
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        FoodRecommendationScreen(session: widget.session)))
+            .then((_) {
+          setState(() {
+            foodController.isStopFoodMenu = false;
+            foodController.isStopFood = false;
+          });
+        });
       }
     }
+  }
+
+  void recommendationByFoodBottomSheet(List<Food> foods, index, bool isGanti) {
+    Get.bottomSheet(Container(
+      height: 400.h,
+      width: 360.w,
+      decoration: BoxDecoration(
+          color: color.primaryColor,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      child: ListView.builder(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          itemCount: foodController.listFoodByFood.length,
+          itemBuilder: (context, idx) {
+            return FoodTile(
+              depth: 4,
+              containerButton: () {
+                foodController.getOtherFoodRecommendation(
+                    foodController.listFoodByFood[idx].foodId, widget.session);
+                foodController
+                    .getFoodItem(foodController.listFoodByFood[idx].foodId);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FoodDetailScreen(
+                              session: widget.session,
+                              isFromFoodMeal: true,
+                              foodController: foodController,
+                              color: color,
+                              recommendationScore: foodController
+                                  .listFoodByFood[idx].recommendationScore!
+                                  .toStringAsFixed(2),
+                              foodId:
+                                  foodController.listFoodByFood[idx].foodId!,
+                            )));
+              },
+              iconButton: () {
+                final food = Food(
+                  imageFileName:
+                      foodController.listFoodByFood[idx].imageFilename,
+                  session: widget.session,
+                  date: foodController.selectedDay.toString(),
+                  name: foodController.listFoodByFood[idx].foodName,
+                  calcium: foodController.listFoodByFood[idx].calcium,
+                  carbohydrate: foodController.listFoodByFood[idx].carbohydrate,
+                  copper: foodController.listFoodByFood[idx].copper,
+                  difficulty: foodController.listFoodByFood[idx].difficulty,
+                  duration: foodController.listFoodByFood[idx].duration,
+                  energy: foodController.listFoodByFood[idx].energy,
+                  fat: foodController.listFoodByFood[idx].fat,
+                  fiber: foodController.listFoodByFood[idx].fiber,
+                  foodId: foodController.listFoodByFood[idx].foodId,
+                  foodTypes: foodController.listFoodByFood[idx].foodTypes,
+                  iron: foodController.listFoodByFood[idx].iron,
+                  phosphor: foodController.listFoodByFood[idx].phosphor,
+                  potassium: foodController.listFoodByFood[idx].potassium,
+                  protein: foodController.listFoodByFood[idx].protein,
+                  retinol: foodController.listFoodByFood[idx].retinol,
+                  serving: foodController.listFoodByFood[idx].serving,
+                  sodium: foodController.listFoodByFood[idx].sodium,
+                  tags: foodController.listFoodByFood[idx].tags,
+                  vitaminB1: foodController.listFoodByFood[idx].vitaminB1,
+                  vitaminB2: foodController.listFoodByFood[idx].vitaminB2,
+                  vitaminB3: foodController.listFoodByFood[idx].vitaminB3,
+                  vitaminC: foodController.listFoodByFood[idx].vitaminC,
+                  water: foodController.listFoodByFood[idx].water,
+                  zinc: foodController.listFoodByFood[idx].zinc,
+                  itemFood: '',
+                  recommendationScore: foodController
+                      .listFoodByFood[idx].recommendationScore!
+                      .toStringAsFixed(2),
+                );
+
+                foodController.foodStore.box<Food>().put(food);
+                if (isGanti) {
+                  getDeleteFunction(foods, index);
+                } else {}
+                Navigator.pop(context);
+              },
+              icon: FontAwesomeIcons.plus,
+              color: color,
+              imageFilename:
+                  foodController.listFoodByFood[idx].imageFilename! == ''
+                      ? ''
+                      : foodController.listFoodByFood[idx].imageFilename!,
+              name: foodController.listFoodByFood[idx].foodName!,
+              necessity: (foodController.listFoodByFood[idx].energy!)
+                  .toStringAsFixed(0),
+              serving: (foodController.listFoodByFood[idx].serving!)
+                  .toStringAsFixed(0),
+              recommendationScore: foodController
+                  .listFoodByFood[idx].recommendationScore!
+                  .toStringAsFixed(2),
+              duration: foodController.listFoodByFood[idx].duration!
+                  .toStringAsFixed(0),
+            );
+          }),
+    ));
   }
 }

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+// import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sirkadian_app/controller/auth_controller.dart';
 import 'package:sirkadian_app/controller/hexcolor_controller.dart';
 import 'package:sirkadian_app/screen/list_screen.dart';
@@ -23,6 +24,9 @@ void onItemPressed(BuildContext context,
     case 1:
       Get.toNamed(RouteScreens.userHealthPreference);
       break;
+    case 2:
+      Get.toNamed(RouteScreens.healthware);
+      break;
     case 3:
       Get.toNamed(RouteScreens.settingsGeneral);
       break;
@@ -37,12 +41,14 @@ class DrawerSideBar extends StatefulWidget {
   final AuthController authController;
   final ColorConstantController color;
   final UserController userController;
-  const DrawerSideBar(
-      {Key? key,
-      required this.authController,
-      required this.color,
-      required this.userController})
-      : super(key: key);
+  // final PackageInfo packageInfo;
+  const DrawerSideBar({
+    Key? key,
+    required this.authController,
+    required this.color,
+    required this.userController,
+    // required this.packageInfo
+  }) : super(key: key);
 
   @override
   State<DrawerSideBar> createState() => _DrawerSideBarState();
@@ -50,6 +56,7 @@ class DrawerSideBar extends StatefulWidget {
 
 class _DrawerSideBarState extends State<DrawerSideBar> {
   final color = Get.find<ColorConstantController>();
+
   @override
   void initState() {
     super.initState();
@@ -108,7 +115,10 @@ class _DrawerSideBarState extends State<DrawerSideBar> {
                       ),
                     ),
                     Text(
-                      widget.authController.data.read('dataUser')['username'],
+                      widget.userController.userInformationResponse.value
+                              .displayName ??
+                          widget.authController.data
+                              .read('dataUser')['username'],
                       style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                             color: widget.color.primaryColor,
@@ -150,8 +160,8 @@ class _DrawerSideBarState extends State<DrawerSideBar> {
                       height: 30.h,
                     ),
                     DrawerItem(
-                      name: 'Aktivitas',
-                      icon: FontAwesomeIcons.thList,
+                      name: 'Devices',
+                      icon: FontAwesomeIcons.microchip,
                       onPressed: () => onItemPressed(context,
                           index: 2, authController: widget.authController),
                       color: widget.color,
@@ -178,6 +188,8 @@ class _DrawerSideBarState extends State<DrawerSideBar> {
                     ),
                   ],
                 ),
+                // Column(
+                //   children: [
                 Text(
                   'Copyright by Sirkadian 2022',
                   style: GoogleFonts.poppins(
@@ -186,7 +198,18 @@ class _DrawerSideBarState extends State<DrawerSideBar> {
                         fontSize: 12.sp,
                         fontWeight: FontWeight.normal),
                   ),
-                )
+                ),
+                // Text(
+                //   '${widget.packageInfo.version}',
+                //   style: GoogleFonts.poppins(
+                //     textStyle: TextStyle(
+                //         color: color.primaryColor,
+                //         fontSize: 12.sp,
+                //         fontWeight: FontWeight.normal),
+                //   ),
+                // )
+                //   ],
+                // ),
               ],
             ),
           ),

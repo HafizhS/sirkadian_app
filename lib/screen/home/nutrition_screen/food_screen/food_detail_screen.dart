@@ -1,11 +1,12 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
-import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
+import '../../../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import '../../../../widget/food_widget/necessity_gauge.dart';
 import '../../../../widget/food_widget/other_food_tile.dart';
 
@@ -18,6 +19,7 @@ class FoodDetailScreen extends StatefulWidget {
     required this.session,
     required this.foodId,
     required this.recommendationScore,
+    required this.isFromFoodMeal,
   }) : super(key: key);
 
   // final DataFoodRecommendationResponse food;
@@ -26,19 +28,21 @@ class FoodDetailScreen extends StatefulWidget {
   final FoodController foodController;
   final ColorConstantController color;
   final String recommendationScore;
+  final bool isFromFoodMeal;
 
   @override
   State<FoodDetailScreen> createState() => _FoodDetailScreenState();
 }
 
 class _FoodDetailScreenState extends State<FoodDetailScreen> {
+  final data = GetStorage('myData');
   ScrollController scrollController = ScrollController();
   bool isOnBottom = false;
   bool isBahanOpen = false;
   bool isLangkahOpen = false;
 
   void initState() {
-    widget.foodController.getFoodItem(widget.foodId);
+    // widget.foodController.getFoodItem(widget.foodId);
     scrollController.addListener(() {
       if (scrollController.offset > 1000) {
         setState(() {
@@ -128,23 +132,24 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(right: 5.w),
-                                    child: NeumorphicButton(
-                                      onPressed: () {},
-                                      style: NeumorphicStyle(
-                                        depth: 0,
-                                        shape: NeumorphicShape.flat,
-                                        boxShape: NeumorphicBoxShape.circle(),
-                                        color: widget.color.primaryColor,
+                                      margin: EdgeInsets.only(right: 5.w),
+                                      child: SizedBox()
+                                      //  NeumorphicButton(
+                                      //   onPressed: () {},
+                                      //   style: NeumorphicStyle(
+                                      //     depth: 0,
+                                      //     shape: NeumorphicShape.flat,
+                                      //     boxShape: NeumorphicBoxShape.circle(),
+                                      //     color: widget.color.primaryColor,
+                                      //   ),
+                                      //   padding: EdgeInsets.all(14.sp),
+                                      //   child: FaIcon(
+                                      //     FontAwesomeIcons.solidHeart,
+                                      //     size: 20.sp,
+                                      //     color: widget.color.secondaryTextColor,
+                                      //   ),
+                                      // ),
                                       ),
-                                      padding: EdgeInsets.all(14.sp),
-                                      child: FaIcon(
-                                        FontAwesomeIcons.solidHeart,
-                                        size: 20.sp,
-                                        color: widget.color.secondaryTextColor,
-                                      ),
-                                    ),
-                                  ),
                                 ],
                               ),
                             ]),
@@ -187,7 +192,34 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 10.h),
+                                  SizedBox(height: 5.h),
+                                  Row(
+                                      children: widget.foodController
+                                          .foodItemResponse.value.foodTypes!
+                                          .map((e) => Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    color: widget
+                                                        .color.secondaryColor),
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 20.w,
+                                                    vertical: 5.h),
+                                                margin: EdgeInsets.only(
+                                                    right: 10.w, bottom: 5.h),
+                                                child: Text(e,
+                                                    style: GoogleFonts.inter(
+                                                      textStyle: TextStyle(
+                                                          color: widget.color
+                                                              .primaryColor,
+                                                          fontSize: 14.sp,
+                                                          fontWeight: FontWeight
+                                                              .normal),
+                                                    )),
+                                              ))
+                                          .toList()),
+                                  SizedBox(height: 5.h),
                                   Row(
                                     children: [
                                       FaIcon(
@@ -208,7 +240,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                             textStyle: TextStyle(
                                                 color: widget
                                                     .color.tersierTextColor,
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.normal),
                                           )),
                                       SizedBox(width: 20.w),
@@ -219,11 +251,12 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                       ),
                                       Text(
                                           ' ' +
-                                              widget
-                                                  .foodController
-                                                  .foodItemResponse
-                                                  .value
-                                                  .duration!
+                                              (widget
+                                                          .foodController
+                                                          .foodItemResponse
+                                                          .value
+                                                          .duration! /
+                                                      60)
                                                   .toStringAsFixed(0) +
                                               ' min',
                                           style: GoogleFonts.inter(
@@ -247,17 +280,6 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                               fontWeight: FontWeight.normal),
                                         ),
                                       ),
-                                      SizedBox(width: 20.w),
-                                      Text(
-                                          widget.foodController.foodItemResponse
-                                              .value.foodTypes!.first,
-                                          style: GoogleFonts.inter(
-                                            textStyle: TextStyle(
-                                                color: widget
-                                                    .color.tersierTextColor,
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.normal),
-                                          )),
                                     ],
                                   ),
                                   SizedBox(height: 10.h),
@@ -282,7 +304,9 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                     ),
                                     SizedBox(width: 20.w),
                                     Text(
-                                      ' By : Abiyyuda Naufal P.',
+                                      widget.foodController.foodItemResponse
+                                              .value.creatorName ??
+                                          '',
                                       style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
                                             color: widget.color.tersierColor
@@ -314,15 +338,31 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            'Informasi Nutrisi',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                  color: widget
-                                                      .color.secondaryTextColor,
-                                                  fontSize: 18.sp,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Informasi Nutrisi',
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                      color: widget.color
+                                                          .secondaryTextColor,
+                                                      fontSize: 18.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
+                                              Text(
+                                                ' (1 Porsi)',
+                                                style: GoogleFonts.inter(
+                                                  textStyle: TextStyle(
+                                                      color: widget.color
+                                                          .secondaryTextColor,
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.normal),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                           SizedBox(width: 20.w),
                                           Row(
@@ -366,126 +406,229 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                             child: SingleChildScrollView(
                                               child: Column(
                                                 children: [
+                                                  Text(
+                                                    'Pemenuhan Nutrisi Harian',
+                                                    style: GoogleFonts.poppins(
+                                                      textStyle: TextStyle(
+                                                          color: widget.color
+                                                              .tersierTextColor,
+                                                          fontSize: 18.sp,
+                                                          fontWeight: FontWeight
+                                                              .normal),
+                                                    ),
+                                                  ),
                                                   bottomSheetNecesityChild(
                                                       'Serat',
-                                                      widget
-                                                              .foodController
-                                                              .foodItemResponse
-                                                              .value
-                                                              .fiber! /
-                                                          widget
-                                                              .foodController
-                                                              .foodItemResponse
-                                                              .value
-                                                              .serving!),
+                                                      (widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .fiber! /
+                                                              widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .serving!) /
+                                                          (widget
+                                                                  .foodController
+                                                                  .necessity
+                                                                  .value
+                                                                  .macro!
+                                                                  .breakfast!
+                                                                  .fiber! +
+                                                              widget
+                                                                  .foodController
+                                                                  .necessity
+                                                                  .value
+                                                                  .macro!
+                                                                  .lunch!
+                                                                  .fiber! +
+                                                              widget
+                                                                  .foodController
+                                                                  .necessity
+                                                                  .value
+                                                                  .macro!
+                                                                  .dinner!
+                                                                  .fiber!)),
                                                   bottomSheetNecesityChild(
                                                       'Kalsium',
-                                                      widget
+                                                      (widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .calcium! /
+                                                              widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .serving!) /
+                                                          (widget
                                                               .foodController
-                                                              .foodItemResponse
+                                                              .necessity
                                                               .value
-                                                              .calcium! /
-                                                          widget
-                                                              .foodController
-                                                              .foodItemResponse
-                                                              .value
-                                                              .serving!),
+                                                              .micro!
+                                                              .calcium!)),
                                                   bottomSheetNecesityChild(
                                                       'Zat Besi',
-                                                      widget
+                                                      (widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .iron! /
+                                                              widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .serving!) /
+                                                          (widget
                                                               .foodController
-                                                              .foodItemResponse
+                                                              .necessity
                                                               .value
-                                                              .iron! /
-                                                          widget
-                                                              .foodController
-                                                              .foodItemResponse
-                                                              .value
-                                                              .serving!),
+                                                              .micro!
+                                                              .iron!)),
                                                   bottomSheetNecesityChild(
                                                       'zinc',
-                                                      widget
+                                                      (widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .zinc! /
+                                                              widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .serving!) /
+                                                          (widget
                                                               .foodController
-                                                              .foodItemResponse
+                                                              .necessity
                                                               .value
-                                                              .zinc! /
-                                                          widget
-                                                              .foodController
-                                                              .foodItemResponse
-                                                              .value
-                                                              .serving!),
+                                                              .micro!
+                                                              .zinc!)),
                                                   bottomSheetNecesityChild(
                                                       'Copper',
-                                                      widget
+                                                      (widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .copper! /
+                                                              widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .serving!) /
+                                                          (widget
                                                               .foodController
-                                                              .foodItemResponse
+                                                              .necessity
                                                               .value
-                                                              .copper! /
-                                                          widget
-                                                              .foodController
-                                                              .foodItemResponse
-                                                              .value
-                                                              .serving!),
+                                                              .micro!
+                                                              .copper!)),
                                                   bottomSheetNecesityChild(
                                                       'Vitamin C',
-                                                      widget
+                                                      (widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .vitaminC! /
+                                                              widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .serving!) /
+                                                          (widget
                                                               .foodController
-                                                              .foodItemResponse
+                                                              .necessity
                                                               .value
-                                                              .vitaminC! /
-                                                          widget
-                                                              .foodController
-                                                              .foodItemResponse
-                                                              .value
-                                                              .serving!),
+                                                              .micro!
+                                                              .vitaminC!)),
                                                   bottomSheetNecesityChild(
                                                       'Vitamin B1',
-                                                      widget
+                                                      (widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .vitaminB1! /
+                                                              widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .serving!) /
+                                                          (widget
                                                               .foodController
-                                                              .foodItemResponse
+                                                              .necessity
                                                               .value
-                                                              .vitaminB1! /
-                                                          widget
-                                                              .foodController
-                                                              .foodItemResponse
-                                                              .value
-                                                              .serving!),
+                                                              .micro!
+                                                              .vitaminB1!)),
                                                   bottomSheetNecesityChild(
                                                       'Vitamin B2',
-                                                      widget
+                                                      (widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .vitaminB2! /
+                                                              widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .serving!) /
+                                                          (widget
                                                               .foodController
-                                                              .foodItemResponse
+                                                              .necessity
                                                               .value
-                                                              .vitaminB2! /
-                                                          widget
-                                                              .foodController
-                                                              .foodItemResponse
-                                                              .value
-                                                              .serving!),
+                                                              .micro!
+                                                              .vitaminB2!)),
                                                   bottomSheetNecesityChild(
                                                       'Vitamin B3',
-                                                      widget
+                                                      (widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .vitaminB3! /
+                                                              widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .serving!) /
+                                                          (widget
                                                               .foodController
-                                                              .foodItemResponse
+                                                              .necessity
                                                               .value
-                                                              .vitaminB3! /
-                                                          widget
-                                                              .foodController
-                                                              .foodItemResponse
-                                                              .value
-                                                              .serving!),
+                                                              .micro!
+                                                              .vitaminB3!)),
                                                   bottomSheetNecesityChild(
                                                       'Retinol',
-                                                      widget
+                                                      (widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .retinol! /
+                                                              widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .serving!) /
+                                                          (widget
                                                               .foodController
-                                                              .foodItemResponse
+                                                              .necessity
                                                               .value
-                                                              .retinol! /
-                                                          widget
+                                                              .micro!
+                                                              .retinol!)),
+                                                  bottomSheetNecesityChild(
+                                                      'Cairan',
+                                                      (widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .water! /
+                                                              widget
+                                                                  .foodController
+                                                                  .foodItemResponse
+                                                                  .value
+                                                                  .serving!) /
+                                                          (widget
                                                               .foodController
-                                                              .foodItemResponse
+                                                              .necessity
                                                               .value
-                                                              .serving!),
+                                                              .water!)),
                                                 ],
                                               ),
                                             ),
@@ -850,38 +993,52 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                             ),
 
                             /// disini ditambahin other food recommendation
-                            Text(
-                              'Rekomendasi Sejenis',
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    color: widget.color.secondaryTextColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                            Container(
-                              height: 200.h,
-                              width: 360.w,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount:
-                                    widget.foodController.listOtherFood.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    margin: EdgeInsets.all(10.sp),
-                                    child: OtherFoodRecommendationTile(
-                                      productOld: widget.foodController
-                                          .foodItemResponse.value,
-                                      session: widget.session,
-                                      foodController: widget.foodController,
-                                      product: widget
-                                          .foodController.listOtherFood[index],
-                                      color: widget.color,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
+                          !widget.isFromFoodMeal?  Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Rekomendasi Sejenis',
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        color: widget.color.secondaryTextColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                widget.foodController.listOtherFood.isNotEmpty
+                                    ? Container(
+                                        height: 200.h,
+                                        width: 360.w,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: widget.foodController
+                                              .listOtherFood.length,
+                                          itemBuilder: (context, index) {
+                                            return Container(
+                                              margin: EdgeInsets.all(10.sp),
+                                              child:
+                                                  OtherFoodRecommendationTile(
+                                                isFromFoodMeal:
+                                                    widget.isFromFoodMeal,
+                                                productOld: widget
+                                                    .foodController
+                                                    .foodItemResponse
+                                                    .value,
+                                                session: widget.session,
+                                                foodController:
+                                                    widget.foodController,
+                                                product: widget.foodController
+                                                    .listOtherFood[index],
+                                                color: widget.color,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      )
+                                    : Container(),
+                              ],
+                            ):Container(),
+
                             isBahanOpen
                                 ? Neumorphic(
                                     padding: EdgeInsets.all(10),
@@ -1006,17 +1163,35 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                                             FontAwesomeIcons.circle,
                                                                                             size: 8.sp,
                                                                                           )),
-                                                                                      Flexible(
-                                                                                        child: Padding(
-                                                                                          padding: EdgeInsets.only(left: 10.w),
-                                                                                          child: Text(
-                                                                                            '${e.ingredientDescription}.',
-                                                                                            softWrap: true,
-                                                                                            textAlign: TextAlign.justify,
-                                                                                            style: GoogleFonts.inter(
-                                                                                              textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14.sp, fontWeight: FontWeight.normal),
+                                                                                      Container(
+                                                                                        width: 260.w,
+                                                                                        padding: EdgeInsets.only(left: 10.w),
+                                                                                        child: Row(
+                                                                                          children: [
+                                                                                            Flexible(
+                                                                                              child: FittedBox(
+                                                                                                child: Text(
+                                                                                                  '${e.ingredientDescription} ',
+                                                                                                  maxLines: 1,
+                                                                                                  softWrap: true,
+                                                                                                  textAlign: TextAlign.justify,
+                                                                                                  style: GoogleFonts.inter(
+                                                                                                    textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14.sp, fontWeight: FontWeight.normal),
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ),
                                                                                             ),
-                                                                                          ),
+                                                                                            e.measurementDescription != null
+                                                                                                ? Text(
+                                                                                                    '${e.measurementDescription}.',
+                                                                                                    softWrap: true,
+                                                                                                    textAlign: TextAlign.justify,
+                                                                                                    style: GoogleFonts.inter(
+                                                                                                      textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14.sp, fontWeight: FontWeight.normal),
+                                                                                                    ),
+                                                                                                  )
+                                                                                                : SizedBox()
+                                                                                          ],
                                                                                         ),
                                                                                       ),
                                                                                     ],
@@ -1038,19 +1213,33 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                           Alignment
                                                                               .centerLeft,
                                                                       child:
+                                                                          Row(
+                                                                        children: [
+                                                                          Flexible(
+                                                                            child:
+                                                                                FittedBox(
+                                                                              child: Text(
+                                                                                '${e.ingredientDescription} ',
+                                                                                softWrap: true,
+                                                                                textAlign: TextAlign.justify,
+                                                                                style: GoogleFonts.inter(
+                                                                                  textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14.sp, fontWeight: FontWeight.normal),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
                                                                           Text(
-                                                                        '${e.ingredientDescription}.',
-                                                                        softWrap:
-                                                                            true,
-                                                                        textAlign:
-                                                                            TextAlign.justify,
-                                                                        style: GoogleFonts
-                                                                            .inter(
-                                                                          textStyle: TextStyle(
-                                                                              color: widget.color.primaryTextColor,
-                                                                              fontSize: 14.sp,
-                                                                              fontWeight: FontWeight.normal),
-                                                                        ),
+                                                                            '${e.measurementDescription}.',
+                                                                            softWrap:
+                                                                                true,
+                                                                            textAlign:
+                                                                                TextAlign.justify,
+                                                                            style:
+                                                                                GoogleFonts.inter(
+                                                                              textStyle: TextStyle(color: widget.color.primaryTextColor, fontSize: 14.sp, fontWeight: FontWeight.normal),
+                                                                            ),
+                                                                          ),
+                                                                        ],
                                                                       ),
                                                                     ))
                                                     ],
@@ -1279,19 +1468,19 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                                         ),
                                                                                       ],
                                                                                     ),
-                                                                                    Container(
-                                                                                        height: 150.h,
-                                                                                        width: 360.w,
-                                                                                        margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                                                                                        child: widget.foodController.foodItemResponse.value.imageFilename == ''
-                                                                                            ? Icon(Icons.image_not_supported_rounded)
-                                                                                            : ClipRRect(
-                                                                                                borderRadius: BorderRadius.circular(20),
-                                                                                                child: Image.network(
-                                                                                                  widget.foodController.foodItemResponse.value.imageFilename!,
-                                                                                                  fit: BoxFit.cover,
-                                                                                                ),
-                                                                                              )),
+                                                                                    // Container(
+                                                                                    //     height: 150.h,
+                                                                                    //     width: 360.w,
+                                                                                    //     margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                                                                                    //     child: widget.foodController.foodItemResponse.value.imageFilename == ''
+                                                                                    //         ? Icon(Icons.image_not_supported_rounded)
+                                                                                    //         : ClipRRect(
+                                                                                    //             borderRadius: BorderRadius.circular(20),
+                                                                                    //             child: Image.network(
+                                                                                    //               widget.foodController.foodItemResponse.value.imageFilename!,
+                                                                                    //               fit: BoxFit.cover,
+                                                                                    //             ),
+                                                                                    //           )),
                                                                                   ],
                                                                                 ),
                                                                               )
@@ -1327,37 +1516,37 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                                                       ),
                                                                     ),
                                                                   ),
-                                                            e.instruction ==
-                                                                    null
-                                                                ? Container()
-                                                                : Container(
-                                                                    height:
-                                                                        150.h,
-                                                                    width:
-                                                                        360.w,
-                                                                    margin: EdgeInsets.symmetric(
-                                                                        horizontal: 20
-                                                                            .w,
-                                                                        vertical: 10
-                                                                            .h),
-                                                                    decoration: BoxDecoration(
-                                                                        color: widget
-                                                                            .color
-                                                                            .hintTextColor,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                20)),
-                                                                    child: widget.foodController.foodItemResponse.value.imageFilename ==
-                                                                            ''
-                                                                        ? Icon(Icons
-                                                                            .image_not_supported_rounded)
-                                                                        : ClipRRect(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(20),
-                                                                            child: Image.network(
-                                                                              widget.foodController.foodItemResponse.value.imageFilename!,
-                                                                              fit: BoxFit.cover,
-                                                                            ))),
+                                                            // e.instruction ==
+                                                            //         null
+                                                            //     ? Container()
+                                                            //     : Container(
+                                                            //         height:
+                                                            //             150.h,
+                                                            //         width:
+                                                            //             360.w,
+                                                            //         margin: EdgeInsets.symmetric(
+                                                            //             horizontal: 20
+                                                            //                 .w,
+                                                            //             vertical: 10
+                                                            //                 .h),
+                                                            //         decoration: BoxDecoration(
+                                                            //             color: widget
+                                                            //                 .color
+                                                            //                 .hintTextColor,
+                                                            //             borderRadius:
+                                                            //                 BorderRadius.circular(
+                                                            //                     20)),
+                                                            //         child: widget.foodController.foodItemResponse.value.imageFilename ==
+                                                            //                 ''
+                                                            //             ? Icon(Icons
+                                                            //                 .image_not_supported_rounded)
+                                                            //             : ClipRRect(
+                                                            //                 borderRadius:
+                                                            //                     BorderRadius.circular(20),
+                                                            //                 child: Image.network(
+                                                            //                   widget.foodController.foodItemResponse.value.imageFilename!,
+                                                            //                   fit: BoxFit.cover,
+                                                            //                 ))),
                                                           ],
                                                         ))
                                                       ],
@@ -1464,81 +1653,82 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                               ),
                             )
                           : Container(),
-                      NeumorphicButton(
-                        margin: EdgeInsets.only(right: 10.w, bottom: 10.h),
-                        onPressed: () {
-                          final food = Food(
-                              imageFileName: widget.foodController
-                                  .foodItemResponse.value.imageFilename,
-                              session: widget.session,
-                              date:
-                                  widget.foodController.selectedDay.toString(),
-                              name: widget.foodController.foodItemResponse.value
-                                  .foodName,
-                              calcium: widget.foodController.foodItemResponse
-                                  .value.calcium,
-                              carbohydrate: widget.foodController
-                                  .foodItemResponse.value.carbohydrate,
-                              copper: widget
-                                  .foodController.foodItemResponse.value.copper,
-                              difficulty: widget.foodController.foodItemResponse
-                                  .value.difficulty,
-                              duration: widget.foodController.foodItemResponse
-                                  .value.duration,
-                              energy: widget
-                                  .foodController.foodItemResponse.value.energy,
-                              fat: widget
-                                  .foodController.foodItemResponse.value.fat,
-                              fiber: widget
-                                  .foodController.foodItemResponse.value.fiber,
-                              foodId: widget
-                                  .foodController.foodItemResponse.value.foodId,
-                              foodTypes: widget.foodController.foodItemResponse
-                                  .value.foodTypes,
-                              iron: widget
-                                  .foodController.foodItemResponse.value.iron,
-                              phosphor: widget.foodController.foodItemResponse
-                                  .value.phosphor,
-                              potassium: widget.foodController.foodItemResponse
-                                  .value.potassium,
-                              protein:
-                                  widget.foodController.foodItemResponse.value.protein,
-                              retinol: widget.foodController.foodItemResponse.value.retinol,
-                              serving: widget.foodController.foodItemResponse.value.serving,
-                              sodium: widget.foodController.foodItemResponse.value.sodium,
-                              tags: widget.foodController.foodItemResponse.value.tags,
-                              vitaminB1: widget.foodController.foodItemResponse.value.vitaminB1,
-                              vitaminB2: widget.foodController.foodItemResponse.value.vitaminB2,
-                              vitaminB3: widget.foodController.foodItemResponse.value.vitaminB3,
-                              vitaminC: widget.foodController.foodItemResponse.value.vitaminC,
-                              water: widget.foodController.foodItemResponse.value.water,
-                              zinc: widget.foodController.foodItemResponse.value.zinc,
-                              // instruction: foodController
-                              //     .listFood[index]
-                              //     .foodInstructionInfo!
-                              //     .map((e) =>
-                              //         e.instruction!)
-                              //     .toList(),
-                              instruction: [],
-                              recommendationScore: widget.foodController.foodItemResponse.value.recommendationScore!.toStringAsFixed(2));
-                          widget.foodController.foodStore.box<Food>().put(food);
+                      !widget.isFromFoodMeal
+                          ? NeumorphicButton(
+                              margin:
+                                  EdgeInsets.only(right: 10.w, bottom: 10.h),
+                              onPressed: () {
+                                final food = Food(
+                                    imageFileName: widget.foodController
+                                        .foodItemResponse.value.imageFilename,
+                                    session: widget.session,
+                                    date: widget.foodController.selectedDay
+                                        .toString(),
+                                    name: widget.foodController.foodItemResponse
+                                        .value.foodName,
+                                    calcium: widget.foodController
+                                        .foodItemResponse.value.calcium,
+                                    carbohydrate: widget.foodController
+                                        .foodItemResponse.value.carbohydrate,
+                                    copper: widget.foodController
+                                        .foodItemResponse.value.copper,
+                                    difficulty: widget.foodController
+                                        .foodItemResponse.value.difficulty,
+                                    duration: widget.foodController
+                                        .foodItemResponse.value.duration,
+                                    energy: widget.foodController
+                                        .foodItemResponse.value.energy,
+                                    fat: widget.foodController.foodItemResponse
+                                        .value.fat,
+                                    fiber: widget.foodController
+                                        .foodItemResponse.value.fiber,
+                                    foodId: widget.foodController
+                                        .foodItemResponse.value.foodId,
+                                    foodTypes: widget.foodController
+                                        .foodItemResponse.value.foodTypes,
+                                    iron: widget.foodController.foodItemResponse.value.iron,
+                                    phosphor: widget.foodController.foodItemResponse.value.phosphor,
+                                    potassium: widget.foodController.foodItemResponse.value.potassium,
+                                    protein: widget.foodController.foodItemResponse.value.protein,
+                                    retinol: widget.foodController.foodItemResponse.value.retinol,
+                                    serving: widget.foodController.foodItemResponse.value.serving,
+                                    sodium: widget.foodController.foodItemResponse.value.sodium,
+                                    tags: widget.foodController.foodItemResponse.value.tags,
+                                    vitaminB1: widget.foodController.foodItemResponse.value.vitaminB1,
+                                    vitaminB2: widget.foodController.foodItemResponse.value.vitaminB2,
+                                    vitaminB3: widget.foodController.foodItemResponse.value.vitaminB3,
+                                    vitaminC: widget.foodController.foodItemResponse.value.vitaminC,
+                                    water: widget.foodController.foodItemResponse.value.water,
+                                    zinc: widget.foodController.foodItemResponse.value.zinc,
+                                    // instruction: foodController
+                                    //     .listFood[index]
+                                    //     .foodInstructionInfo!
+                                    //     .map((e) =>
+                                    //         e.instruction!)
+                                    //     .toList(),
+                                    itemFood: 'widget.foodController.foodItemResponse.toJson()',
+                                    recommendationScore: widget.recommendationScore);
+                                widget.foodController.foodStore
+                                    .box<Food>()
+                                    .put(food);
 
-                          Navigator.of(context)
-                              .popUntil(ModalRoute.withName("/foodMealScreen"));
-                        },
-                        style: NeumorphicStyle(
-                          depth: 0,
-                          shape: NeumorphicShape.flat,
-                          boxShape: NeumorphicBoxShape.circle(),
-                          color: widget.color.secondaryColor,
-                        ),
-                        padding: EdgeInsets.all(12.sp),
-                        child: FaIcon(
-                          FontAwesomeIcons.plus,
-                          size: 16.sp,
-                          color: widget.color.primaryColor,
-                        ),
-                      ),
+                                Navigator.of(context).popUntil(
+                                    ModalRoute.withName("/foodMealScreen"));
+                              },
+                              style: NeumorphicStyle(
+                                depth: 0,
+                                shape: NeumorphicShape.flat,
+                                boxShape: NeumorphicBoxShape.circle(),
+                                color: widget.color.secondaryColor,
+                              ),
+                              padding: EdgeInsets.all(12.sp),
+                              child: FaIcon(
+                                FontAwesomeIcons.plus,
+                                size: 16.sp,
+                                color: widget.color.primaryColor,
+                              ),
+                            )
+                          : Container()
                     ],
                   ),
                 ]),

@@ -13,13 +13,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../controller/hexcolor_controller.dart';
 import '../../../controller/auth_controller.dart';
 import '../../../controller/food_controller.dart';
-import '../../../model/obejctbox_model.dart/food_exercise_model.dart';
+import '../../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import '../../../objectbox.g.dart';
 import 'food_screen/food_future_mealPlan_screen.dart';
 
 class NutritionScreen extends StatefulWidget {
-  const NutritionScreen({Key? key}) : super(key: key);
-
+  const NutritionScreen({Key? key, required this.hasBeenInitializedFood})
+      : super(key: key);
+  final bool hasBeenInitializedFood;
   @override
   State<NutritionScreen> createState() => _NutritionScreenState();
 }
@@ -27,72 +28,75 @@ class NutritionScreen extends StatefulWidget {
 class _NutritionScreenState extends State<NutritionScreen> {
   final authController = Get.find<AuthController>();
   final foodController = Get.find<FoodController>();
+
   final color = Get.find<ColorConstantController>();
   final notificationController = Get.find<NotificationController>();
   late Stream<List<Food>> _necessityStream;
   late Stream<List<Food>> _sarapanStream;
   late Stream<List<Food>> _makanSiangStream;
   late Stream<List<Food>> _makanMalamStream;
-  late Stream<List<Food>> _snackStream;
+  // late Stream<List<Food>> _snackStream;
   // = controller.stream;
 
-  var hasBeenInitialized = false.obs;
+  // bool hasBeenInitialized = false;
   var isFood = true;
 
   @override
   void initState() {
     super.initState();
-    foodController.getNecessity();
+    // foodController.getNecessity();
     foodController.getDateTime();
-    getApplicationDocumentsDirectory().then((dir) {
-      foodController.foodStore = Store(getObjectBoxModel(),
-          // directory: join(dir.path, 'foodObjectBox')
-          directory: '${dir.path}/food');
-    }).then((value) => setState(() {
-          _necessityStream = foodController.foodStore
-              .box<Food>()
-              .query(Food_.date.equals(foodController.selectedDay.toString()))
-              .watch(triggerImmediately: true)
-              .map((query) => query.find());
-          _sarapanStream = foodController.foodStore
-              .box<Food>()
-              .query(Food_.date.equals(foodController.selectedDay.toString()) &
-                  Food_.session.equals('Sarapan'))
-              .watch(triggerImmediately: true)
-              .map((query) => query.find());
-          _makanSiangStream = foodController.foodStore
-              .box<Food>()
-              .query(Food_.date.equals(foodController.selectedDay.toString()) &
-                  Food_.session.equals('Makan Siang'))
-              .watch(triggerImmediately: true)
-              .map((query) => query.find());
-          _makanMalamStream = foodController.foodStore
-              .box<Food>()
-              .query(Food_.date.equals(foodController.selectedDay.toString()) &
-                  Food_.session.equals('Makan Malam'))
-              .watch(triggerImmediately: true)
-              .map((query) => query.find());
-          _snackStream = foodController.foodStore
-              .box<Food>()
-              .query(Food_.date.equals(foodController.selectedDay.toString()) &
-                  Food_.session.equals('Snack'))
-              .watch(triggerImmediately: true)
-              .map((query) => query.find());
+    // getApplicationDocumentsDirectory().then((dir) {
+    //   foodController.foodStore = Store(getObjectBoxModel(),
+    //       // directory: join(dir.path, 'foodObjectBox')
+    //       directory: '${dir.path}/food');
+    // }).then((value) =>
+    setState(() {
+      _necessityStream = foodController.foodStore
+          .box<Food>()
+          .query(Food_.date.equals(foodController.selectedDay.toString()))
+          .watch(triggerImmediately: true)
+          .map((query) => query.find());
+      _sarapanStream = foodController.foodStore
+          .box<Food>()
+          .query(Food_.date.equals(foodController.selectedDay.toString()) &
+              Food_.session.equals('Sarapan'))
+          .watch(triggerImmediately: true)
+          .map((query) => query.find());
+      _makanSiangStream = foodController.foodStore
+          .box<Food>()
+          .query(Food_.date.equals(foodController.selectedDay.toString()) &
+              Food_.session.equals('Makan Siang'))
+          .watch(triggerImmediately: true)
+          .map((query) => query.find());
+      _makanMalamStream = foodController.foodStore
+          .box<Food>()
+          .query(Food_.date.equals(foodController.selectedDay.toString()) &
+              Food_.session.equals('Makan Malam'))
+          .watch(triggerImmediately: true)
+          .map((query) => query.find());
+      // _snackStream = foodController.foodStore
+      //     .box<Food>()
+      //     .query(Food_.date.equals(foodController.selectedDay.toString()) &
+      //         Food_.session.equals('Snack'))
+      //     .watch(triggerImmediately: true)
+      //     .map((query) => query.find());
 
-          hasBeenInitialized(true);
-        }));
+      // hasBeenInitialized = true;
+    });
+    // );
   }
 
-  @override
-  void dispose() {
-    //print('-------------------------store Closed------------------------');
-    foodController.foodStore.close();
-    // controller.close();
+  // @override
+  // void dispose() {
+  //   //print('-------------------------store Closed------------------------');
+  //   foodController.foodStore.close();
+  //   // controller.close();
 
-    // foodController.hasBeenInitialized(false);
-    hasBeenInitialized(false);
-    super.dispose();
-  }
+  //   hasBeenInitialized = false;
+
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -106,43 +110,56 @@ class _NutritionScreenState extends State<NutritionScreen> {
               ),
             ),
           )
-        : Obx(() => hasBeenInitialized.isFalse
-            ? Scaffold(
-                body: Center(
-                child: CircularProgressIndicator(
-                  color: color.secondaryColor,
-                ),
-              ))
-            : StreamBuilder5<List<Food>, List<Food>, List<Food>, List<Food>,
-                    List<Food>>(
-                streams: Tuple5(_necessityStream, _sarapanStream,
-                    _makanSiangStream, _makanMalamStream, _snackStream),
-                // stream: _necessityStream,
-                builder: (context, snapshot) {
-                  switch (snapshot.item1.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: color.secondaryColor,
-                        ),
-                      );
-                    case ConnectionState.active:
-                      return bodyWidget(context, snapshot);
-                    case ConnectionState.done:
-                      return bodyWidget(context, snapshot);
-                  }
-                })));
+        :
+        // !hasBeenInitialized
+        //     ? Scaffold(
+        //         body: Center(
+        //         child: CircularProgressIndicator(
+        //           color: color.secondaryColor,
+        //         ),
+        //       ))
+        //     :
+        StreamBuilder4<
+                List<Food>,
+                List<Food>,
+                List<Food>,
+                List<Food>
+                // ,
+                // List<Food>
+                >(
+            streams: Tuple4(
+              _necessityStream, _sarapanStream,
+              _makanSiangStream, _makanMalamStream,
+              //  _snackStream
+            ),
+            // stream: _necessityStream,
+            builder: (context, snapshot) {
+              switch (snapshot.item1.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: color.secondaryColor,
+                    ),
+                  );
+                case ConnectionState.active:
+                  return bodyWidget(context, snapshot);
+                case ConnectionState.done:
+                  return bodyWidget(context, snapshot);
+              }
+            }));
   }
 
   Widget bodyWidget(
       BuildContext context,
-      Tuple5<
+      Tuple4<
               AsyncSnapshot<List<Food>>,
               AsyncSnapshot<List<Food>>,
               AsyncSnapshot<List<Food>>,
-              AsyncSnapshot<List<Food>>,
-              AsyncSnapshot<List<Food>>>
+              AsyncSnapshot<List<Food>>
+              // ,
+              // AsyncSnapshot<List<Food>>
+              >
           snapshot) {
     return Scaffold(
         backgroundColor: color.bgColor,
@@ -192,7 +209,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                                 builder: (context) => FutureMealPlanScreen(
                                       listMealNecessity: snapshot.item1.data!,
                                       hasBeenInitialized:
-                                          hasBeenInitialized.value,
+                                          widget.hasBeenInitializedFood,
                                     ))).then((_) {
                           foodController.selectedDay = DateTime.utc(
                               DateTime.now().year,
@@ -220,8 +237,11 @@ class _NutritionScreenState extends State<NutritionScreen> {
             ),
           ),
         ),
-        body: nutritionChildWidget(context, snapshot.item1, snapshot.item2,
-            snapshot.item3, snapshot.item4, snapshot.item5));
+        body: nutritionChildWidget(
+          context, snapshot.item1, snapshot.item2,
+          snapshot.item3, snapshot.item4,
+          // snapshot.item5
+        ));
   }
 
   Widget nutritionChildWidget(
@@ -230,7 +250,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
     AsyncSnapshot<List<Food>> snapshotSarapan,
     AsyncSnapshot<List<Food>> snapshotMakanSiang,
     AsyncSnapshot<List<Food>> snapshotMakanMalam,
-    AsyncSnapshot<List<Food>> snapshotSnack,
+    // AsyncSnapshot<List<Food>> snapshotSnack,
   ) {
     return Padding(
       padding: EdgeInsets.only(top: 20.h),
@@ -310,17 +330,17 @@ class _NutritionScreenState extends State<NutritionScreen> {
             ),
             //segment 2
             AnimatedCrossFade(
-                duration: const Duration(milliseconds: 200),
+                duration: Duration(milliseconds: 200),
                 crossFadeState: isFood
                     ? CrossFadeState.showFirst
                     : CrossFadeState.showSecond,
                 firstChild: FoodGeneralScreen(
-                  hasBeenInitialized: hasBeenInitialized.value,
+                  hasBeenInitialized: widget.hasBeenInitializedFood,
                   listMealNecessity: snapshotNecessity.data!,
                   listMealSarapan: snapshotSarapan.data!,
                   listMealMakanSiang: snapshotMakanSiang.data!,
                   listMealMakanMalam: snapshotMakanMalam.data!,
-                  listMealSnack: snapshotSnack.data!,
+                  // listMealSnack: snapshotSnack.data!,
                 ),
                 secondChild: FluidGeneralScreen())
           ],

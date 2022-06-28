@@ -13,7 +13,7 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import 'model/obejctbox_model.dart/food_exercise_model.dart';
+import 'model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -82,7 +82,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(2, 1537447124247363090),
       name: 'Food',
-      lastPropertyId: const IdUid(32, 2456367297624848551),
+      lastPropertyId: const IdUid(33, 2232694683453113941),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -226,11 +226,6 @@ final _entities = <ModelEntity>[
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(29, 533869178784666820),
-            name: 'instruction',
-            type: 30,
-            flags: 0),
-        ModelProperty(
             id: const IdUid(30, 3672133806436929419),
             name: 'imageFileName',
             type: 9,
@@ -246,6 +241,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(32, 2456367297624848551),
             name: 'recommendationScore',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(33, 2232694683453113941),
+            name: 'itemFood',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -253,7 +253,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(3, 7510490782568328100),
       name: 'User',
-      lastPropertyId: const IdUid(1, 3060100015683794578),
+      lastPropertyId: const IdUid(6, 1437548543311448272),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -266,7 +266,11 @@ final _entities = <ModelEntity>[
         ModelRelation(
             id: const IdUid(1, 2793138410119953805),
             name: 'exercises',
-            targetId: const IdUid(1, 3008231103323831688))
+            targetId: const IdUid(1, 3008231103323831688)),
+        ModelRelation(
+            id: const IdUid(2, 3630503998688504444),
+            name: 'fluids',
+            targetId: const IdUid(5, 1909141059124702049))
       ],
       backlinks: <ModelBacklink>[
         ModelBacklink(name: 'foods', srcEntity: 'Food', srcField: '')
@@ -331,6 +335,98 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(5, 1909141059124702049),
+      name: 'Fluid',
+      lastPropertyId: const IdUid(8, 8675585080805851104),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 818733145713387695),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 1170951742925076722),
+            name: 'amountWater',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 2141257929698314200),
+            name: 'sum',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 4130262775528313154),
+            name: 'size',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 2313111055989483883),
+            name: 'userId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(4, 6467042609362080745),
+            relationTarget: 'User'),
+        ModelProperty(
+            id: const IdUid(6, 2596076749375506042),
+            name: 'fluidTime',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 3611538651259451109),
+            name: 'date',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 8675585080805851104),
+            name: 'isChecked',
+            type: 1,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(6, 7878077734263330923),
+      name: 'UserLogNutrition',
+      lastPropertyId: const IdUid(6, 2032555065387646167),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 7340422539125443912),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 8591874732048303294),
+            name: 'nutrition',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 5926951380887393057),
+            name: 'date',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 7760838414128896392),
+            name: 'foodId',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 402974733017888413),
+            name: 'userId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(5, 3050745490690027306),
+            relationTarget: 'User'),
+        ModelProperty(
+            id: const IdUid(6, 2032555065387646167),
+            name: 'water',
+            type: 8,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -354,16 +450,22 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(4, 8973082184935809639),
-      lastIndexId: const IdUid(3, 6506144417513643134),
-      lastRelationId: const IdUid(1, 2793138410119953805),
+      lastEntityId: const IdUid(6, 7878077734263330923),
+      lastIndexId: const IdUid(5, 3050745490690027306),
+      lastRelationId: const IdUid(2, 3630503998688504444),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
       retiredPropertyUids: const [
         1429937487993746113,
         7226356010622220216,
-        5683875273788991992
+        5683875273788991992,
+        533869178784666820,
+        9137595373477644716,
+        6537195619297171632,
+        1302546583909080264,
+        6395641543657608555,
+        1437548543311448272
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -458,18 +560,16 @@ ModelDefinition getObjectBoxModel() {
               object.tags == null ? null : fbb.writeString(object.tags!);
           final foodIdOffset =
               object.foodId == null ? null : fbb.writeString(object.foodId!);
-          final instructionOffset = object.instruction == null
-              ? null
-              : fbb.writeList(object.instruction!
-                  .map(fbb.writeString)
-                  .toList(growable: false));
           final imageFileNameOffset = object.imageFileName == null
               ? null
               : fbb.writeString(object.imageFileName!);
           final recommendationScoreOffset = object.recommendationScore == null
               ? null
               : fbb.writeString(object.recommendationScore!);
-          fbb.startTable(33);
+          final itemFoodOffset = object.itemFood == null
+              ? null
+              : fbb.writeString(object.itemFood!);
+          fbb.startTable(34);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, foodTypesOffset);
@@ -498,10 +598,10 @@ ModelDefinition getObjectBoxModel() {
           fbb.addFloat64(25, object.vitaminB3);
           fbb.addFloat64(26, object.retinol);
           fbb.addOffset(27, foodIdOffset);
-          fbb.addOffset(28, instructionOffset);
           fbb.addOffset(29, imageFileNameOffset);
           fbb.addInt64(30, object.user.targetId);
           fbb.addOffset(31, recommendationScoreOffset);
+          fbb.addOffset(32, itemFoodOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -546,7 +646,7 @@ ModelDefinition getObjectBoxModel() {
               vitaminB3: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 54),
               retinol: const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 56),
               foodId: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 58),
-              instruction: const fb.ListReader<String>(fb.StringReader(asciiOptimization: true), lazy: false).vTableGetNullable(buffer, rootOffset, 60),
+              itemFood: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 68),
               imageFileName: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 62),
               recommendationScore: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 66));
           object.user.targetId =
@@ -559,6 +659,7 @@ ModelDefinition getObjectBoxModel() {
         toOneRelations: (User object) => [],
         toManyRelations: (User object) => {
               RelInfo<User>.toMany(1, object.id): object.exercises,
+              RelInfo<User>.toMany(2, object.id): object.fluids,
               RelInfo<Food>.toOneBacklink(
                       31, object.id, (Food srcObject) => srcObject.user):
                   object.foods
@@ -568,7 +669,7 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (User object, fb.Builder fbb) {
-          fbb.startTable(2);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.finish(fbb.endTable());
           return object.id;
@@ -581,6 +682,8 @@ ModelDefinition getObjectBoxModel() {
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
           InternalToManyAccess.setRelInfo(object.exercises, store,
               RelInfo<User>.toMany(1, object.id), store.box<User>());
+          InternalToManyAccess.setRelInfo(object.fluids, store,
+              RelInfo<User>.toMany(2, object.id), store.box<User>());
           InternalToManyAccess.setRelInfo(
               object.foods,
               store,
@@ -649,6 +752,97 @@ ModelDefinition getObjectBoxModel() {
                   const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 8));
           object.user.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
+          object.user.attach(store);
+          return object;
+        }),
+    Fluid: EntityDefinition<Fluid>(
+        model: _entities[4],
+        toOneRelations: (Fluid object) => [object.user],
+        toManyRelations: (Fluid object) => {},
+        getId: (Fluid object) => object.id,
+        setId: (Fluid object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Fluid object, fb.Builder fbb) {
+          final fluidTimeOffset = object.fluidTime == null
+              ? null
+              : fbb.writeString(object.fluidTime!);
+          final dateOffset =
+              object.date == null ? null : fbb.writeString(object.date!);
+          fbb.startTable(9);
+          fbb.addInt64(0, object.id);
+          fbb.addFloat64(1, object.amountWater);
+          fbb.addFloat64(2, object.sum);
+          fbb.addFloat64(3, object.size);
+          fbb.addInt64(4, object.user.targetId);
+          fbb.addOffset(5, fluidTimeOffset);
+          fbb.addOffset(6, dateOffset);
+          fbb.addBool(7, object.isChecked);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Fluid(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              amountWater: const fb.Float64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 6),
+              sum: const fb.Float64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 8),
+              size: const fb.Float64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 10),
+              fluidTime: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 14),
+              date: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 16),
+              isChecked: const fb.BoolReader()
+                  .vTableGetNullable(buffer, rootOffset, 18));
+          object.user.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
+          object.user.attach(store);
+          return object;
+        }),
+    UserLogNutrition: EntityDefinition<UserLogNutrition>(
+        model: _entities[5],
+        toOneRelations: (UserLogNutrition object) => [object.user],
+        toManyRelations: (UserLogNutrition object) => {},
+        getId: (UserLogNutrition object) => object.id,
+        setId: (UserLogNutrition object, int id) {
+          object.id = id;
+        },
+        objectToFB: (UserLogNutrition object, fb.Builder fbb) {
+          final dateOffset =
+              object.date == null ? null : fbb.writeString(object.date!);
+          final foodIdOffset =
+              object.foodId == null ? null : fbb.writeString(object.foodId!);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addFloat64(1, object.nutrition);
+          fbb.addOffset(2, dateOffset);
+          fbb.addOffset(3, foodIdOffset);
+          fbb.addInt64(4, object.user.targetId);
+          fbb.addFloat64(5, object.water);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = UserLogNutrition(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              nutrition: const fb.Float64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 6),
+              date: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8),
+              foodId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 10),
+              water: const fb.Float64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 14));
+          object.user.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
           object.user.attach(store);
           return object;
         })
@@ -791,20 +985,20 @@ class Food_ {
   /// see [Food.foodId]
   static final foodId = QueryStringProperty<Food>(_entities[1].properties[27]);
 
-  /// see [Food.instruction]
-  static final instruction =
-      QueryStringVectorProperty<Food>(_entities[1].properties[28]);
-
   /// see [Food.imageFileName]
   static final imageFileName =
-      QueryStringProperty<Food>(_entities[1].properties[29]);
+      QueryStringProperty<Food>(_entities[1].properties[28]);
 
   /// see [Food.user]
   static final user =
-      QueryRelationToOne<Food, User>(_entities[1].properties[30]);
+      QueryRelationToOne<Food, User>(_entities[1].properties[29]);
 
   /// see [Food.recommendationScore]
   static final recommendationScore =
+      QueryStringProperty<Food>(_entities[1].properties[30]);
+
+  /// see [Food.itemFood]
+  static final itemFood =
       QueryStringProperty<Food>(_entities[1].properties[31]);
 }
 
@@ -816,6 +1010,10 @@ class User_ {
   /// see [User.exercises]
   static final exercises =
       QueryRelationToMany<User, Exercise>(_entities[2].relations[0]);
+
+  /// see [User.fluids]
+  static final fluids =
+      QueryRelationToMany<User, Fluid>(_entities[2].relations[1]);
 }
 
 /// [Variations] entity fields to define ObjectBox queries.
@@ -859,4 +1057,62 @@ class Variations_ {
   /// see [Variations.difficulty]
   static final difficulty =
       QueryStringProperty<Variations>(_entities[3].properties[9]);
+}
+
+/// [Fluid] entity fields to define ObjectBox queries.
+class Fluid_ {
+  /// see [Fluid.id]
+  static final id = QueryIntegerProperty<Fluid>(_entities[4].properties[0]);
+
+  /// see [Fluid.amountWater]
+  static final amountWater =
+      QueryDoubleProperty<Fluid>(_entities[4].properties[1]);
+
+  /// see [Fluid.sum]
+  static final sum = QueryDoubleProperty<Fluid>(_entities[4].properties[2]);
+
+  /// see [Fluid.size]
+  static final size = QueryDoubleProperty<Fluid>(_entities[4].properties[3]);
+
+  /// see [Fluid.user]
+  static final user =
+      QueryRelationToOne<Fluid, User>(_entities[4].properties[4]);
+
+  /// see [Fluid.fluidTime]
+  static final fluidTime =
+      QueryStringProperty<Fluid>(_entities[4].properties[5]);
+
+  /// see [Fluid.date]
+  static final date = QueryStringProperty<Fluid>(_entities[4].properties[6]);
+
+  /// see [Fluid.isChecked]
+  static final isChecked =
+      QueryBooleanProperty<Fluid>(_entities[4].properties[7]);
+}
+
+/// [UserLogNutrition] entity fields to define ObjectBox queries.
+class UserLogNutrition_ {
+  /// see [UserLogNutrition.id]
+  static final id =
+      QueryIntegerProperty<UserLogNutrition>(_entities[5].properties[0]);
+
+  /// see [UserLogNutrition.nutrition]
+  static final nutrition =
+      QueryDoubleProperty<UserLogNutrition>(_entities[5].properties[1]);
+
+  /// see [UserLogNutrition.date]
+  static final date =
+      QueryStringProperty<UserLogNutrition>(_entities[5].properties[2]);
+
+  /// see [UserLogNutrition.foodId]
+  static final foodId =
+      QueryStringProperty<UserLogNutrition>(_entities[5].properties[3]);
+
+  /// see [UserLogNutrition.user]
+  static final user =
+      QueryRelationToOne<UserLogNutrition, User>(_entities[5].properties[4]);
+
+  /// see [UserLogNutrition.water]
+  static final water =
+      QueryDoubleProperty<UserLogNutrition>(_entities[5].properties[5]);
 }

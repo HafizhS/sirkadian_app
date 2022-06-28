@@ -1,14 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+// import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sirkadian_app/constant/hex_color.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/controller/notification_controller.dart';
-import 'package:sirkadian_app/screen/home/nutrition_screen/nutrition_screen.dart';
 import '../controller/auth_controller.dart';
 import '../controller/hexcolor_controller.dart';
 import '../controller/tabNavigator_controller.dart';
@@ -22,7 +24,7 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   final data = GetStorage('myData');
   final authController = Get.find<AuthController>();
 
@@ -30,8 +32,9 @@ class _MainScreenState extends State<MainScreen> {
   final informationController = Get.find<InformationController>();
   final notificationController = Get.find<NotificationController>();
   final color = Get.find<ColorConstantController>();
+  late StreamSubscription<InternetConnectionStatus> _streamSubscription;
   GlobalKey<TabNavigatorState> tabKey = GlobalKey();
-  bool hasInternet = false;
+  bool hasInternet = true;
   var _currentTab = "Home";
   final screenIndex = 0.obs;
   List<String> pageKeys = [
@@ -44,6 +47,7 @@ class _MainScreenState extends State<MainScreen> {
     "Program": GlobalKey<NavigatorState>(),
     'Healthware': GlobalKey<NavigatorState>(),
   };
+
   void _selectTab(String tabItem, int index) {
     if (tabItem == _currentTab) {
       // pop to first route
@@ -56,11 +60,27 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+// PackageInfo _packageInfo = PackageInfo(
+  //   appName: 'Unknown',
+  //   packageName: 'Unknown',
+  //   version: 'Unknown',
+  //   buildNumber: 'Unknown',
+  //   buildSignature: 'Unknown',
+  // );
+  // Future<void> _initPackageInfo() async {
+  //   final info = await PackageInfo.fromPlatform();
+  //   print(info);
+  //   setState(() {
+  //     _packageInfo = info;
+  //   });
+  // }
+
   @override
   void initState() {
-    InternetConnectionChecker().onStatusChange.listen((status) {
+    _streamSubscription =
+        InternetConnectionChecker().onStatusChange.listen((status) {
       final hasInternet = status == InternetConnectionStatus.connected;
-      print(hasInternet);
+      // _initPackageInfo();
       setState(() {
         this.hasInternet = hasInternet;
       });
@@ -69,7 +89,42 @@ class _MainScreenState extends State<MainScreen> {
     listenNotifications();
 
     authController.getUsableToken();
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) return;
+    final isBackground = state == AppLifecycleState.paused;
+    final isForeground = state == AppLifecycleState.resumed;
+    print(state);
+
+    if (isBackground) {
+      //stop service
+
+      _streamSubscription.cancel();
+    } else {
+      //start service
+      _streamSubscription =
+          InternetConnectionChecker().onStatusChange.listen((status) {
+        final hasInternet = status == InternetConnectionStatus.connected;
+        // _initPackageInfo();
+        setState(() {
+          this.hasInternet = hasInternet;
+        });
+      });
+      print(isForeground);
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _streamSubscription.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   void listenNotifications() {
@@ -94,8 +149,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void onClickedNotification(String? payload) {
+    // Navigator.push(
+    //     context, MaterialPageRoute(builder: (context) => NutritionScreen()));
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NutritionScreen()));
+        context, MaterialPageRoute(builder: (context) => MainScreen()));
   }
 
   @override
@@ -103,13 +160,22 @@ class _MainScreenState extends State<MainScreen> {
     return hasInternet == false
         ? Scaffold(
             bottomNavigationBar: bottomNavBar(),
+            // drawer: Drawer(backgroundColor: color.tersierColor, width: 200.w),
             body: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Center(
                     child: Text(
-                        'Tidak ada koneksi, pastikan anda memiliki koneksi internet.'),
+                      'Tidak ada koneksi, pastikan anda memiliki koneksi internet.',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            color: color.secondaryTextColor,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 28.h,
@@ -119,19 +185,26 @@ class _MainScreenState extends State<MainScreen> {
                         try {
                           hasInternet =
                               await InternetConnectionChecker().hasConnection;
+
                           if (hasInternet) {
                             setState(() {
                               this.hasInternet = hasInternet;
                             });
 
-                            if (Get.isDialogOpen!) Get.back();
-                            informationController
-                                .showSuccessSnackBar('Koneksi telah ditemukan');
+                            if (Get.isSnackbarOpen) {
+                              Get.back();
+                            } else {
+                              informationController.showSuccessSnackBar(
+                                  'Koneksi telah ditemukan');
+                            }
                           } else {
-                            if (Get.isDialogOpen!) Get.back();
-                            informationController.snackBarError(
-                                'tidak ada koneksi',
-                                'Pastikan Anda memiliki koneksi lalu ulangi');
+                            if (Get.isSnackbarOpen) {
+                              Get.back();
+                            } else {
+                              informationController.snackBarError(
+                                  'tidak ada koneksi',
+                                  'Pastikan Anda memiliki koneksi lalu ulangi');
+                            }
                           }
                         } finally {}
                       },
@@ -175,6 +248,7 @@ class _MainScreenState extends State<MainScreen> {
                       ]),
               ),
               drawer: DrawerSideBar(
+                // packageInfo: _packageInfo,
                 authController: authController,
                 userController: userController,
                 color: color,
@@ -267,6 +341,7 @@ class _MainScreenState extends State<MainScreen> {
     return Offstage(
       offstage: _currentTab != tabItem,
       child: TabNavigator(
+        listUserLog: [],
         key: tabKey,
         navigatorKey: _navigatorKeys[tabItem]!,
         tabItem: tabItem,

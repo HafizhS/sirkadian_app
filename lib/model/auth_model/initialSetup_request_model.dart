@@ -2,6 +2,7 @@ class InitialSetupRequest {
   String? dob;
   String? gender;
   String? lang;
+  String? displayName;
   int? height;
   int? weight;
   String? activityLevel;
@@ -14,6 +15,7 @@ class InitialSetupRequest {
       {this.dob,
       this.gender,
       this.lang,
+      this.displayName,
       this.height,
       this.weight,
       this.activityLevel,
@@ -26,6 +28,7 @@ class InitialSetupRequest {
     dob = json['dob'];
     gender = json['gender'];
     lang = json['lang'];
+    displayName = json['display_name'];
     height = json['height'];
     weight = json['weight'];
     activityLevel = json['activity_level'];
@@ -40,6 +43,7 @@ class InitialSetupRequest {
     data['dob'] = this.dob;
     data['gender'] = this.gender;
     data['lang'] = this.lang;
+    data['display_name'] = this.displayName;
     data['height'] = this.height;
     data['weight'] = this.weight;
     data['activity_level'] = this.activityLevel;

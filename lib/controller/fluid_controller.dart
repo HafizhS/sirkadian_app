@@ -1,14 +1,20 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import '../objectbox.g.dart';
 import 'auth_controller.dart';
 import 'information_controller.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FluidController extends GetxController {
   final authController = Get.put(AuthController());
   final informationController = Get.put(InformationController());
   final data = GetStorage('myData');
-  final isLoadingSubscriptionAll = false.obs;
+
+  //objectbox material
+  late Store fluidStore;
+
+  bool hasBeenInitializedFluid = false;
 
 //date material
   late String dateStartt;

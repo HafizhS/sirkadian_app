@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/hexcolor_controller.dart';
 import 'package:sirkadian_app/model/food_model/food_item_response_model.dart';
 import 'package:sirkadian_app/model/food_model/food_recommendation_response_model.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../controller/food_controller.dart';
 import '../../screen/home/nutrition_screen/food_screen/food_detail_screen.dart';
 
@@ -179,6 +179,7 @@ class OtherFoodRecommendationTile extends StatelessWidget {
   final ColorConstantController color;
   final FoodController foodController;
   final String session;
+  final bool isFromFoodMeal;
 
   OtherFoodRecommendationTile(
       {Key? key,
@@ -186,20 +187,21 @@ class OtherFoodRecommendationTile extends StatelessWidget {
       required this.productOld,
       required this.color,
       required this.foodController,
-      required this.session})
+      required this.session,
+      required this.isFromFoodMeal})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return NeumorphicButton(
       onPressed: () {
         foodController.getOtherFoodRecommendation(product.foodId, session);
-
+        foodController.getFoodItem(product.foodId);
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => FoodDetailScreen(
+                      isFromFoodMeal: isFromFoodMeal,
                       foodController: foodController,
                       color: color,
                       recommendationScore:
@@ -207,6 +209,7 @@ class OtherFoodRecommendationTile extends StatelessWidget {
                       session: session,
                       foodId: product.foodId!,
                     ))).then((_) {
+          foodController.getFoodItem(productOld.foodId);
           foodController.getOtherFoodRecommendation(productOld.foodId, session);
         });
       },
@@ -222,8 +225,8 @@ class OtherFoodRecommendationTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-              height: size.height * 0.15,
-              width: size.width * 0.5,
+              height: 120.h,
+              width: 200.w,
               child: product.imageFilename == ''
                   ? Icon(Icons.image_not_supported_rounded)
                   : ClipRRect(
@@ -239,21 +242,21 @@ class OtherFoodRecommendationTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 5),
+                padding: EdgeInsets.only(left: 8.w, top: 5.h),
                 child: Text(
                   product.foodName!,
                   maxLines: 2,
                   style: GoogleFonts.inter(
                       textStyle: TextStyle(
                     color: color.primaryTextColor,
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.normal,
                   )),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 10),
+                padding: EdgeInsets.only(left: 8.w, top: 10.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -262,56 +265,58 @@ class OtherFoodRecommendationTile extends StatelessWidget {
                         FaIcon(
                           FontAwesomeIcons.fire,
                           color: color.redColor,
-                          size: 12,
+                          size: 12.sp,
                         ),
                         Text(
                           ' ' + product.energy!.toStringAsFixed(0) + ' kkal',
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      width: 10,
+                      width: 10.w,
                     ),
                     Row(
                       children: [
                         FaIcon(
                           FontAwesomeIcons.solidClock,
                           color: color.blueColor,
-                          size: 12,
+                          size: 12.sp,
                         ),
                         Text(
-                          ' ' + product.duration!.toStringAsFixed(0) + ' min',
+                          ' ' +
+                              (product.duration! / 60).toStringAsFixed(0) +
+                              ' min',
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      width: 10,
+                      width: 10.w,
                     ),
                     Row(
                       children: [
                         FaIcon(
                           FontAwesomeIcons.solidStar,
                           color: color.yellowColor,
-                          size: 12,
+                          size: 12.sp,
                         ),
                         Text(
                           ' ' + product.recommendationScore!.toStringAsFixed(1),
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),

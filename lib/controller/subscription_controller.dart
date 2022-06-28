@@ -58,7 +58,6 @@ class SubscriptionController extends GetxController {
         if (_subscriptionActiveUser.statusCode == 200) {
           listSubscriptionActiveUser.value = _subscriptionActiveUser.data!;
         }
-        print(listSubscriptionActiveUser);
       }
 
       if (Get.isDialogOpen!) Get.back();

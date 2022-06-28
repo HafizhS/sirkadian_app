@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../controller/hexcolor_controller.dart';
 import '../../constant/hex_color.dart';
 import '../../controller/food_controller.dart';
-import '../../model/obejctbox_model.dart/food_exercise_model.dart';
+import '../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import 'necessity_gauge.dart';
 
 class NecessityDisplayWidget extends StatefulWidget {
@@ -600,8 +600,6 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
             (widget.listMeal[i].vitaminB3! / widget.listMeal[i].serving!);
         widget.foodController.retinol = widget.foodController.retinol +
             (widget.listMeal[i].retinol! / widget.listMeal[i].serving!);
-        widget.foodController.water = widget.foodController.water +
-            (widget.listMeal[i].water! / widget.listMeal[i].serving!);
       });
     }
   }

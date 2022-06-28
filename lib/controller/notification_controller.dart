@@ -71,7 +71,16 @@ class NotificationController extends GetxController {
       id,
       title,
       body,
-      _scheduleDaily(Time(hours, minutes, seconds ?? 0)),
+      // _scheduleDaily(Time(hours, minutes, seconds ?? 0)),
+      _scheduleWeekly(Time(hours, minutes, seconds ?? 0), days: [
+        DateTime.monday,
+        DateTime.tuesday,
+        DateTime.wednesday,
+        DateTime.thursday,
+        DateTime.friday,
+        DateTime.saturday,
+        DateTime.sunday,
+      ]),
       const NotificationDetails(
         android: AndroidNotificationDetails('food_channel', 'food channel',
             channelDescription: 'food channel notifications',
@@ -88,7 +97,7 @@ class NotificationController extends GetxController {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
-      matchDateTimeComponents: DateTimeComponents.time,
+      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
       payload: payload,
     );
   }
@@ -108,7 +117,16 @@ class NotificationController extends GetxController {
       id,
       title,
       body,
-      _scheduleDaily(Time(hours, minutes, seconds ?? 0)),
+      // _scheduleDaily(Time(hours, minutes, seconds ?? 0)),
+      _scheduleWeekly(Time(hours, minutes, seconds ?? 0), days: [
+        DateTime.monday,
+        DateTime.tuesday,
+        DateTime.wednesday,
+        DateTime.thursday,
+        DateTime.friday,
+        DateTime.saturday,
+        DateTime.sunday,
+      ]),
       const NotificationDetails(
         android: AndroidNotificationDetails(
             'food_channel_muted', 'food channel muted',
@@ -129,7 +147,7 @@ class NotificationController extends GetxController {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
-      matchDateTimeComponents: DateTimeComponents.time,
+      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
       payload: payload,
     );
   }
@@ -147,7 +165,16 @@ class NotificationController extends GetxController {
       id,
       title,
       body,
-      _scheduleDaily(Time(hours, minutes, seconds ?? 0)),
+      // _scheduleDaily(Time(hours, minutes, seconds ?? 0)),
+      _scheduleWeekly(Time(hours, minutes, seconds ?? 0), days: [
+        DateTime.monday,
+        DateTime.tuesday,
+        DateTime.wednesday,
+        DateTime.thursday,
+        DateTime.friday,
+        DateTime.saturday,
+        DateTime.sunday,
+      ]),
       NotificationDetails(
         android: AndroidNotificationDetails('fluid_channel', 'fluid channel',
             channelDescription: 'fluid channel notifications',
@@ -164,7 +191,7 @@ class NotificationController extends GetxController {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
-      matchDateTimeComponents: DateTimeComponents.time,
+      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
       payload: payload,
     );
   }
@@ -184,7 +211,16 @@ class NotificationController extends GetxController {
       id,
       title,
       body,
-      _scheduleDaily(Time(hours, minutes, seconds ?? 0)),
+      // _scheduleDaily(Time(hours, minutes, seconds ?? 0)),
+      _scheduleWeekly(Time(hours, minutes, seconds ?? 0), days: [
+        DateTime.monday,
+        DateTime.tuesday,
+        DateTime.wednesday,
+        DateTime.thursday,
+        DateTime.friday,
+        DateTime.saturday,
+        DateTime.sunday,
+      ]),
       const NotificationDetails(
         android: AndroidNotificationDetails(
             'fluid_channel_muted', 'fluid channel muted',
@@ -205,7 +241,7 @@ class NotificationController extends GetxController {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
-      matchDateTimeComponents: DateTimeComponents.time,
+      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
       payload: payload,
     );
   }
@@ -219,6 +255,15 @@ class NotificationController extends GetxController {
     return scheduledDate.isBefore(now)
         ? scheduledDate.add(Duration(days: 1))
         : scheduledDate;
+  }
+
+  static tz.TZDateTime _scheduleWeekly(Time time, {required List<int> days}) {
+    tz.TZDateTime scheduledDate = _scheduleDaily(time);
+
+    while (!days.contains(scheduledDate.weekday)) {
+      scheduledDate = scheduledDate.add(Duration(days: 1));
+    }
+    return scheduledDate;
   }
 
   void cancelNotification(int id) {
@@ -306,8 +351,7 @@ class NotificationController extends GetxController {
       showScheduledNotificationFood(
         id: id,
         title: 'Sarapan',
-        body:
-            'Hari ini Sarapan jam ${data.read('dataNotificationFoodSarapan') != null ? data.read('dataNotificationFoodSarapan')['hour'] : hourSarapan}:${data.read('dataNotificationFoodSarapan') != null ? data.read('dataNotificationFoodSarapan')['minute'] : minuteSarapan}, yuk cari menu di sirkadian!',
+        body: 'Waktunya Sarapan, yuk cari menu di sirkadian!',
         payload: 'Sarapan',
         hours: data.read('dataNotificationFoodSarapan') != null
             ? data.read('dataNotificationFoodSarapan')['hour']
@@ -322,8 +366,7 @@ class NotificationController extends GetxController {
       showScheduledNotificationFoodMuted(
         id: id,
         title: 'Sarapan',
-        body:
-            'Hari ini Sarapan jam ${data.read('dataNotificationFoodSarapan') != null ? data.read('dataNotificationFoodSarapan')['hour'] : hourSarapan}:${data.read('dataNotificationFoodSarapan') != null ? data.read('dataNotificationFoodSarapan')['minute'] : minuteSarapan}, yuk cari menu di sirkadian!',
+        body: 'Waktunya Sarapan, yuk cari menu di sirkadian!',
         payload: 'Sarapan',
         hours: data.read('dataNotificationFoodSarapan') != null
             ? data.read('dataNotificationFoodSarapan')['hour']
@@ -343,8 +386,7 @@ class NotificationController extends GetxController {
       showScheduledNotificationFood(
         id: id,
         title: 'Makan Siang',
-        body:
-            'Hari ini Makan Siang jam ${data.read('dataNotificationFoodMakanSiang') != null ? data.read('dataNotificationFoodMakanSiang')['hour'] : hourMakanSiang}:${data.read('dataNotificationFoodMakanSiang') != null ? data.read('dataNotificationFoodMakanSiang')['minute'] : minuteMakanSiang} , yuk cari menu di sirkadian!',
+        body: 'Waktunya Makan Siang, yuk cari menu di sirkadian!',
         payload: 'Makan Siang',
         hours: data.read('dataNotificationFoodMakanSiang') != null
             ? data.read('dataNotificationFoodMakanSiang')['hour']
@@ -380,8 +422,7 @@ class NotificationController extends GetxController {
       showScheduledNotificationFood(
         id: id,
         title: 'Makan Malam',
-        body:
-            'Hari ini Makan Malam jam ${data.read('dataNotificationFoodMakanMalam') != null ? data.read('dataNotificationFoodMakanMalam')['hour'] : hourMakanMalam}:${data.read('dataNotificationFoodMakanMalam') != null ? data.read('dataNotificationFoodMakanMalam')['minute'] : minuteMakanMalam}, yuk cari menu di sirkadian!',
+        body: 'Waktunya Makan Malam, yuk cari menu di sirkadian!',
         payload: 'Makan Malam',
         hours: data.read('dataNotificationFoodMakanMalam') != null
             ? data.read('dataNotificationFoodMakanMalam')['hour']
@@ -396,8 +437,7 @@ class NotificationController extends GetxController {
       showScheduledNotificationFoodMuted(
         id: id,
         title: 'Makan Malam',
-        body:
-            'Hari ini Makan Malam jam ${data.read('dataNotificationFoodMakanMalam') != null ? data.read('dataNotificationFoodMakanMalam')['hour'] : hourMakanMalam}:${data.read('dataNotificationFoodMakanMalam') != null ? data.read('dataNotificationFoodMakanMalam')['minute'] : minuteMakanMalam}, yuk cari menu di sirkadian!',
+        body: 'Waktunya Makan Malam, yuk cari menu di sirkadian!',
         payload: 'Makan Malam',
         hours: data.read('dataNotificationFoodMakanMalam') != null
             ? data.read('dataNotificationFoodMakanMalam')['hour']
