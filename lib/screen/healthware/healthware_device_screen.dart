@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -5,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/healthware_controller.dart';
 
 import '../../controller/hexcolor_controller.dart';
+import 'bluetooth.dart';
 
 class HealthwareDeviceScreen extends StatefulWidget {
   HealthwareDeviceScreen({Key? key}) : super(key: key);
@@ -16,24 +20,88 @@ class HealthwareDeviceScreen extends StatefulWidget {
 class _HealthwareDeviceScreenState extends State<HealthwareDeviceScreen> {
   final color = Get.find<ColorConstantController>();
   final healthwareController = Get.find<HealthwareController>();
-  bool isMeasure = true;
+
+  bool bluetoothOn = false;
 
   @override
   void initState() {
-    healthwareController.getDateTime();
+    getConnection();
+
     super.initState();
+  }
+
+  Future<void> getConnection() async {
+    var connection = await FlutterBluePlus.instance.isOn;
+    if (connection) {
+      setState(() {
+        bluetoothOn = true;
+      });
+    } else {
+      setState(() {
+        bluetoothOn = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SafeArea(
-          child: Container(
-        margin: EdgeInsets.symmetric(vertical: 30),
-        child: SingleChildScrollView(
+        floatingActionButton: bluetoothOn
+            ? StreamBuilder<bool>(
+                stream: FlutterBluePlus.instance.isScanning,
+                initialData: false,
+                builder: (c, snapshot) {
+                  if (snapshot.data!) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 20.h),
+                      child: FloatingActionButton(
+                        child: const Icon(Icons.stop),
+                        onPressed: () => FlutterBluePlus.instance.stopScan(),
+                        backgroundColor: color.redColor,
+                      ),
+                    );
+                  } else {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 20.h),
+                      child: FloatingActionButton(
+                          child: const Icon(Icons.search),
+                          onPressed: () => FlutterBluePlus.instance
+                              .startScan(timeout: const Duration(seconds: 4))),
+                    );
+                  }
+                },
+              )
+            : Container(),
+        body: Container(
+          height: 800.h,
+          width: 360.w,
           child: Column(
             children: [
+              appBar(),
+              StreamBuilder<BluetoothState>(
+                  stream: FlutterBluePlus.instance.state,
+                  initialData: BluetoothState.unknown,
+                  builder: (c, snapshot) {
+                    final state = snapshot.data;
+                    if (state == BluetoothState.on) {
+                      return FindDevicesScreen();
+                    }
+                    return BluetoothOffScreen(state: state!, color: color);
+                  })
+            ],
+          ),
+        )
+
+        //
+        );
+  }
+
+  Widget appBar() {
+    return SafeArea(
+        child: Container(
+            margin: EdgeInsets.symmetric(vertical: 30),
+            child: SingleChildScrollView(
+                child: Column(children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,7 +110,7 @@ class _HealthwareDeviceScreenState extends State<HealthwareDeviceScreen> {
                     margin: EdgeInsets.only(left: 20),
                     child: NeumorphicButton(
                       onPressed: () {
-                        Scaffold.of(context).openDrawer();
+                        Get.back();
                       },
                       style: NeumorphicStyle(
                         shape: NeumorphicShape.flat,
@@ -51,448 +119,60 @@ class _HealthwareDeviceScreenState extends State<HealthwareDeviceScreen> {
                       ),
                       padding: const EdgeInsets.all(16.0),
                       child: FaIcon(
-                        FontAwesomeIcons.bars,
+                        FontAwesomeIcons.chevronLeft,
                         size: 16,
                         color: color.secondaryTextColor,
                       ),
                     ),
                   ),
                   Text(
-                    'Sirka Smart Body Scale',
+                    'Bluetooth Devices',
                     style: GoogleFonts.inter(
                       textStyle: TextStyle(
                           color: color.primaryTextColor,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.only(right: 20),
                     child: NeumorphicButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (bluetoothOn) {
+                          Platform.isAndroid
+                              ? FlutterBluePlus.instance.turnOff()
+                              : null;
+                          setState(() {
+                            bluetoothOn = false;
+                          });
+                        } else {
+                          Platform.isAndroid
+                              ? FlutterBluePlus.instance.turnOn()
+                              : null;
+                          setState(() {
+                            bluetoothOn = true;
+                          });
+                        }
+                      },
                       style: NeumorphicStyle(
+                        depth: bluetoothOn ? -4 : 4,
                         shape: NeumorphicShape.flat,
                         boxShape: NeumorphicBoxShape.circle(),
                         color: color.primaryColor,
                       ),
                       padding: const EdgeInsets.all(16.0),
                       child: FaIcon(
-                        FontAwesomeIcons.cog,
+                        FontAwesomeIcons.powerOff,
                         size: 16,
-                        color: color.secondaryTextColor,
+                        color: bluetoothOn
+                            ? color.secondaryColor
+                            : color.secondaryTextColor,
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: size.height * 0.02),
-
-              //segment 2
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  NeumorphicButton(
-                      margin: EdgeInsets.only(top: 12),
-                      onPressed: () {
-                        setState(() {
-                          isMeasure = true;
-                        });
-                      },
-                      style: NeumorphicStyle(
-                          depth: isMeasure ? -4 : 4,
-                          color: color.primaryColor,
-                          shape: NeumorphicShape.flat,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                              BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  topLeft: Radius.circular(20)))),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 12, horizontal: size.width * 0.1),
-                      child: Text(
-                        'Pengukuran',
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                              color: isMeasure
-                                  ? color.secondaryColor
-                                  : color.secondaryTextColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal),
-                        ),
-                      )),
-                  NeumorphicButton(
-                      margin: EdgeInsets.only(top: 12),
-                      onPressed: () {
-                        setState(() {
-                          isMeasure = false;
-                        });
-                      },
-                      style: NeumorphicStyle(
-                          depth: isMeasure ? 4 : -4,
-                          color: color.primaryColor,
-                          shape: NeumorphicShape.flat,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                              BorderRadius.only(
-                                  bottomRight: Radius.circular(20),
-                                  topRight: Radius.circular(20)))),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 12, horizontal: size.width * 0.1),
-                      child: Text(
-                        'Hasil Data',
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                              color: isMeasure
-                                  ? color.secondaryTextColor
-                                  : color.secondaryColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal),
-                        ),
-                      )),
-                ],
-              ),
-              SizedBox(height: size.height * 0.04),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: AnimatedCrossFade(
-                    duration: const Duration(milliseconds: 200),
-                    crossFadeState: isMeasure
-                        ? CrossFadeState.showFirst
-                        : CrossFadeState.showSecond,
-                    firstChild: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: size.height * 0.2,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.asset(
-                                      'assets/images/sirkabodyscale.jpg'),
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      RichText(
-                                        text: TextSpan(
-                                          text: 'Battery : ',
-                                          style: GoogleFonts.inter(
-                                              textStyle: TextStyle(
-                                            color: color.primaryTextColor,
-                                            fontSize: 14,
-                                          )),
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text: '70%  ',
-                                              style: GoogleFonts.inter(
-                                                textStyle: TextStyle(
-                                                    color:
-                                                        color.primaryTextColor,
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      FaIcon(FontAwesomeIcons.bolt,
-                                          color: color.yellowColor, size: 12)
-                                    ],
-                                  ),
-                                  NeumorphicButton(
-                                      margin: EdgeInsets.only(top: 12),
-                                      onPressed: () {},
-                                      style: NeumorphicStyle(
-                                          color: color.secondaryColor,
-                                          shape: NeumorphicShape.flat,
-                                          boxShape:
-                                              NeumorphicBoxShape.roundRect(
-                                            BorderRadius.circular(20),
-                                          )
-                                          //border: NeumorphicBorder()
-                                          ),
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 12,
-                                          horizontal: size.width * 0.15),
-                                      child: Text(
-                                        "Sync",
-                                        style: GoogleFonts.inter(
-                                          textStyle: TextStyle(
-                                              color: color.primaryColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                      )),
-                                  NeumorphicButton(
-                                      margin: EdgeInsets.only(top: 12),
-                                      onPressed: () {},
-                                      style: NeumorphicStyle(
-                                          color: color.secondaryColor,
-                                          shape: NeumorphicShape.flat,
-                                          boxShape:
-                                              NeumorphicBoxShape.roundRect(
-                                            BorderRadius.circular(20),
-                                          )
-                                          //border: NeumorphicBorder()
-                                          ),
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 12,
-                                          horizontal: size.width * 0.16),
-                                      child: Text(
-                                        "Pair",
-                                        style: GoogleFonts.inter(
-                                          textStyle: TextStyle(
-                                              color: color.primaryColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                      )),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: size.height * 0.03),
-                          Text(
-                            'Riwayat Pengukuran',
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  color: isMeasure
-                                      ? color.secondaryTextColor
-                                      : color.secondaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Container(
-                            height: size.height * 0.5,
-                            child: ListView(children: [
-                              Neumorphic(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                style: NeumorphicStyle(
-                                  shape: NeumorphicShape.flat,
-                                  color: color.primaryColor,
-                                  boxShape: NeumorphicBoxShape.roundRect(
-                                      BorderRadius.circular(20)),
-                                ),
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 10),
-                                child: ListTile(
-                                  leading: SizedBox(
-                                    height: size.height * 0.2,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Image.asset(
-                                          'assets/images/sirkabodyscale.jpg'),
-                                    ),
-                                  ),
-                                  title: RichText(
-                                    text: TextSpan(
-                                      text: healthwareController.dateNoww,
-                                      style: GoogleFonts.inter(
-                                          textStyle: TextStyle(
-                                        color: color.primaryTextColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: ' (04.00 WIB)',
-                                          style: GoogleFonts.inter(
-                                            textStyle: TextStyle(
-                                                color: color.primaryTextColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.normal),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    'BMI: 21 | TFB: 28% | FFM: 23  | TBF: 30',
-                                    style: GoogleFonts.inter(
-                                        textStyle: TextStyle(
-                                      color: color.primaryTextColor,
-                                      fontSize: 12,
-                                    )),
-                                  ),
-                                  trailing: Text(
-                                    '60 kg',
-                                    style: GoogleFonts.inter(
-                                        textStyle: TextStyle(
-                                      color: color.primaryTextColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    )),
-                                  ),
-                                ),
-                              ),
-                              Neumorphic(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                style: NeumorphicStyle(
-                                  shape: NeumorphicShape.flat,
-                                  color: color.primaryColor,
-                                  boxShape: NeumorphicBoxShape.roundRect(
-                                      BorderRadius.circular(20)),
-                                ),
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 10),
-                                child: ListTile(
-                                  leading: SizedBox(
-                                    height: size.height * 0.2,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Image.asset(
-                                          'assets/images/sirkabodyscale.jpg'),
-                                    ),
-                                  ),
-                                  title: RichText(
-                                    text: TextSpan(
-                                      text: healthwareController.dateNoww,
-                                      style: GoogleFonts.inter(
-                                          textStyle: TextStyle(
-                                        color: color.primaryTextColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: ' (01.00 WIB)',
-                                          style: GoogleFonts.inter(
-                                            textStyle: TextStyle(
-                                                color: color.primaryTextColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.normal),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    'BMI: 21 | TFB: 28% | FFM: 23   | TBF: 30',
-                                    style: GoogleFonts.inter(
-                                        textStyle: TextStyle(
-                                      color: color.primaryTextColor,
-                                      fontSize: 12,
-                                    )),
-                                  ),
-                                  trailing: Text(
-                                    '61 kg',
-                                    style: GoogleFonts.inter(
-                                        textStyle: TextStyle(
-                                      color: color.primaryTextColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    )),
-                                  ),
-                                ),
-                              ),
-                            ]),
-                          )
-                        ],
-                      ),
-                    ),
-                    secondChild: Container(
-                      child: Column(
-                        children: [
-                          HealthwareGauge(
-                            color: color,
-                            size: size,
-                            title: 'Berat Badan',
-                            value: 0.5,
-                            item_1: '60 kg',
-                            item_2: '78 kg',
-                            item_3: '85 kg',
-                            class_1: 'Underweight',
-                            class_2: 'Normal',
-                            class_3: 'Overweight',
-                            class_4: 'Obese',
-                          ),
-                          SizedBox(height: size.height * 0.01),
-                          Divider(
-                              color: color.secondaryTextColor.withOpacity(0.3),
-                              height: 30),
-                          SizedBox(height: size.height * 0.02),
-                          HealthwareGauge(
-                            color: color,
-                            size: size,
-                            title: 'Body Mass Index',
-                            value: 0.5,
-                            item_1: '18.5',
-                            item_2: '25.0',
-                            item_3: '30.0',
-                            class_1: 'Underweight',
-                            class_2: 'Normal',
-                            class_3: 'Overweight',
-                            class_4: 'Obese',
-                          ),
-                          SizedBox(height: size.height * 0.01),
-                          Divider(
-                              color: color.secondaryTextColor.withOpacity(0.3),
-                              height: 30),
-                          SizedBox(height: size.height * 0.02),
-                          HealthwareGauge(
-                            color: color,
-                            size: size,
-                            title: 'Total Fat Body',
-                            value: 0.35,
-                            item_1: '10%',
-                            item_2: '30%',
-                            item_3: '45%',
-                            class_1: 'Underfat',
-                            class_2: 'Healthy',
-                            class_3: 'Overfat',
-                            class_4: 'Obese',
-                          ),
-                          SizedBox(height: size.height * 0.01),
-                          Divider(
-                              color: color.secondaryTextColor.withOpacity(0.3),
-                              height: 30),
-                          SizedBox(height: size.height * 0.02),
-                          HealthwareGauge(
-                            color: color,
-                            size: size,
-                            title: 'Fat-Free Mass Index',
-                            value: 0.5,
-                            item_1: '18.5',
-                            item_2: '25.0',
-                            item_3: '30.0',
-                            class_1: 'Underweight',
-                            class_2: 'Normal',
-                            class_3: 'Overweight',
-                            class_4: 'Obese',
-                          ),
-                          SizedBox(height: size.height * 0.01),
-                          Divider(
-                              color: color.secondaryTextColor.withOpacity(0.3),
-                              height: 30),
-                          SizedBox(height: size.height * 0.02),
-                          HealthwareGauge(
-                            color: color,
-                            size: size,
-                            title: 'Total Body Fluid',
-                            value: 0.5,
-                            item_1: '18.5',
-                            item_2: '25.0',
-                            item_3: '30.0',
-                            class_1: 'underweight',
-                            class_2: 'normal',
-                            class_3: 'overweight',
-                            class_4: 'obese',
-                          ),
-                        ],
-                      ),
-                    )),
-              ),
-            ],
-          ),
-        ),
-      )),
-    );
+            ]))));
   }
 }
 

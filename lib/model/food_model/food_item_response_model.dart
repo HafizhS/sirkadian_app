@@ -37,6 +37,8 @@ class DataFoodItemResponse {
   int? serving;
   String? difficulty;
   String? tags;
+  String? creatorName;
+  String? source;
   double? water;
   double? energy;
   double? protein;
@@ -68,6 +70,8 @@ class DataFoodItemResponse {
     this.serving,
     this.difficulty,
     this.tags,
+    this.creatorName,
+    this.source,
     this.water,
     this.energy,
     this.protein,
@@ -110,6 +114,8 @@ class DataFoodItemResponse {
     serving = json['serving'];
     difficulty = json['difficulty'];
     tags = json['tags'];
+    creatorName = json['creatorName'];
+    source = json['source'];
     water = json['water'];
     energy = json['energy'];
     protein = json['protein'];
@@ -152,6 +158,8 @@ class DataFoodItemResponse {
     data['serving'] = this.serving;
     data['difficulty'] = this.difficulty;
     data['tags'] = this.tags;
+    data['creatorName'] = this.creatorName;
+    data['source'] = this.source;
     data['water'] = this.water;
     data['energy'] = this.energy;
     data['protein'] = this.protein;

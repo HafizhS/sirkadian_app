@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/exercise_controller.dart';
 import 'package:sirkadian_app/controller/hexcolor_controller.dart';
 
-import '../../../model/obejctbox_model.dart/food_exercise_model.dart';
+import '../../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 
 class ExerciseDetailScreen extends StatefulWidget {
   final ColorConstantController color;
@@ -255,10 +255,10 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                               child: Center(
                                 child: Text(
                                   'Tidak ada variasi untuk olahraga ini.',
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.inter(
                                     textStyle: TextStyle(
-                                        color: widget.color.primaryTextColor,
-                                        fontSize: 12.sp,
+                                        color: widget.color.secondaryTextColor,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.normal),
                                   ),
                                 ),
@@ -417,12 +417,12 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                                                                   child: Text(
                                                                     'Tidak ada subvariasi untuk variasi ini.',
                                                                     style: GoogleFonts
-                                                                        .poppins(
+                                                                        .inter(
                                                                       textStyle: TextStyle(
                                                                           color: widget
                                                                               .color
-                                                                              .primaryTextColor,
-                                                                          fontSize: 12
+                                                                              .secondaryTextColor,
+                                                                          fontSize: 14
                                                                               .sp,
                                                                           fontWeight:
                                                                               FontWeight.normal),

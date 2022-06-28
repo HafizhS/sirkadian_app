@@ -6,7 +6,7 @@ import 'package:sirkadian_app/controller/exercise_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../controller/hexcolor_controller.dart';
-import '../../../model/obejctbox_model.dart/food_exercise_model.dart';
+import '../../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import '../../../../objectbox.g.dart';
 import '../../../widget/exercise_widget/exercise_tile.dart';
 import 'exercise_recommendation_screen.dart';

@@ -39,6 +39,8 @@ class DataNecessityResponse {
   DataNecessityResponse({
     this.water,
     this.energy,
+    this.macro,
+    this.micro,
   });
 
   DataNecessityResponse.fromJson(Map<String, dynamic> json) {

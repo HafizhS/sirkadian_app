@@ -20,7 +20,8 @@ class InitialSetupScreen extends StatefulWidget {
 class _InitialSetupScreenState extends State<InitialSetupScreen> {
   final authController = Get.find<AuthController>();
   final color = Get.find<ColorConstantController>();
-  final textC = Get.find<InitialSetupTextC>();
+  // final textC = Get.find<InitialSetupTextC>();
+  final textC = Get.put(InitialSetupTextC());
   final arguments = Get.arguments;
   final ValueNotifier<DateTime?> dateSub = ValueNotifier(null);
 
@@ -137,6 +138,7 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
                                               selectedValueTingkatAktivitas,
                                           dob: selectedDate,
                                           gender: selectedValueJenisKelamin,
+                                          displayName: textC.displayNameC.text,
                                           halal: selectedValueHalal == 'ya'
                                               ? true
                                               : false,
@@ -160,11 +162,11 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
                                       initialSetupRequest: initialSetupRequest,
                                       accessToken: arguments[0].toString());
                                   print(initialSetupRequest.toJson());
+                                } else {
+                                  _controller.nextPage(
+                                      duration: Duration(milliseconds: 800),
+                                      curve: Curves.easeInOutQuint);
                                 }
-
-                                _controller.nextPage(
-                                    duration: Duration(milliseconds: 800),
-                                    curve: Curves.easeInOutQuint);
                               },
                               margin: EdgeInsets.only(top: 10.h),
                               style: NeumorphicStyle(
@@ -244,7 +246,36 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20.h),
+                Text(
+                  'Display Name',
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                        color: color.primaryTextColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+                Neumorphic(
+                  style:
+                      NeumorphicStyle(depth: -5, color: color.backgroundColor),
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  margin: EdgeInsets.only(bottom: 30.h),
+                  child: TextFormField(
+                    controller: textC.displayNameC,
+                    keyboardType: TextInputType.text,
+                    onTap: () {
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
+                      }
+                    },
+                    decoration: InputDecoration(
+                        focusedBorder: InputBorder.none,
+                        border: InputBorder.none,
+                        hintText: 'Masukkan Display Name',
+                        hintStyle: TextStyle(
+                            color: color.hintTextColor, fontSize: 14.sp)),
+                  ),
+                ),
                 Text(
                   'Tanggal Lahir',
                   style: GoogleFonts.poppins(
@@ -298,26 +329,26 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
                     decoration: InputDecoration(
                         focusedBorder: InputBorder.none,
                         border: InputBorder.none,
-                        hintText: selectedDate != 'Pilih tanggal lahir'
+                        hintText: selectedDate != 'Pilih Tanggal Lahir'
                             ? selectedDate
-                            : 'Pilih tanggal lahir',
+                            : 'Pilih Tanggal Lahir',
                         suffixIcon: IconButton(
                           splashRadius: 20.sp,
                           onPressed: () {
-                            if (selectedDate != 'Pilih tanggal lahir') {
+                            if (selectedDate != 'Pilih Tanggal Lahir') {
                               setState(() {
-                                selectedDate = 'Pilih tanggal lahir';
+                                selectedDate = 'Pilih Tanggal Lahir';
                               });
                             }
                           },
                           icon: FaIcon(FontAwesomeIcons.times,
                               size: 14.sp,
-                              color: selectedDate != 'Pilih tanggal lahir'
+                              color: selectedDate != 'Pilih Tanggal Lahir'
                                   ? color.redColor
                                   : color.hintTextColor),
                         ),
                         hintStyle: TextStyle(
-                            color: selectedDate != 'Pilih tanggal lahir'
+                            color: selectedDate != 'Pilih Tanggal Lahir'
                                 ? color.secondaryTextColor
                                 : color.hintTextColor,
                             fontSize: 14.sp)),

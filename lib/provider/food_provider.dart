@@ -8,7 +8,7 @@ class FoodProvider extends GetConnect {
   //get method-------------------------------------------------------
 
   Future<Response> getFoodRecommendation(
-      String accessToken, String session, int page) async {
+      String accessToken, String session, int page, String foodEaten) async {
     Response? _response;
 
     var headers = {
@@ -16,9 +16,45 @@ class FoodProvider extends GetConnect {
       'Accept': 'application/json',
       'Authorization': 'Bearer $accessToken',
     };
-    print('${foodRecommendationGetUrl}food_time=${session}&page=$page');
+
     _response = await get(
-        '${foodRecommendationGetUrl}food_time=${session}&page=$page',
+        '${foodRecommendationGetUrl}food_time=${session}&page=$page$foodEaten',
+        headers: headers);
+
+    return _response;
+  }
+
+  Future<Response> getFoodRecommendationByFood(String accessToken,
+      String session, String foodId, String foodEaten) async {
+    Response? _response;
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+    print(
+        '${foodRecommendationByFoodGetUrl}$foodId/recommendation_by_food?food_time=${session}${foodEaten}');
+    _response = await get(
+        '${foodRecommendationByFoodGetUrl}$foodId/recommendation_by_food?food_time=${session}${foodEaten}',
+        headers: headers);
+
+    return _response;
+  }
+
+  Future<Response> getFoodRecommendationMenu(String accessToken, String session,
+      int page, String foodEaten, String foodType) async {
+    Response? _response;
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+    print(
+        '${foodRecommendationMenuGetUrl}food_time=${session}&page=$page$foodEaten$foodType');
+    _response = await get(
+        '${foodRecommendationMenuGetUrl}food_time=${session}&page=$page$foodEaten$foodType',
         headers: headers);
 
     return _response;
@@ -95,7 +131,7 @@ class FoodProvider extends GetConnect {
     _response = await post(foodHistoryGetPostUrl, foodHistoryRequest.toJson(),
         headers: headers);
     print(foodHistoryRequest.toJson());
-    print(_response.body);
+
     return _response;
   }
 }

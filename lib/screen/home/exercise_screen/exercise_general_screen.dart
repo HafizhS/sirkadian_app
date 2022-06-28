@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/exercise_controller.dart';
-import 'package:sirkadian_app/model/obejctbox_model.dart/food_exercise_model.dart';
+import 'package:sirkadian_app/model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import 'package:sirkadian_app/objectbox.g.dart';
 import 'package:sirkadian_app/screen/home/exercise_screen/exercise_future_sportPlan_screen.dart';
 import 'package:sirkadian_app/widget/exercise_widget/exercise_tile.dart';

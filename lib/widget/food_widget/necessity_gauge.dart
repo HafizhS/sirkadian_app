@@ -189,7 +189,7 @@ class DotOnCircleProgressBarPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     // Start at the top. 0 radians represents the right edge
-    final double startAngle = -(4 * Math.pi * 0.5);
+    // final double startAngle = -(4 * Math.pi * 0.5);
     final double sweepAngle = (4 * Math.pi * (this.percentage * 0.5));
 
     // // Don't draw the background if we don't have a background color

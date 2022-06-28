@@ -45,7 +45,7 @@ class FoodTile extends StatelessWidget {
             BorderRadius.circular(20),
           )),
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-      child: Stack(alignment: Alignment.bottomRight, children: [
+      child: Stack(alignment: Alignment.topRight, children: [
         Row(
           children: [
             Container(
@@ -114,7 +114,9 @@ class FoodTile extends StatelessWidget {
                           size: 12,
                         ),
                         Text(
-                          ' ' + duration + ' min',
+                          ' ' +
+                              (int.parse(duration) / 60).toStringAsFixed(0) +
+                              ' min',
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: color.secondaryTextColor,
@@ -147,7 +149,7 @@ class FoodTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
-              margin: EdgeInsets.only(right: 20.w, bottom: 30.h),
+              margin: EdgeInsets.only(right: 20.w, top: 20.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -169,7 +171,7 @@ class FoodTile extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(right: 20.w, bottom: 20.h),
+              margin: EdgeInsets.only(right: 20.w, top: 35.h),
               child: NeumorphicButton(
                 onPressed: iconButton,
                 style: NeumorphicStyle(

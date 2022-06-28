@@ -1,14 +1,13 @@
 import 'package:get/route_manager.dart';
 import 'package:sirkadian_app/bindings/bindings.dart';
+import 'package:sirkadian_app/screen/auth/greeting_screen.dart';
+import 'package:sirkadian_app/screen/healthware/healthware_device_screen.dart';
 import 'package:sirkadian_app/screen/settings/settings_general_screen.dart';
 import 'package:sirkadian_app/screen/user/user_health_preference_screen.dart';
-import 'package:sirkadian_app/screen/home/nutrition_screen/nutrition_screen.dart';
 import 'package:sirkadian_app/screen/user/user_information_screen.dart';
 import '../screen/main_screen.dart';
 
 import '../screen/auth/initial_setup_screen.dart';
-import '../screen/auth/verification_screen.dart';
-
 import '../screen/auth/login_screen.dart';
 import '../screen/auth/register_screen.dart';
 import '../screen/auth/welcome_screen.dart';
@@ -25,25 +24,29 @@ class ListScreen {
         name: RouteScreens.register,
         page: () => RegisterScreen(),
         bindings: [RegisterTextB(), ControllerBinding()]),
-    GetPage(
-        name: RouteScreens.verification,
-        page: () => VerificationScreen(),
-        binding: ControllerBinding()),
+    // GetPage(
+    //     name: RouteScreens.verification,
+    //     page: () => VerificationScreen(),
+    //     binding: ControllerBinding()),
     GetPage(
         name: RouteScreens.initialSetup,
         page: () => InitialSetupScreen(),
         bindings: [ControllerBinding(), InitialSetupTextB()]),
+    GetPage(
+        name: RouteScreens.greeting,
+        page: () => GreetingScreen(),
+        bindings: [ControllerBinding()]),
 
     //general
     GetPage(name: RouteScreens.main, page: () => MainScreen(), bindings: [
       ControllerBinding(),
     ]),
 
-    //food
-    GetPage(
-        name: RouteScreens.foodMeal,
-        page: () => NutritionScreen(),
-        bindings: []),
+    // food
+    // GetPage(
+    //     name: RouteScreens.foodMeal,
+    //     page: () => NutritionScreen(),
+    //     bindings: []),
 
     //user
     GetPage(
@@ -60,6 +63,12 @@ class ListScreen {
         name: RouteScreens.settingsGeneral,
         page: () => SettingsGeneralScreen(),
         bindings: [ControllerBinding()]),
+
+    //
+    GetPage(
+        name: RouteScreens.healthware,
+        page: () => HealthwareDeviceScreen(),
+        bindings: [ControllerBinding()]),
   ];
 }
 
@@ -70,6 +79,7 @@ abstract class RouteScreens {
   static const login = '/loginScreen';
   static const verification = '/verificationScreen';
   static const initialSetup = '/initialSetupScreen';
+  static const greeting = '/greetingScreen';
 
   //general
   static const main = '/mainScreen';
@@ -85,4 +95,7 @@ abstract class RouteScreens {
 
   //settings
   static const settingsGeneral = '/settingsGeneralScreen';
+
+  //healthware
+  static const healthware = '/healthwareScreen';
 }

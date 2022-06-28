@@ -2,7 +2,10 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sirkadian_app/controller/auth_controller.dart';
+import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/screen/user/user_information_setting_screen.dart';
+import '../../controller/auth_controller.dart';
 import '../../controller/hexcolor_controller.dart';
 import '../../controller/text_controller.dart';
 import '../../controller/user_controller.dart';
@@ -18,12 +21,14 @@ class UserInformationScreen extends StatefulWidget {
 class _UserInformationScreenState extends State<UserInformationScreen> {
   final textController = Get.find<InitialSetupTextC>();
   final userController = Get.find<UserController>();
+  final authController = Get.find<AuthController>();
+  final informationController = Get.find<InformationController>();
   final color = Get.find<ColorConstantController>();
   bool isOpen = false;
 
   @override
   void initState() {
-    userController.getUserInformation();
+    // userController.getUserInformation();
     // userController.getUserHealthHistoryLatest();
     super.initState();
   }
@@ -95,12 +100,49 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
             ),
             preferredSize: Size.fromHeight(70.h)),
         body: Obx(
-          () => userController.isLoadingUserInformation.isTrue ||
-                  userController.isLoadingUserHealthHistoryLatest.isTrue
-              ? Center(
-                  child: CircularProgressIndicator(
-                    color: color.secondaryColor,
-                  ),
+          () => userController.userInformationResponse.value.displayName ==
+                      null ||
+                  userController.userHealthHistoryLatestResponse.value.height ==
+                      null
+              ? Container(
+                  height: 800.h,
+                  width: 360.w,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(
+                          color: color.secondaryColor,
+                        ),
+                        NeumorphicButton(
+                            margin: EdgeInsets.only(top: 28.h),
+                            onPressed: () {
+                              userController.getUserInformation();
+                              userController.getUserHealthHistoryLatest();
+                            },
+                            style: NeumorphicStyle(
+                                color: color.secondaryColor,
+                                depth: 4,
+                                // shadowDarkColor: HexColor.fromHex('#C3C3C3'),
+                                // shadowLightColor: HexColor.fromHex('#FFFFFF'),
+                                shape: NeumorphicShape.flat,
+                                boxShape: NeumorphicBoxShape.roundRect(
+                                  BorderRadius.circular(20),
+                                )
+                                //border: NeumorphicBorder()
+                                ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 12.h, horizontal: 30.w),
+                            child: Text(
+                              "Refresh",
+                              style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                    color: color.primaryColor,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                            )),
+                      ]),
                 )
               : SingleChildScrollView(
                   child: Container(
@@ -127,14 +169,28 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                               Container(
                                 alignment: Alignment.center,
                                 width: double.infinity,
-                                child: Text(
-                                  'Test',
-                                  style: GoogleFonts.inter(
-                                    textStyle: TextStyle(
-                                        color: color.primaryTextColor,
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // SizedBox(width: 30.w),
+                                    Text(
+                                      '${userController.userInformationResponse.value.displayName ?? authController.data.read('dataUser')['username']}',
+                                      style: GoogleFonts.inter(
+                                        textStyle: TextStyle(
+                                            color: color.primaryTextColor,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                    // SizedBox(width: 10.w),
+                                    // InkWell(
+                                    //   onTap: (){},
+                                    //   child: FaIcon(
+                                    //     FontAwesomeIcons.edit,
+                                    //     size: 18.sp,
+                                    //   ),
+                                    // )
+                                  ],
                                 ),
                               ),
                               Neumorphic(
@@ -156,7 +212,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          20.toString(),
+                                          '${DateTime.now().year - int.parse(userController.userInformationResponse.value.dob!.substring(0, 4))}',
                                           style: GoogleFonts.inter(
                                             textStyle: TextStyle(
                                                 color: color.primaryTextColor,
@@ -335,7 +391,10 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
           Column(
             children: [
               IntegrateBarWidget(
-                onTap: () {},
+                onTap: () {
+                  informationController.snackBarError('Fitur Belum Tersedia',
+                      'Kami sedang mengerjakan fitur tersebut');
+                },
                 colorText: color,
 
                 title: 'Nutrisi',
@@ -348,7 +407,10 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
               ),
               SizedBox(height: 18.h),
               IntegrateBarWidget(
-                onTap: () {},
+                onTap: () {
+                  informationController.snackBarError('Fitur Belum Tersedia',
+                      'Kami sedang mengerjakan fitur tersebut');
+                },
                 colorText: color,
                 title: 'Olahraga',
                 kebutuhanDipenuhi: 120,
@@ -356,7 +418,10 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
               ),
               SizedBox(height: 18.h),
               IntegrateBarWidget(
-                onTap: () {},
+                onTap: () {
+                  informationController.snackBarError('Fitur Belum Tersedia',
+                      'Kami sedang mengerjakan fitur tersebut');
+                },
                 colorText: color,
                 title: 'Cairan',
                 kebutuhanDipenuhi: 40,

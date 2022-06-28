@@ -3,11 +3,12 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sirkadian_app/controller/user_controller.dart';
 import 'package:sirkadian_app/screen/home/nutrition_screen/food_screen/food_history_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
-import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
+import '../../../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import '../../../../widget/food_widget/necessity_display.dart';
 import 'food_mealplan_screen.dart';
 
@@ -19,7 +20,7 @@ class FoodGeneralScreen extends StatefulWidget {
     required this.listMealSarapan,
     required this.listMealMakanSiang,
     required this.listMealMakanMalam,
-    required this.listMealSnack,
+    // required this.listMealSnack,
   }) : super(key: key);
 
   final bool hasBeenInitialized;
@@ -27,7 +28,7 @@ class FoodGeneralScreen extends StatefulWidget {
   final List<Food> listMealSarapan;
   final List<Food> listMealMakanSiang;
   final List<Food> listMealMakanMalam;
-  final List<Food> listMealSnack;
+  // final List<Food> listMealSnack;
 
   @override
   State<FoodGeneralScreen> createState() => _FoodGeneralScreenState();
@@ -35,7 +36,16 @@ class FoodGeneralScreen extends StatefulWidget {
 
 class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
   final foodController = Get.find<FoodController>();
+  final userController = Get.find<UserController>();
+
   final color = Get.find<ColorConstantController>();
+  var maxSarapan = 0;
+  var maxIndexSarapan = null;
+  var maxMakanSiang = 0;
+  var maxIndexMakanSiang = null;
+  var maxMakanMalam = 0;
+  var maxIndexMakanMalam = null;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -109,6 +119,33 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                   viewportFraction: 0.5,
                   scale: 0.9,
                   itemBuilder: (BuildContext context, int index) {
+                    if (index == 0) {
+                      widget.listMealSarapan.asMap().forEach((index, element) {
+                        if (element.energy! > maxSarapan) {
+                          maxIndexSarapan = index;
+                          maxSarapan = element.energy!.toInt();
+                        }
+                      });
+                    } else if (index == 1) {
+                      widget.listMealMakanSiang
+                          .asMap()
+                          .forEach((index, element) {
+                        if (element.energy! > maxMakanSiang) {
+                          maxIndexMakanSiang = index;
+                          maxMakanSiang = element.energy!.toInt();
+                        }
+                      });
+                    } else {
+                      widget.listMealMakanMalam
+                          .asMap()
+                          .forEach((index, element) {
+                        if (element.energy! > maxMakanMalam) {
+                          maxIndexMakanMalam = index;
+                          maxMakanMalam = element.energy!.toInt();
+                        }
+                      });
+                    }
+
                     switch (index) {
                       case 0:
                         return Container(
@@ -122,8 +159,10 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                                         settings: RouteSettings(
                                             name: "/foodMealScreen"),
                                         builder: (context) => FoodMealScreen(
-                                            session: foodController
-                                                .sessions[index])));
+                                              session: foodController
+                                                  .sessions[index],
+                                              isFromFutureMealplan: false,
+                                            )));
                               },
                               style: NeumorphicStyle(
                                   color: color.bgColor,
@@ -133,7 +172,8 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                                   )),
                               child: widget.listMealSarapan.isNotEmpty
                                   ? notEmptyChild(
-                                      widget.listMealSarapan[0].imageFileName!,
+                                      widget.listMealSarapan[maxIndexSarapan]
+                                          .imageFileName!,
                                       index,
                                     )
                                   : emptySessionChild(index)),
@@ -151,8 +191,10 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                                         settings: RouteSettings(
                                             name: "/foodMealScreen"),
                                         builder: (context) => FoodMealScreen(
-                                            session: foodController
-                                                .sessions[index])));
+                                              session: foodController
+                                                  .sessions[index],
+                                              isFromFutureMealplan: false,
+                                            )));
                               },
                               style: NeumorphicStyle(
                                   color: color.bgColor,
@@ -163,7 +205,9 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                               child: widget.listMealMakanSiang.isNotEmpty
                                   ? notEmptyChild(
                                       widget
-                                          .listMealMakanSiang[0].imageFileName!,
+                                          .listMealMakanSiang[
+                                              maxIndexMakanSiang]
+                                          .imageFileName!,
                                       index,
                                     )
                                   : emptySessionChild(index)),
@@ -180,8 +224,10 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                                         settings: RouteSettings(
                                             name: "/foodMealScreen"),
                                         builder: (context) => FoodMealScreen(
-                                            session: foodController
-                                                .sessions[index])));
+                                              session: foodController
+                                                  .sessions[index],
+                                              isFromFutureMealplan: false,
+                                            )));
                               },
                               style: NeumorphicStyle(
                                   color: color.bgColor,
@@ -192,39 +238,41 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                               child: widget.listMealMakanMalam.isNotEmpty
                                   ? notEmptyChild(
                                       widget
-                                          .listMealMakanMalam[0].imageFileName!,
+                                          .listMealMakanMalam[
+                                              maxIndexMakanMalam]
+                                          .imageFileName!,
                                       index,
                                     )
                                   : emptySessionChild(index)),
                         );
-                      case 3:
-                        return Container(
-                          margin: EdgeInsets.all(10.sp),
-                          child: NeumorphicButton(
-                              padding: EdgeInsets.all(0),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        settings: RouteSettings(
-                                            name: "/foodMealScreen"),
-                                        builder: (context) => FoodMealScreen(
-                                            session: foodController
-                                                .sessions[index])));
-                              },
-                              style: NeumorphicStyle(
-                                  color: color.bgColor,
-                                  shape: NeumorphicShape.flat,
-                                  boxShape: NeumorphicBoxShape.roundRect(
-                                    BorderRadius.circular(20),
-                                  )),
-                              child: widget.listMealSnack.isNotEmpty
-                                  ? notEmptyChild(
-                                      widget.listMealSnack[0].imageFileName!,
-                                      index,
-                                    )
-                                  : emptySessionChild(index)),
-                        );
+                      // case 3:
+                      //   return Container(
+                      //     margin: EdgeInsets.all(10.sp),
+                      //     child: NeumorphicButton(
+                      //         padding: EdgeInsets.all(0),
+                      //         onPressed: () {
+                      //           Navigator.push(
+                      //               context,
+                      //               MaterialPageRoute(
+                      //                   settings: RouteSettings(
+                      //                       name: "/foodMealScreen"),
+                      //                   builder: (context) => FoodMealScreen(
+                      //                       session: foodController
+                      //                           .sessions[index])));
+                      //         },
+                      //         style: NeumorphicStyle(
+                      //             color: color.bgColor,
+                      //             shape: NeumorphicShape.flat,
+                      //             boxShape: NeumorphicBoxShape.roundRect(
+                      //               BorderRadius.circular(20),
+                      //             )),
+                      //         child: widget.listMealSnack.isNotEmpty
+                      //             ? notEmptyChild(
+                      //                 widget.listMealSnack[0].imageFileName!,
+                      //                 index,
+                      //               )
+                      //             : emptySessionChild(index)),
+                      //   );
                       default:
                         return Container(
                             margin: EdgeInsets.all(10.sp),
@@ -236,8 +284,10 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                                           settings: RouteSettings(
                                               name: "/foodMealScreen"),
                                           builder: (context) => FoodMealScreen(
-                                              session: foodController
-                                                  .sessions[index])));
+                                                session: foodController
+                                                    .sessions[index],
+                                                isFromFutureMealplan: false,
+                                              )));
                                 },
                                 style: NeumorphicStyle(
                                     color: color.bgColor,

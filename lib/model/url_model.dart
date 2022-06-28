@@ -38,6 +38,9 @@ final String rootUserFood = '$root/user_food';
 final String foodAllGetUrl = '$rootFood/all';
 final String foodItemGetUrl = '$rootFood';
 final String foodRecommendationGetUrl = '$rootUserFood/recommendation?';
+final String foodRecommendationByFoodGetUrl = '$rootUserFood/';
+final String foodRecommendationMenuGetUrl =
+    '$rootUserFood/menu_recommendation?';
 final String necessityGetUrl = '$rootUserFood/necessity';
 final String foodHistoryGetPostUrl = '$rootUserFood/history';
 
@@ -48,16 +51,7 @@ final String exerciseAllGetUrl = '$rootExercise/all';
 final String exerciseItemGetUrl = '$rootExercise';
 final String exerciseHistoryUrl = '$rootUserExercise/history';
 
-
-
-
-
-//akun
-// final String userUpdateEmailGetUrl = '$root/user/update_email';
-// final String userUpdateEmailPatchUrl = '$root/user/verify_update_email';
-// final String userUpdatePasswordGetUrl = '$root/user/update_password';
-// final String userUpdatePasswordPatchUrl = '$root/user/verify_update_password';
-// final String userUpdateGenderDobLangPatchUrl = '$root/user/update';
-
-//drinks
-// final String historyDrinkUrl = '$root/drink/history';
+//article
+final String rootArticle = '$root/article';
+final String articleAllGetUrl = '$rootArticle/all?';
+final String articleDetailGetUrl = '$rootArticle/';

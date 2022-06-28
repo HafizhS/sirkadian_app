@@ -6,6 +6,7 @@ import 'package:sirkadian_app/model/user_model/user_health_preferenceLatest_resp
 import 'package:sirkadian_app/model/user_model/user_health_preference_request_model.dart';
 import 'package:sirkadian_app/model/user_model/user_information_response_model.dart';
 
+import '../objectbox.g.dart';
 import '../provider/user_provider.dart';
 import 'auth_controller.dart';
 import 'information_controller.dart';
@@ -55,6 +56,11 @@ class UserController extends GetxController {
   String tipeDietValue = 'maintain';
   String levelOlahragaValue = 'light';
   bool veganValue = true;
+
+  //objectbox material
+  late Store userLogStore;
+  var focusedDay = DateTime.utc(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   //-----------------------------------------------------------------------------
   //----------------------------------------------------------------------------
@@ -122,6 +128,7 @@ class UserController extends GetxController {
         if (_userInformationResponse.statusCode == 200) {
           userInformationResponse.value = _userInformationResponse.data!;
         }
+        print(userInformationResponse.value.displayName);
       }
 
       if (Get.isDialogOpen!) Get.back();

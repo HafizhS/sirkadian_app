@@ -72,6 +72,7 @@ class InitialSetupTextC extends GetxController {
   late TextEditingController heightC;
   late TextEditingController dateC;
   late TextEditingController weightC;
+  late TextEditingController displayNameC;
 
   @override
   void onInit() {
@@ -79,6 +80,7 @@ class InitialSetupTextC extends GetxController {
     dateC = TextEditingController();
     heightC = TextEditingController();
     weightC = TextEditingController();
+    displayNameC = TextEditingController();
   }
 
   @override
@@ -86,7 +88,7 @@ class InitialSetupTextC extends GetxController {
     dateC.dispose();
     heightC.dispose();
     weightC.dispose();
-
+    displayNameC.dispose();
     super.onClose();
   }
 }

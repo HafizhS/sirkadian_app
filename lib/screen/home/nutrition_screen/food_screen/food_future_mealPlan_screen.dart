@@ -8,7 +8,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/food_controller.dart';
-import '../../../../model/obejctbox_model.dart/food_exercise_model.dart';
+import '../../../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import '../../../../objectbox.g.dart';
 import '../../../../widget/food_widget/necessity_display.dart';
 import 'food_mealplan_screen.dart';
@@ -38,7 +38,7 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
   late Stream<List<Food>> _sarapanStream;
   late Stream<List<Food>> _makanSiangStream;
   late Stream<List<Food>> _makanMalamStream;
-  late Stream<List<Food>> _snackStream;
+  // late Stream<List<Food>> _snackStream;
   bool hasBeenInitialized = false;
 
   @override
@@ -70,12 +70,12 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
               Food_.session.equals('Makan Malam'))
           .watch(triggerImmediately: true)
           .map((query) => query.find());
-      _snackStream = foodController.foodStore
-          .box<Food>()
-          .query(Food_.date.equals(foodController.selectedDay.toString()) &
-              Food_.session.equals('Snack'))
-          .watch(triggerImmediately: true)
-          .map((query) => query.find());
+      // _snackStream = foodController.foodStore
+      //     .box<Food>()
+      //     .query(Food_.date.equals(foodController.selectedDay.toString()) &
+      //         Food_.session.equals('Snack'))
+      //     .watch(triggerImmediately: true)
+      //     .map((query) => query.find());
       hasBeenInitialized = true;
     });
     super.initState();
@@ -203,9 +203,17 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                   ),
                 ),
               ),
-              StreamBuilder4<List<Food>, List<Food>, List<Food>, List<Food>>(
-                  streams: Tuple4(_sarapanStream, _makanSiangStream,
-                      _makanMalamStream, _snackStream),
+              StreamBuilder3<
+                      List<Food>,
+                      List<Food>,
+                      List<Food>
+                      // , List<Food>
+                      >(
+                  streams: Tuple3(
+                    _sarapanStream, _makanSiangStream,
+                    _makanMalamStream,
+                    //  _snackStream
+                  ),
                   // stream: _necessityStream,
                   builder: (context, snapshot) {
                     switch (snapshot.item1.connectionState) {
@@ -218,17 +226,19 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                         );
                       case ConnectionState.active:
                         return sessionChildWidget(
-                            snapshot.item1.data!,
-                            snapshot.item2.data!,
-                            snapshot.item3.data!,
-                            snapshot.item4.data!);
+                          snapshot.item1.data!,
+                          snapshot.item2.data!,
+                          snapshot.item3.data!,
+                          // snapshot.item4.data!
+                        );
 
                       case ConnectionState.done:
                         return sessionChildWidget(
-                            snapshot.item1.data!,
-                            snapshot.item2.data!,
-                            snapshot.item3.data!,
-                            snapshot.item4.data!);
+                          snapshot.item1.data!,
+                          snapshot.item2.data!,
+                          snapshot.item3.data!,
+                          // snapshot.item4.data!
+                        );
                     }
                   }),
               //segment 2
@@ -263,10 +273,11 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
   }
 
   Container sessionChildWidget(
-      List<Food> listMealSarapan,
-      List<Food> listMealMakanSiang,
-      List<Food> listMealMakanMalam,
-      List<Food> listMealSnack) {
+    List<Food> listMealSarapan,
+    List<Food> listMealMakanSiang,
+    List<Food> listMealMakanMalam,
+    // List<Food> listMealSnack
+  ) {
     return Container(
       margin: EdgeInsets.only(top: 10.h),
       height: 150.h,
@@ -292,7 +303,9 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                                 settings:
                                     RouteSettings(name: "/foodMealScreen"),
                                 builder: (context) => FoodMealScreen(
-                                    session: foodController.sessions[index])));
+                                      session: foodController.sessions[index],
+                                      isFromFutureMealplan: true,
+                                    )));
                       },
                       style: NeumorphicStyle(
                           color: color.primaryColor,
@@ -318,7 +331,9 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                                 settings:
                                     RouteSettings(name: "/foodMealScreen"),
                                 builder: (context) => FoodMealScreen(
-                                    session: foodController.sessions[index])));
+                                      session: foodController.sessions[index],
+                                      isFromFutureMealplan: true,
+                                    )));
                       },
                       style: NeumorphicStyle(
                           color: color.primaryColor,
@@ -343,7 +358,9 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                                 settings:
                                     RouteSettings(name: "/foodMealScreen"),
                                 builder: (context) => FoodMealScreen(
-                                    session: foodController.sessions[index])));
+                                      session: foodController.sessions[index],
+                                      isFromFutureMealplan: true,
+                                    )));
                       },
                       style: NeumorphicStyle(
                           color: color.primaryColor,
@@ -356,31 +373,34 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                               listMealMakanMalam[0].imageFileName!, index)
                           : emptySessionChild(index)),
                 );
-              case 3:
-                return Container(
-                  margin: EdgeInsets.all(10.sp),
-                  child: NeumorphicButton(
-                      padding: EdgeInsets.all(0),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                settings:
-                                    RouteSettings(name: "/foodMealScreen"),
-                                builder: (context) => FoodMealScreen(
-                                    session: foodController.sessions[index])));
-                      },
-                      style: NeumorphicStyle(
-                          color: color.primaryColor,
-                          shape: NeumorphicShape.flat,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(20),
-                          )),
-                      child: listMealSnack.isNotEmpty
-                          ? notEmptyChild(
-                              listMealSnack[0].imageFileName!, index)
-                          : emptySessionChild(index)),
-                );
+              // case 3:
+              //   return Container(
+              //     margin: EdgeInsets.all(10.sp),
+              //     child: NeumorphicButton(
+              //         padding: EdgeInsets.all(0),
+              //         onPressed: () {
+              //           Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                   settings:
+              //                       RouteSettings(name: "/foodMealScreen"),
+              //                   builder: (context) => FoodMealScreen(
+              //                         session: foodController.sessions[index],
+              //                         isFromFutureMealplan:
+              //                             isFromFutureMealplan,
+              //                       )));
+              //         },
+              //         style: NeumorphicStyle(
+              //             color: color.primaryColor,
+              //             shape: NeumorphicShape.flat,
+              //             boxShape: NeumorphicBoxShape.roundRect(
+              //               BorderRadius.circular(20),
+              //             )),
+              //         child: listMealSnack.isNotEmpty
+              //             ? notEmptyChild(
+              //                 listMealSnack[0].imageFileName!, index)
+              //             : emptySessionChild(index)),
+              //   );
               default:
                 return Container(
                     margin: EdgeInsets.all(10.sp),
@@ -392,8 +412,9 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                                   settings:
                                       RouteSettings(name: "/foodMealScreen"),
                                   builder: (context) => FoodMealScreen(
-                                      session:
-                                          foodController.sessions[index])));
+                                        session: foodController.sessions[index],
+                                        isFromFutureMealplan: true,
+                                      )));
                         },
                         style: NeumorphicStyle(
                             color: color.primaryColor,
@@ -641,15 +662,14 @@ class _FutureMealPlanScreenState extends State<FutureMealPlanScreen>
                           Food_.session.equals('Makan Malam'))
                   .watch(triggerImmediately: true)
                   .map((query) => query.find());
-              _snackStream = foodController.foodStore
-                  .box<Food>()
-                  .query(
-                      Food_.date.equals(foodController.selectedDay.toString()) &
-                          Food_.session.equals('Snack'))
-                  .watch(triggerImmediately: true)
-                  .map((query) => query.find());
+              // _snackStream = foodController.foodStore
+              //     .box<Food>()
+              //     .query(
+              //         Food_.date.equals(foodController.selectedDay.toString()) &
+              //             Food_.session.equals('Snack'))
+              //     .watch(triggerImmediately: true)
+              //     .map((query) => query.find());
             });
-            print(foodController.selectedDay);
           },
           selectedDayPredicate: (DateTime date) {
             return isSameDay(foodController.selectedDay, date);
