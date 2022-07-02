@@ -38,5 +38,5 @@ class HealthwareController extends GetxController {
   }
 
   // bluetooth material
-  RxList<BluetoothDevice> listBluetooth = <BluetoothDevice>[].obs;
+  // RxList<BluetoothDevice> listBluetooth = <BluetoothDevice>[].obs;
 }

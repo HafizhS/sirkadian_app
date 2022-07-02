@@ -9,11 +9,13 @@ import 'package:sirkadian_app/controller/fluid_controller.dart';
 import 'package:sirkadian_app/controller/food_controller.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/screen/home/article_screen/article_detail_screen.dart';
+import 'package:sirkadian_app/screen/list_screen.dart';
 import 'package:sirkadian_app/widget/food_widget/necessity_display.dart';
 import '../../constant/hex_color.dart';
 import '../../controller/auth_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../controller/hexcolor_controller.dart';
+import '../../controller/notification_controller.dart';
 import '../../controller/user_controller.dart';
 import '../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import '../../objectbox.g.dart';
@@ -39,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final foodController = Get.find<FoodController>();
   final fluidController = Get.find<FluidController>();
   final informationController = Get.find<InformationController>();
+  final notificationController = Get.find<NotificationController>();
   final color = Get.find<ColorConstantController>();
   ScrollController scrollController = ScrollController();
   var closeTopContainer = false.obs;
@@ -88,8 +91,41 @@ class _HomeScreenState extends State<HomeScreen> {
         closeTopContainer.value = scrollController.offset > 50;
       });
     });
-
+    listenNotifications();
     super.initState();
+  }
+
+  void listenNotifications() {
+    NotificationController().initNotification().then((value) {
+      //notification setup
+      notificationController.notificationFoodSarapan(
+          1, notificationController.isSoundSarapan);
+      notificationController.notificationFoodMakanSiang(
+          2, notificationController.isSoundMakanSiang);
+      notificationController.notificationFoodMakanMalam(
+          3, notificationController.isSoundMakanMalam);
+      notificationController.notificationFluidMinum1(
+          4, notificationController.isSoundMinum1);
+      notificationController.notificationFluidMinum2(
+          5, notificationController.isSoundMinum2);
+      notificationController.notificationFluidMinum3(
+          6, notificationController.isSoundMinum3);
+      notificationController.notificationFluidMinum4(
+          7, notificationController.isSoundMinum4);
+    });
+    NotificationController.onNotifications.stream.listen(onClickedNotification);
+  }
+
+  void onClickedNotification(String? payload) {
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => NutritionScreen(
+    //               hasBeenInitializedFood: hasBeenInitializedFood,
+    //             )));
+    Get.toNamed(RouteScreens.home);
+    // Navigator.push(
+    // context, MaterialPageRoute(builder: (context) => MainScreen()));
   }
 
   @override
