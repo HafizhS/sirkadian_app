@@ -10,7 +10,6 @@ import 'package:sirkadian_app/controller/food_controller.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/screen/home/article_screen/article_detail_screen.dart';
 import 'package:sirkadian_app/screen/list_screen.dart';
-import 'package:sirkadian_app/widget/food_widget/necessity_display.dart';
 import '../../constant/hex_color.dart';
 import '../../controller/auth_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -690,7 +689,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return articleController.articleAll.isEmpty
         ? Container(
             width: 360.w,
-            height: 250.h,
+            height: 230.h,
             padding: EdgeInsets.only(bottom: 50.h),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -734,7 +733,7 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         : Container(
             width: 360.w,
-            height: 250.h,
+            height: 230.h,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: articleController.articleAll.length,

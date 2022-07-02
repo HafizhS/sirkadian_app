@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sirkadian_app/controller/auth_controller.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/screen/user/user_information_setting_screen.dart';
@@ -159,13 +163,31 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                           child: Column(
                             children: [
                               Container(
-                                margin: EdgeInsets.all(10.sp),
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage('assets/images/user_male.jpg'),
-                                  radius: 60.sp,
-                                ),
-                              ),
+                                  margin: EdgeInsets.all(10.sp),
+                                  child: Stack(
+                                      alignment: Alignment.bottomRight,
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                              'assets/images/user_male.jpg'),
+                                          radius: 60.sp,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            pickImage();
+                                          },
+                                          child: CircleAvatar(
+                                            radius: 20.sp,
+                                            backgroundColor:
+                                                color.secondaryColor,
+                                            child: FaIcon(
+                                              FontAwesomeIcons.camera,
+                                              color: color.primaryTextColor,
+                                              size: 16.sp,
+                                            ),
+                                          ),
+                                        )
+                                      ])),
                               Container(
                                 alignment: Alignment.center,
                                 width: double.infinity,
@@ -433,6 +455,23 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
         ],
       ),
     );
+  }
+
+  File? image;
+  Future<void> pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+      informationController.snackBarError(
+          'Gagal Mengambil gambar', e.toString());
+    }
   }
 }
 
