@@ -65,10 +65,10 @@ class ListScreen {
         bindings: [ControllerBinding()]),
 
     //
-    GetPage(
-        name: RouteScreens.healthware,
-        page: () => HealthwareDeviceScreen(),
-        bindings: [ControllerBinding()]),
+    //   GetPage(
+    //       name: RouteScreens.healthware,
+    //       page: () => HealthwareDeviceScreen(),
+    //       bindings: [ControllerBinding()]),
   ];
 }
 

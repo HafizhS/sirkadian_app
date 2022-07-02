@@ -62,7 +62,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
       print('sama dan ada data');
     }
     if (data.read('dataSessionMakanSiang') == null ||
-        data.read('dataSessionSarapan')['date'] !=
+        data.read('dataSessionMakanSiang')['date'] !=
             foodController.focusedDay.toString()) {
       setState(() {
         data.write('dataSessionMakanSiang', {
@@ -73,7 +73,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
       });
     }
     if (data.read('dataSessionMakanMalam') == null ||
-        data.read('dataSessionSarapan')['date'] !=
+        data.read('dataSessionMakanMalam')['date'] !=
             foodController.focusedDay.toString()) {
       setState(() {
         data.write('dataSessionMakanMalam', {

@@ -24,9 +24,9 @@ void onItemPressed(BuildContext context,
     case 1:
       Get.toNamed(RouteScreens.userHealthPreference);
       break;
-    case 2:
-      Get.toNamed(RouteScreens.healthware);
-      break;
+    // case 2:
+    //   Get.toNamed(RouteScreens.healthware);
+    //   break;
     case 3:
       Get.toNamed(RouteScreens.settingsGeneral);
       break;
@@ -159,16 +159,16 @@ class _DrawerSideBarState extends State<DrawerSideBar> {
                     SizedBox(
                       height: 30.h,
                     ),
-                    DrawerItem(
-                      name: 'Devices',
-                      icon: FontAwesomeIcons.microchip,
-                      onPressed: () => onItemPressed(context,
-                          index: 2, authController: widget.authController),
-                      color: widget.color,
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
+                    // DrawerItem(
+                    //   name: 'Devices',
+                    //   icon: FontAwesomeIcons.microchip,
+                    //   onPressed: () => onItemPressed(context,
+                    //       index: 2, authController: widget.authController),
+                    //   color: widget.color,
+                    // ),
+                    // SizedBox(
+                    //   height: 30.h,
+                    // ),
                     DrawerItem(
                       name: 'Notifikasi',
                       icon: Icons.notifications,

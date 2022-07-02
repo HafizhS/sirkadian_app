@@ -413,6 +413,7 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                   color: color,
                   foodController: foodController,
                 ),
+          SizedBox(height: 10.h),
         ],
       ),
     );

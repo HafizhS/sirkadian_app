@@ -16,6 +16,7 @@ import '../controller/hexcolor_controller.dart';
 import '../controller/tabNavigator_controller.dart';
 import '../controller/user_controller.dart';
 import '../widget/drawer_sidebar.dart';
+import 'home/nutrition_screen/nutrition_screen.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -86,7 +87,6 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
       });
     });
     notificationController.getToData();
-    listenNotifications();
 
     authController.getUsableToken();
     WidgetsBinding.instance.addObserver(this);
@@ -121,39 +121,42 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _streamSubscription.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
-  void listenNotifications() {
-    NotificationController().initNotification().then((value) {
-      //notification setup
-      notificationController.notificationFoodSarapan(
-          1, notificationController.isSoundSarapan);
-      notificationController.notificationFoodMakanSiang(
-          2, notificationController.isSoundMakanSiang);
-      notificationController.notificationFoodMakanMalam(
-          3, notificationController.isSoundMakanMalam);
-      notificationController.notificationFluidMinum1(
-          4, notificationController.isSoundMinum1);
-      notificationController.notificationFluidMinum2(
-          5, notificationController.isSoundMinum2);
-      notificationController.notificationFluidMinum3(
-          6, notificationController.isSoundMinum3);
-      notificationController.notificationFluidMinum4(
-          7, notificationController.isSoundMinum4);
-    });
-    NotificationController.onNotifications.stream.listen(onClickedNotification);
-  }
+  // void listenNotifications() {
+  //   NotificationController().initNotification().then((value) {
+  //     //notification setup
+  //     notificationController.notificationFoodSarapan(
+  //         1, notificationController.isSoundSarapan);
+  //     notificationController.notificationFoodMakanSiang(
+  //         2, notificationController.isSoundMakanSiang);
+  //     notificationController.notificationFoodMakanMalam(
+  //         3, notificationController.isSoundMakanMalam);
+  //     notificationController.notificationFluidMinum1(
+  //         4, notificationController.isSoundMinum1);
+  //     notificationController.notificationFluidMinum2(
+  //         5, notificationController.isSoundMinum2);
+  //     notificationController.notificationFluidMinum3(
+  //         6, notificationController.isSoundMinum3);
+  //     notificationController.notificationFluidMinum4(
+  //         7, notificationController.isSoundMinum4);
+  //   });
+  //   NotificationController.onNotifications.stream.listen(onClickedNotification);
+  // }
 
-  void onClickedNotification(String? payload) {
-    // Navigator.push(
-    //     context, MaterialPageRoute(builder: (context) => NutritionScreen()));
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MainScreen()));
-  }
+  // void onClickedNotification(String? payload) {
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => NutritionScreen(
+  //                 hasBeenInitializedFood: widget.h,
+  //               )));
+  //   // Navigator.push(
+  //   // context, MaterialPageRoute(builder: (context) => MainScreen()));
+  // }
 
   @override
   Widget build(BuildContext context) {

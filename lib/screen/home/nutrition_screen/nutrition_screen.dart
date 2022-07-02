@@ -30,7 +30,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
   final foodController = Get.find<FoodController>();
 
   final color = Get.find<ColorConstantController>();
-  final notificationController = Get.find<NotificationController>();
+
   late Stream<List<Food>> _necessityStream;
   late Stream<List<Food>> _sarapanStream;
   late Stream<List<Food>> _makanSiangStream;
@@ -210,6 +210,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                                       listMealNecessity: snapshot.item1.data!,
                                       hasBeenInitialized:
                                           widget.hasBeenInitializedFood,
+                                      // hasBeenInitialized,
                                     ))).then((_) {
                           foodController.selectedDay = DateTime.utc(
                               DateTime.now().year,
@@ -336,6 +337,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                     : CrossFadeState.showSecond,
                 firstChild: FoodGeneralScreen(
                   hasBeenInitialized: widget.hasBeenInitializedFood,
+                  // hasBeenInitialized: hasBeenInitialized,
                   listMealNecessity: snapshotNecessity.data!,
                   listMealSarapan: snapshotSarapan.data!,
                   listMealMakanSiang: snapshotMakanSiang.data!,

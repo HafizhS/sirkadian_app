@@ -45,256 +45,270 @@ class _NecessityDisplayWidgetState extends State<NecessityDisplayWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.h),
-      height: 600.h,
-      width: double.infinity,
-      child: GridView(
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-          ),
-          children: [
-            NecessityGauge(
-              onpress: () {
-                onPressNecessityGauge(
-                    title: 'Kalori',
-                    necessitySarapan: widget
-                        .foodController.necessity.value.energy!.breakfast!,
-                    necessityMakanSiang:
-                        widget.foodController.necessity.value.energy!.lunch!,
-                    necessityMakanMalam:
-                        widget.foodController.necessity.value.energy!.dinner!,
-                    nutritionTotal: widget.foodController.energy,
-                    nutritionSarapan: widget.foodController.energySarapan,
-                    nutritionMakanSiang: widget.foodController.energyMakanSiang,
-                    nutritionMakanMalam: widget.foodController.energyMakanMalam,
-                    unit: ' kkal');
-              },
-              color: widget.color,
-              text: 'Kalori',
-              backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-              foregroundColor: HexColor.fromHex('#5B9423'),
-              value: widget.foodController.energy /
-                  (widget.foodController.necessity.value.energy!.breakfast! +
-                      widget.foodController.necessity.value.energy!.lunch! +
-                      widget.foodController.necessity.value.energy!.dinner!),
-              size: Size(100.w, 120.h),
+    return SafeArea(
+      child: Container(
+        margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
+        height: 530.h,
+        width: double.infinity,
+        child: GridView(
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
             ),
+            children: [
+              NecessityGauge(
+                onpress: () {
+                  onPressNecessityGauge(
+                      title: 'Kalori',
+                      necessitySarapan: widget
+                          .foodController.necessity.value.energy!.breakfast!,
+                      necessityMakanSiang:
+                          widget.foodController.necessity.value.energy!.lunch!,
+                      necessityMakanMalam:
+                          widget.foodController.necessity.value.energy!.dinner!,
+                      nutritionTotal: widget.foodController.energy,
+                      nutritionSarapan: widget.foodController.energySarapan,
+                      nutritionMakanSiang:
+                          widget.foodController.energyMakanSiang,
+                      nutritionMakanMalam:
+                          widget.foodController.energyMakanMalam,
+                      unit: ' kkal');
+                },
+                color: widget.color,
+                text: 'Kalori',
+                backgroundColor:
+                    widget.color.secondaryTextColor.withOpacity(0.3),
+                foregroundColor: HexColor.fromHex('#5B9423'),
+                value: widget.foodController.energy /
+                    (widget.foodController.necessity.value.energy!.breakfast! +
+                        widget.foodController.necessity.value.energy!.lunch! +
+                        widget.foodController.necessity.value.energy!.dinner!),
+                size: Size(100.w, 120.h),
+              ),
 
-            NecessityGauge(
-              onpress: () {
-                onPressNecessityGauge(
-                    title: 'Karbohidrat',
-                    necessitySarapan: widget.foodController.necessity.value
-                        .macro!.breakfast!.carbohydrate,
-                    necessityMakanSiang: widget.foodController.necessity.value
-                        .macro!.lunch!.carbohydrate,
-                    necessityMakanMalam: widget.foodController.necessity.value
-                        .macro!.dinner!.carbohydrate,
-                    nutritionTotal: widget.foodController.carbohydrate,
-                    nutritionSarapan: widget.foodController.carbohydrateSarapan,
-                    nutritionMakanSiang:
-                        widget.foodController.carbohydrateMakanSiang,
-                    nutritionMakanMalam:
-                        widget.foodController.carbohydrateMakanMalam,
-                    unit: ' g');
-              },
-              color: widget.color,
-              text: 'Karbohidrat',
-              backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-              foregroundColor: HexColor.fromHex('#895DD1'),
-              value: widget.foodController.carbohydrate /
-                  (widget.foodController.necessity.value.macro!.breakfast!
-                          .carbohydrate! +
-                      widget.foodController.necessity.value.macro!.lunch!
-                          .carbohydrate! +
-                      widget.foodController.necessity.value.macro!.dinner!
-                          .carbohydrate!),
-              size: Size(100.w, 120.h),
-            ),
-            NecessityGauge(
-              onpress: () {
-                onPressNecessityGauge(
-                    title: 'Protein',
-                    necessitySarapan: widget.foodController.necessity.value
-                        .macro!.breakfast!.protein,
-                    necessityMakanSiang: widget
-                        .foodController.necessity.value.macro!.lunch!.protein,
-                    necessityMakanMalam: widget
-                        .foodController.necessity.value.macro!.dinner!.protein,
-                    nutritionTotal: widget.foodController.protein,
-                    nutritionSarapan: widget.foodController.proteinSarapan,
-                    nutritionMakanSiang:
-                        widget.foodController.proteinMakanSiang,
-                    nutritionMakanMalam:
-                        widget.foodController.proteinMakanMalam,
-                    unit: ' g');
-              },
-              color: widget.color,
-              text: 'Protein',
-              backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-              foregroundColor: HexColor.fromHex('#94223D'),
-              value: widget.foodController.protein /
-                  (widget.foodController.necessity.value.macro!.breakfast!
-                          .protein! +
-                      widget.foodController.necessity.value.macro!.lunch!
-                          .protein! +
-                      widget.foodController.necessity.value.macro!.dinner!
-                          .protein!),
-              size: Size(100.w, 120.h),
-            ),
-            NecessityGauge(
-              onpress: () {
-                onPressNecessityGauge(
-                    title: 'Lemak',
-                    necessitySarapan: widget
-                        .foodController.necessity.value.macro!.breakfast!.fat,
-                    necessityMakanSiang:
-                        widget.foodController.necessity.value.macro!.lunch!.fat,
-                    necessityMakanMalam: widget
-                        .foodController.necessity.value.macro!.dinner!.fat,
-                    nutritionTotal: widget.foodController.fat,
-                    nutritionSarapan: widget.foodController.fatSarapan,
-                    nutritionMakanSiang: widget.foodController.fatMakanSiang,
-                    nutritionMakanMalam: widget.foodController.fatMakanMalam,
-                    unit: ' g');
-              },
-              color: widget.color,
-              text: 'Lemak',
-              backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-              foregroundColor: HexColor.fromHex('#D3AA19'),
-              value: widget.foodController.fat /
-                  (widget.foodController.necessity.value.macro!.breakfast!
-                          .fat! +
-                      widget.foodController.necessity.value.macro!.lunch!.fat! +
-                      widget
-                          .foodController.necessity.value.macro!.dinner!.fat!),
-              size: Size(100.w, 120.h),
-            ),
-            NecessityGauge(
-              onpress: () {
-                onPressNecessityGauge(
-                    title: 'Serat',
-                    necessitySarapan: widget
-                        .foodController.necessity.value.macro!.breakfast!.fiber,
-                    necessityMakanSiang: widget
-                        .foodController.necessity.value.macro!.lunch!.fiber,
-                    necessityMakanMalam: widget
-                        .foodController.necessity.value.macro!.dinner!.fiber,
-                    nutritionTotal: widget.foodController.fiber,
-                    nutritionSarapan: widget.foodController.fiberSarapan,
-                    nutritionMakanSiang: widget.foodController.fiberMakanSiang,
-                    nutritionMakanMalam: widget.foodController.fiberMakanMalam,
-                    unit: ' g');
-              },
-              color: widget.color,
-              text: 'Serat',
-              backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-              foregroundColor: HexColor.fromHex('#4E5749'),
-              value: widget.foodController.fiber /
-                  (widget.foodController.necessity.value.macro!.breakfast!
-                          .fiber! +
-                      widget
-                          .foodController.necessity.value.macro!.lunch!.fiber! +
-                      widget.foodController.necessity.value.macro!.dinner!
-                          .fiber!),
-              size: Size(100.w, 120.h),
-            ),
+              NecessityGauge(
+                onpress: () {
+                  onPressNecessityGauge(
+                      title: 'Karbohidrat',
+                      necessitySarapan: widget.foodController.necessity.value
+                          .macro!.breakfast!.carbohydrate,
+                      necessityMakanSiang: widget.foodController.necessity.value
+                          .macro!.lunch!.carbohydrate,
+                      necessityMakanMalam: widget.foodController.necessity.value
+                          .macro!.dinner!.carbohydrate,
+                      nutritionTotal: widget.foodController.carbohydrate,
+                      nutritionSarapan:
+                          widget.foodController.carbohydrateSarapan,
+                      nutritionMakanSiang:
+                          widget.foodController.carbohydrateMakanSiang,
+                      nutritionMakanMalam:
+                          widget.foodController.carbohydrateMakanMalam,
+                      unit: ' g');
+                },
+                color: widget.color,
+                text: 'Karbohidrat',
+                backgroundColor:
+                    widget.color.secondaryTextColor.withOpacity(0.3),
+                foregroundColor: HexColor.fromHex('#895DD1'),
+                value: widget.foodController.carbohydrate /
+                    (widget.foodController.necessity.value.macro!.breakfast!
+                            .carbohydrate! +
+                        widget.foodController.necessity.value.macro!.lunch!
+                            .carbohydrate! +
+                        widget.foodController.necessity.value.macro!.dinner!
+                            .carbohydrate!),
+                size: Size(100.w, 120.h),
+              ),
+              NecessityGauge(
+                onpress: () {
+                  onPressNecessityGauge(
+                      title: 'Protein',
+                      necessitySarapan: widget.foodController.necessity.value
+                          .macro!.breakfast!.protein,
+                      necessityMakanSiang: widget
+                          .foodController.necessity.value.macro!.lunch!.protein,
+                      necessityMakanMalam: widget.foodController.necessity.value
+                          .macro!.dinner!.protein,
+                      nutritionTotal: widget.foodController.protein,
+                      nutritionSarapan: widget.foodController.proteinSarapan,
+                      nutritionMakanSiang:
+                          widget.foodController.proteinMakanSiang,
+                      nutritionMakanMalam:
+                          widget.foodController.proteinMakanMalam,
+                      unit: ' g');
+                },
+                color: widget.color,
+                text: 'Protein',
+                backgroundColor:
+                    widget.color.secondaryTextColor.withOpacity(0.3),
+                foregroundColor: HexColor.fromHex('#94223D'),
+                value: widget.foodController.protein /
+                    (widget.foodController.necessity.value.macro!.breakfast!
+                            .protein! +
+                        widget.foodController.necessity.value.macro!.lunch!
+                            .protein! +
+                        widget.foodController.necessity.value.macro!.dinner!
+                            .protein!),
+                size: Size(100.w, 120.h),
+              ),
+              NecessityGauge(
+                onpress: () {
+                  onPressNecessityGauge(
+                      title: 'Lemak',
+                      necessitySarapan: widget
+                          .foodController.necessity.value.macro!.breakfast!.fat,
+                      necessityMakanSiang: widget
+                          .foodController.necessity.value.macro!.lunch!.fat,
+                      necessityMakanMalam: widget
+                          .foodController.necessity.value.macro!.dinner!.fat,
+                      nutritionTotal: widget.foodController.fat,
+                      nutritionSarapan: widget.foodController.fatSarapan,
+                      nutritionMakanSiang: widget.foodController.fatMakanSiang,
+                      nutritionMakanMalam: widget.foodController.fatMakanMalam,
+                      unit: ' g');
+                },
+                color: widget.color,
+                text: 'Lemak',
+                backgroundColor:
+                    widget.color.secondaryTextColor.withOpacity(0.3),
+                foregroundColor: HexColor.fromHex('#D3AA19'),
+                value: widget.foodController.fat /
+                    (widget.foodController.necessity.value.macro!.breakfast!
+                            .fat! +
+                        widget
+                            .foodController.necessity.value.macro!.lunch!.fat! +
+                        widget.foodController.necessity.value.macro!.dinner!
+                            .fat!),
+                size: Size(100.w, 120.h),
+              ),
+              NecessityGauge(
+                onpress: () {
+                  onPressNecessityGauge(
+                      title: 'Serat',
+                      necessitySarapan: widget.foodController.necessity.value
+                          .macro!.breakfast!.fiber,
+                      necessityMakanSiang: widget
+                          .foodController.necessity.value.macro!.lunch!.fiber,
+                      necessityMakanMalam: widget
+                          .foodController.necessity.value.macro!.dinner!.fiber,
+                      nutritionTotal: widget.foodController.fiber,
+                      nutritionSarapan: widget.foodController.fiberSarapan,
+                      nutritionMakanSiang:
+                          widget.foodController.fiberMakanSiang,
+                      nutritionMakanMalam:
+                          widget.foodController.fiberMakanMalam,
+                      unit: ' g');
+                },
+                color: widget.color,
+                text: 'Serat',
+                backgroundColor:
+                    widget.color.secondaryTextColor.withOpacity(0.3),
+                foregroundColor: HexColor.fromHex('#4E5749'),
+                value: widget.foodController.fiber /
+                    (widget.foodController.necessity.value.macro!.breakfast!
+                            .fiber! +
+                        widget.foodController.necessity.value.macro!.lunch!
+                            .fiber! +
+                        widget.foodController.necessity.value.macro!.dinner!
+                            .fiber!),
+                size: Size(100.w, 120.h),
+              ),
 
-            NecessityGauge(
-              onpress: () {},
-              color: widget.color,
-              text: 'Cairan',
-              backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-              foregroundColor: HexColor.fromHex('#238094'),
-              value: widget.foodController.water /
-                  widget.foodController.necessity.value.water!,
-              size: Size(100.w, 120.h),
-            ),
+              NecessityGauge(
+                onpress: () {},
+                color: widget.color,
+                text: 'Cairan',
+                backgroundColor:
+                    widget.color.secondaryTextColor.withOpacity(0.3),
+                foregroundColor: HexColor.fromHex('#238094'),
+                value: widget.foodController.water /
+                    widget.foodController.necessity.value.water!,
+                size: Size(100.w, 120.h),
+              ),
 
-            // NecessityGauge(
-            //   color: widget.color,
-            //   text: 'Kalsium',
-            //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-            //   foregroundColor: HexColor.fromHex('#238094'),
-            //   value: widget.foodController.calcium /
-            //       widget.foodController.necessity.calcium!,
-            //   size: Size(size.width * 0.32, size.height * 0.2),
-            // ),
-            // NecessityGauge(
-            //   color: widget.color,
-            //   text: 'Zat Besi',
-            //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-            //   foregroundColor: HexColor.fromHex('#238094'),
-            //   value: widget.foodController.iron /
-            //       widget.foodController.necessity.iron!,
-            //   size: Size(size.width * 0.32, size.height * 0.2),
-            // ),
-            // NecessityGauge(
-            //   color: widget.color,
-            //   text: 'zinc',
-            //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-            //   foregroundColor: HexColor.fromHex('#238094'),
-            //   value: widget.foodController.zinc /
-            //       widget.foodController.necessity.zinc!,
-            //   size: Size(size.width * 0.32, size.height * 0.2),
-            // ),
-            // NecessityGauge(
-            //   color: widget.color,
-            //   text: 'copper',
-            //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-            //   foregroundColor: HexColor.fromHex('#238094'),
-            //   value: widget.foodController.copper /
-            //       widget.foodController.necessity.copper!,
-            //   size: Size(size.width * 0.32, size.height * 0.2),
-            // ),
-            // NecessityGauge(
-            //   color: widget.color,
-            //   text: 'vitamin C',
-            //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-            //   foregroundColor: HexColor.fromHex('#238094'),
-            //   value: widget.foodController.vitaminC /
-            //       widget.foodController.necessity.vitaminC!,
-            //   size: Size(size.width * 0.32, size.height * 0.2),
-            // ),
-            // NecessityGauge(
-            //   color: widget.color,
-            //   text: 'vitamin B1',
-            //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-            //   foregroundColor: HexColor.fromHex('#238094'),
-            //   value: widget.foodController.vitaminB1 /
-            //       widget.foodController.necessity.vitaminB1!,
-            //   size: Size(size.width * 0.32, size.height * 0.2),
-            // ),
-            // NecessityGauge(
-            //   color: widget.color,
-            //   text: 'vitamin B2',
-            //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-            //   foregroundColor: HexColor.fromHex('#238094'),
-            //   value: widget.foodController.vitaminB2 /
-            //       widget.foodController.necessity.vitaminB2!,
-            //   size: Size(size.width * 0.32, size.height * 0.2),
-            // ),
-            // NecessityGauge(
-            //   color: widget.color,
-            //   text: 'vitamin B3',
-            //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-            //   foregroundColor: HexColor.fromHex('#238094'),
-            //   value: widget.foodController.vitaminB3 /
-            //       widget.foodController.necessity.vitaminB3!,
-            //   size: Size(size.width * 0.32, size.height * 0.2),
-            // ),
-            // NecessityGauge(
-            //   color: widget.color,
-            //   text: 'retinol',
-            //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
-            //   foregroundColor: HexColor.fromHex('#238094'),
-            //   value: widget.foodController.retinol /
-            //       widget.foodController.necessity.retinol!,
-            //   size: Size(size.width * 0.32, size.height * 0.2),
-            // ),
-          ]),
+              // NecessityGauge(
+              //   color: widget.color,
+              //   text: 'Kalsium',
+              //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
+              //   foregroundColor: HexColor.fromHex('#238094'),
+              //   value: widget.foodController.calcium /
+              //       widget.foodController.necessity.calcium!,
+              //   size: Size(size.width * 0.32, size.height * 0.2),
+              // ),
+              // NecessityGauge(
+              //   color: widget.color,
+              //   text: 'Zat Besi',
+              //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
+              //   foregroundColor: HexColor.fromHex('#238094'),
+              //   value: widget.foodController.iron /
+              //       widget.foodController.necessity.iron!,
+              //   size: Size(size.width * 0.32, size.height * 0.2),
+              // ),
+              // NecessityGauge(
+              //   color: widget.color,
+              //   text: 'zinc',
+              //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
+              //   foregroundColor: HexColor.fromHex('#238094'),
+              //   value: widget.foodController.zinc /
+              //       widget.foodController.necessity.zinc!,
+              //   size: Size(size.width * 0.32, size.height * 0.2),
+              // ),
+              // NecessityGauge(
+              //   color: widget.color,
+              //   text: 'copper',
+              //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
+              //   foregroundColor: HexColor.fromHex('#238094'),
+              //   value: widget.foodController.copper /
+              //       widget.foodController.necessity.copper!,
+              //   size: Size(size.width * 0.32, size.height * 0.2),
+              // ),
+              // NecessityGauge(
+              //   color: widget.color,
+              //   text: 'vitamin C',
+              //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
+              //   foregroundColor: HexColor.fromHex('#238094'),
+              //   value: widget.foodController.vitaminC /
+              //       widget.foodController.necessity.vitaminC!,
+              //   size: Size(size.width * 0.32, size.height * 0.2),
+              // ),
+              // NecessityGauge(
+              //   color: widget.color,
+              //   text: 'vitamin B1',
+              //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
+              //   foregroundColor: HexColor.fromHex('#238094'),
+              //   value: widget.foodController.vitaminB1 /
+              //       widget.foodController.necessity.vitaminB1!,
+              //   size: Size(size.width * 0.32, size.height * 0.2),
+              // ),
+              // NecessityGauge(
+              //   color: widget.color,
+              //   text: 'vitamin B2',
+              //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
+              //   foregroundColor: HexColor.fromHex('#238094'),
+              //   value: widget.foodController.vitaminB2 /
+              //       widget.foodController.necessity.vitaminB2!,
+              //   size: Size(size.width * 0.32, size.height * 0.2),
+              // ),
+              // NecessityGauge(
+              //   color: widget.color,
+              //   text: 'vitamin B3',
+              //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
+              //   foregroundColor: HexColor.fromHex('#238094'),
+              //   value: widget.foodController.vitaminB3 /
+              //       widget.foodController.necessity.vitaminB3!,
+              //   size: Size(size.width * 0.32, size.height * 0.2),
+              // ),
+              // NecessityGauge(
+              //   color: widget.color,
+              //   text: 'retinol',
+              //   backgroundColor: widget.color.secondaryTextColor.withOpacity(0.3),
+              //   foregroundColor: HexColor.fromHex('#238094'),
+              //   value: widget.foodController.retinol /
+              //       widget.foodController.necessity.retinol!,
+              //   size: Size(size.width * 0.32, size.height * 0.2),
+              // ),
+            ]),
+      ),
     );
   }
 
