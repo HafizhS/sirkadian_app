@@ -59,6 +59,7 @@ dependencies:
   flutter_html: ^2.2.1
   html_unescape: ^2.0.0
   fraction: ^4.1.1
+  image_picker: ^0.8.5+3
   
   # package_info_plus: ^1.4.2
   flutter_datetime_picker:
