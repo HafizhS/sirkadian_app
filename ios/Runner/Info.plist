@@ -20,6 +20,19 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+ 	<array>
+      <dict>
+          <key>CFBundleTypeRole</key>
+          <string>Editor</string>
+          <key>CFBundleURLName</key>
+          <string>api.sirkadian.my.id</string>
+          <key>CFBundleURLSchemes</key>
+          <array>
+              <string>https</string>
+          </array>
+      </dict>
+    </array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -45,5 +58,11 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>To Take User Profile Image From Camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To Choose User Profile Image</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used To Capture Audio For Image Picker Plugin</string>
 </dict>
 </plist>

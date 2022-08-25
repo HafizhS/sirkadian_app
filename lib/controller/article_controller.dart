@@ -21,46 +21,46 @@ class ArticleController extends GetxController {
   Future<void> getArticleAll() async {
     isLoadingArticleAll(true);
 
-    await authController.getUsableToken();
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getArticleAll(accessToken);
 
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getArticleAll(accessToken);
-
-      if (_res.statusCode == 200) {
-        ArticleAllResponse _articleAllResponse =
-            ArticleAllResponse.fromJson(_res.body as Map<String, dynamic>);
-        if (_articleAllResponse.statusCode == 200) {
-          articleAll.value = _articleAllResponse.data!;
+        if (_res.statusCode == 200) {
+          ArticleAllResponse _articleAllResponse =
+              ArticleAllResponse.fromJson(_res.body as Map<String, dynamic>);
+          if (_articleAllResponse.statusCode == 200) {
+            articleAll.value = _articleAllResponse.data!;
+          }
         }
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingArticleAll(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingArticleAll(false);
+      }
+    });
   }
 
   Future<void> getArticleDetail(int articleId) async {
     isLoadingArticleDetail(true);
 
-    await authController.getUsableToken();
-
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getArticleDetail(accessToken, articleId);
-      print(_res.statusCode.toString() + 'dariArticleDetail');
-      if (_res.statusCode == 200) {
-        ArticleDetailResponse _articleDetailResponse =
-            ArticleDetailResponse.fromJson(_res.body as Map<String, dynamic>);
-        if (_articleDetailResponse.statusCode == 200) {
-          articleDetail.value = _articleDetailResponse.data!;
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getArticleDetail(accessToken, articleId);
+        print(_res.statusCode.toString() + 'dariArticleDetail');
+        if (_res.statusCode == 200) {
+          ArticleDetailResponse _articleDetailResponse =
+              ArticleDetailResponse.fromJson(_res.body as Map<String, dynamic>);
+          if (_articleDetailResponse.statusCode == 200) {
+            articleDetail.value = _articleDetailResponse.data!;
+          }
         }
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingArticleDetail(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingArticleDetail(false);
+      }
+    });
   }
 }

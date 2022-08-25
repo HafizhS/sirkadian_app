@@ -34,6 +34,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
   void initState() {
     // userController.getUserInformation();
     // userController.getUserHealthHistoryLatest();
+
     super.initState();
   }
 
@@ -167,14 +168,25 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                                   child: Stack(
                                       alignment: Alignment.bottomRight,
                                       children: [
-                                        CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                              'assets/images/user_male.jpg'),
-                                          radius: 60.sp,
-                                        ),
+                                        userController.userInformationResponse
+                                                    .value.imageFilename !=
+                                                null
+                                            ? CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    userController
+                                                        .userInformationResponse
+                                                        .value
+                                                        .imageFilename!),
+                                                radius: 60.sp,
+                                              )
+                                            : CircleAvatar(
+                                                backgroundImage: AssetImage(
+                                                    'assets/images/user_male.jpg'),
+                                                radius: 60.sp,
+                                              ),
                                         InkWell(
                                           onTap: () {
-                                            pickImage();
+                                            pickImageBottomSheet();
                                           },
                                           child: CircleAvatar(
                                             radius: 20.sp,
@@ -458,20 +470,99 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
   }
 
   File? image;
-  Future<void> pickImage() async {
+  Future<void> pickImage(ImageSource imageSource) async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-
-      final imageTemporary = File(image.path);
-      setState(() {
-        this.image = imageTemporary;
-      });
+      Get.back();
+      final image = await ImagePicker().pickImage(source: imageSource);
+      if (image == null) {
+        return;
+      } else {
+        final imageTemporary = File(image.path);
+        // final imagePermanent = await saveImagePermanent(image.path);
+        setState(() {
+          this.image = imageTemporary;
+        });
+        userController.postUserImageProfile(imageFile: imageTemporary);
+      }
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
       informationController.snackBarError(
           'Gagal Mengambil gambar', e.toString());
     }
+  }
+
+  void pickImageBottomSheet() {
+    Get.bottomSheet(Container(
+      height: 200.h,
+      decoration: BoxDecoration(
+          color: color.primaryColor,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        NeumorphicButton(
+            onPressed: () {
+              pickImage(ImageSource.gallery);
+            },
+            style: NeumorphicStyle(
+                color: color.secondaryColor,
+                depth: 4,
+                shape: NeumorphicShape.flat,
+                boxShape: NeumorphicBoxShape.roundRect(
+                  BorderRadius.circular(20),
+                )),
+            margin: EdgeInsets.symmetric(horizontal: 40.w),
+            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
+            child: Row(
+              children: [
+                FaIcon(
+                  FontAwesomeIcons.image,
+                  color: color.primaryColor,
+                ),
+                SizedBox(width: 20.w),
+                Text(
+                  "Ambil dari gallery",
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        color: color.primaryColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+              ],
+            )),
+        NeumorphicButton(
+            margin: EdgeInsets.only(top: 28.h, left: 40.w, right: 40.w),
+            onPressed: () {
+              pickImage(ImageSource.camera);
+            },
+            style: NeumorphicStyle(
+                color: color.secondaryColor,
+                depth: 4,
+                shape: NeumorphicShape.flat,
+                boxShape: NeumorphicBoxShape.roundRect(
+                  BorderRadius.circular(20),
+                )),
+            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
+            child: Row(
+              children: [
+                FaIcon(
+                  FontAwesomeIcons.camera,
+                  color: color.primaryColor,
+                ),
+                SizedBox(width: 20.w),
+                Text(
+                  "Ambil dari kamera",
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        color: color.primaryColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+              ],
+            )),
+      ]),
+    ));
   }
 }
 

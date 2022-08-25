@@ -20,7 +20,8 @@ final String userHealthPreferenceLatestGetUrl =
 final String userHealthPreferencePostUrl = '$rootUser/preference_history/add';
 final String userHealthHistoryLatestGetUrl = '$rootUser/health_history/latest';
 final String userHealthHistoryPostUrl = '$rootUser/health_history/add';
-final String userInfromationGetUrl = '$rootUser/info';
+final String userInformationGetUrl = '$rootUser/info';
+final String userImageProfilePostUrl = '$rootUser/change_image';
 
 //subscription
 final String rootSubscription = '$root/subscription';

@@ -21,6 +21,8 @@ class FoodController extends GetxController {
   final authController = Get.put(AuthController());
 
   //foods material
+  RxList<DataFoodRecommendationResponse> listFoodAll =
+      <DataFoodRecommendationResponse>[].obs;
   RxList<DataFoodRecommendationResponse> listFood =
       <DataFoodRecommendationResponse>[].obs;
   RxList<DataFoodRecommendationResponse> listFoodByFood =
@@ -39,6 +41,7 @@ class FoodController extends GetxController {
   var isLoadingFoodRecommendationByFood = false.obs;
   var isLoadingFoodRecommendationMenu = false.obs;
   var isLoadingFoodItem = false.obs;
+  var isLoadingFoodAll = false.obs;
   var isLoadingOtherFoodRecommendation = false.obs;
   var isLoadingNecessity = false.obs;
   var isLoadingFoodHistory = false.obs;
@@ -214,34 +217,60 @@ class FoodController extends GetxController {
   }
 
 //provider controller material
+
+  Future<void> getFoodAll() async {
+    isLoadingFoodAll(true);
+
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getFoodAll(accessToken);
+        print(_res.statusCode);
+
+        if (_res.statusCode == 200) {
+          FoodRecommendationResponse _foodAllResponse =
+              FoodRecommendationResponse.fromJson(
+                  _res.body as Map<String, dynamic>);
+          if (_foodAllResponse.statusCode == 200) {
+            listFoodAll.value = _foodAllResponse.data!;
+          }
+        }
+
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingFoodAll(false);
+      }
+    });
+  }
+
   Future<void> getFoodRecommendation(String session) async {
     isLoadingFoodRecommendation(true);
-
-    await authController.getUsableToken();
     String foodTime = session == 'Sarapan'
         ? 'breakfast'
         : session == 'Makan Siang'
             ? 'lunch'
             : 'dinner';
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getFoodRecommendation(
-          accessToken, foodTime, page.value, foodEaten);
-      print(_res.statusCode);
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getFoodRecommendation(
+            accessToken, foodTime, page.value, foodEaten);
+        print(_res.statusCode);
 
-      if (_res.statusCode == 200) {
-        FoodRecommendationResponse _foodRecommendationResponse =
-            FoodRecommendationResponse.fromJson(
-                _res.body as Map<String, dynamic>);
-        if (_foodRecommendationResponse.statusCode == 200) {
-          listFood.value = _foodRecommendationResponse.data!;
+        if (_res.statusCode == 200) {
+          FoodRecommendationResponse _foodRecommendationResponse =
+              FoodRecommendationResponse.fromJson(
+                  _res.body as Map<String, dynamic>);
+          if (_foodRecommendationResponse.statusCode == 200) {
+            listFood.value = _foodRecommendationResponse.data!;
+          }
         }
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingFoodRecommendation(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingFoodRecommendation(false);
+      }
+    });
   }
 
   Future<void> getFoodRecommendationByFood(
@@ -250,40 +279,38 @@ class FoodController extends GetxController {
     if (isLoadingFoodRecommendationByFood == true) {
       informationController.loadingDialog('Sedang memproses');
     }
-    await authController.getUsableToken();
     String foodTime = session == 'Sarapan'
         ? 'breakfast'
         : session == 'Makan Siang'
             ? 'lunch'
             : 'dinner';
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getFoodRecommendationByFood(
-          accessToken, foodTime, foodId, foodEaten);
-      print(_res.statusCode);
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getFoodRecommendationByFood(
+            accessToken, foodTime, foodId, foodEaten);
+        print(_res.statusCode);
 
-      if (_res.statusCode == 200) {
-        FoodRecommendationResponse _foodRecommendationByFoodResponse =
-            FoodRecommendationResponse.fromJson(
-                _res.body as Map<String, dynamic>);
-        if (_foodRecommendationByFoodResponse.statusCode == 200) {
-          listFoodByFood.value = _foodRecommendationByFoodResponse.data!;
+        if (_res.statusCode == 200) {
+          FoodRecommendationResponse _foodRecommendationByFoodResponse =
+              FoodRecommendationResponse.fromJson(
+                  _res.body as Map<String, dynamic>);
+          if (_foodRecommendationByFoodResponse.statusCode == 200) {
+            listFoodByFood.value = _foodRecommendationByFoodResponse.data!;
+          }
+        }
+      } finally {
+        isLoadingFoodRecommendationByFood(false);
+        if (isLoadingFoodRecommendationByFood == false) {
+          if (Get.isDialogOpen!) Get.back();
         }
       }
-    } finally {
-      isLoadingFoodRecommendationByFood(false);
-      if (isLoadingFoodRecommendationByFood == false) {
-        if (Get.isDialogOpen!) Get.back();
-      }
-    }
+    });
   }
 
   Future<void> getFoodRecommendationMenu(String session, bool foodTypePokok,
       bool foodTypeLauk, bool foodTypeSayur, bool exactFoodType) async {
     isLoadingFoodRecommendationMenu(true);
-
-    await authController.getUsableToken();
-
     String foodTime = session == 'Sarapan'
         ? 'breakfast'
         : session == 'Makan Siang'
@@ -293,83 +320,86 @@ class FoodController extends GetxController {
         (foodTypeLauk ? '&food_type=lauk' : '') +
         (foodTypeSayur ? '&food_type=sayur' : '') +
         (exactFoodType ? '&exact_food_type=True' : '');
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getFoodRecommendationMenu(
+            accessToken, foodTime, page.value, foodEaten, foodType);
+        print(_res.statusCode.toString() + 'dari menu');
 
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getFoodRecommendationMenu(
-          accessToken, foodTime, page.value, foodEaten, foodType);
-      print(_res.statusCode.toString() + 'dari menu');
-
-      if (_res.statusCode == 200) {
-        FoodRecommendationMenuResponse _foodRecommendationMenuResponse =
-            FoodRecommendationMenuResponse.fromJson(
-                _res.body as Map<String, dynamic>);
-        if (_foodRecommendationMenuResponse.statusCode == 200) {
-          listFoodMenu.value = _foodRecommendationMenuResponse.data!;
+        if (_res.statusCode == 200) {
+          FoodRecommendationMenuResponse _foodRecommendationMenuResponse =
+              FoodRecommendationMenuResponse.fromJson(
+                  _res.body as Map<String, dynamic>);
+          if (_foodRecommendationMenuResponse.statusCode == 200) {
+            listFoodMenu.value = _foodRecommendationMenuResponse.data!;
+          }
         }
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingFoodRecommendationMenu(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingFoodRecommendationMenu(false);
+      }
+    });
   }
 
   Future<void> getFoodItem(id) async {
     isLoadingFoodItem(true);
-    await authController.getUsableToken();
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getFoodItem(accessToken, id);
 
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getFoodItem(accessToken, id);
+        if (_res.statusCode == 200) {
+          FoodItemResponse _foodItemResponse =
+              FoodItemResponse.fromJson(_res.body as Map<String, dynamic>);
 
-      if (_res.statusCode == 200) {
-        FoodItemResponse _foodItemResponse =
-            FoodItemResponse.fromJson(_res.body as Map<String, dynamic>);
-
-        if (_foodItemResponse.statusCode == 200) {
-          foodItemResponse.value = _foodItemResponse.data!;
-          // print(foodItemResponse);
+          if (_foodItemResponse.statusCode == 200) {
+            foodItemResponse.value = _foodItemResponse.data!;
+            // print(foodItemResponse);
+          }
         }
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingFoodItem(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingFoodItem(false);
+      }
+    });
   }
 
   Future<void> getOtherFoodRecommendation(foodId, session) async {
     isLoadingOtherFoodRecommendation(true);
-    await authController.getUsableToken();
+
     var foodTime = session == 'Sarapan'
         ? 'breakfast'
         : session == 'Makan Siang'
             ? 'lunch'
             : 'dinner';
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getOtherFoodRecommendation(
-          accessToken, foodId, foodTime);
-      print(_res.statusCode);
-      if (_res.statusCode == 200) {
-        FoodRecommendationResponse _foodRecommendationResponse =
-            FoodRecommendationResponse.fromJson(
-                _res.body as Map<String, dynamic>);
-        if (_foodRecommendationResponse.statusCode == 200) {
-          listOtherFood.value = _foodRecommendationResponse.data!;
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getOtherFoodRecommendation(
+            accessToken, foodId, foodTime);
+        print(_res.statusCode);
+        if (_res.statusCode == 200) {
+          FoodRecommendationResponse _foodRecommendationResponse =
+              FoodRecommendationResponse.fromJson(
+                  _res.body as Map<String, dynamic>);
+          if (_foodRecommendationResponse.statusCode == 200) {
+            listOtherFood.value = _foodRecommendationResponse.data!;
+          }
         }
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingOtherFoodRecommendation(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingOtherFoodRecommendation(false);
+      }
+    });
   }
 
   Future<void> getFoodRecommendationNewPage(String session) async {
     isLoadingNewPage(true);
-    await authController.getUsableToken();
+
     page.value = page.value + 1;
 
     var foodTime = session == 'Sarapan'
@@ -377,33 +407,35 @@ class FoodController extends GetxController {
         : session == 'Makan Siang'
             ? 'lunch'
             : 'dinner';
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getFoodRecommendation(
-          accessToken, foodTime, page.value, foodEaten);
-      print(_res.statusCode);
-      if (_res.statusCode == 200) {
-        FoodRecommendationResponse _foodRecommendationResponse =
-            FoodRecommendationResponse.fromJson(
-                _res.body as Map<String, dynamic>);
-        if (_foodRecommendationResponse.statusCode == 200) {
-          if (_foodRecommendationResponse.data!.isEmpty) {
-            isStopFood = true;
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getFoodRecommendation(
+            accessToken, foodTime, page.value, foodEaten);
+        print(_res.statusCode);
+        if (_res.statusCode == 200) {
+          FoodRecommendationResponse _foodRecommendationResponse =
+              FoodRecommendationResponse.fromJson(
+                  _res.body as Map<String, dynamic>);
+          if (_foodRecommendationResponse.statusCode == 200) {
+            if (_foodRecommendationResponse.data!.isEmpty) {
+              isStopFood = true;
+            }
+            listFood = listFood + _foodRecommendationResponse.data!;
           }
-          listFood = listFood + _foodRecommendationResponse.data!;
+        } else {
+          page = page - 1;
+          Future.delayed(Duration(seconds: 10), () {
+            isLoadingNewPage(false);
+          });
         }
-      } else {
-        page = page - 1;
-        Future.delayed(Duration(seconds: 10), () {
-          isLoadingNewPage(false);
-        });
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingNewPage(false);
-      update();
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingNewPage(false);
+        update();
+      }
+    });
   }
 
   Future<void> getFoodRecommendationMenuNewPage(
@@ -413,8 +445,6 @@ class FoodController extends GetxController {
       bool foodTypeSayur,
       bool exactFoodType) async {
     isLoadingNewPage(true);
-
-    await authController.getUsableToken();
     page.value = page.value + 1;
 
     String foodTime = session == 'Sarapan'
@@ -426,80 +456,82 @@ class FoodController extends GetxController {
         (foodTypeLauk ? '&food_type=lauk' : '') +
         (foodTypeSayur ? '&food_type=sayur' : '') +
         (exactFoodType ? '&exact_food_type=True' : '');
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getFoodRecommendationMenu(
+            accessToken, foodTime, page.value, foodEaten, foodType);
+        print(_res.statusCode.toString() + 'dari menu newpage');
 
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getFoodRecommendationMenu(
-          accessToken, foodTime, page.value, foodEaten, foodType);
-      print(_res.statusCode.toString() + 'dari menu newpage');
-
-      if (_res.statusCode == 200) {
-        FoodRecommendationMenuResponse _foodRecommendationMenuResponse =
-            FoodRecommendationMenuResponse.fromJson(
-                _res.body as Map<String, dynamic>);
-        if (_foodRecommendationMenuResponse.statusCode == 200) {
-          if (_foodRecommendationMenuResponse.data!.isEmpty) {
-            isStopFoodMenu = true;
+        if (_res.statusCode == 200) {
+          FoodRecommendationMenuResponse _foodRecommendationMenuResponse =
+              FoodRecommendationMenuResponse.fromJson(
+                  _res.body as Map<String, dynamic>);
+          if (_foodRecommendationMenuResponse.statusCode == 200) {
+            if (_foodRecommendationMenuResponse.data!.isEmpty) {
+              isStopFoodMenu = true;
+            }
+            listFoodMenu = listFoodMenu + _foodRecommendationMenuResponse.data!;
           }
-          listFoodMenu = listFoodMenu + _foodRecommendationMenuResponse.data!;
         }
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingNewPage(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingNewPage(false);
+      }
+    });
   }
 
   Future<void> getFoodHistory() async {
     isLoadingFoodHistory(true);
-    await authController.getUsableToken();
+
     getDateTime();
-
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getFoodHistory(
-          accessToken: accessToken, endDate: endDate, startDate: startDate);
-      print(_res.statusCode);
-      if (_res.statusCode == 200) {
-        FoodHistoryResponse _foodHistoryResponse =
-            FoodHistoryResponse.fromJson(_res.body as Map<String, dynamic>);
-        if (_foodHistoryResponse.statusCode == 200) {
-          listFoodHistory.value = _foodHistoryResponse.data!;
-          listFoodHistory.forEach((element) {
-            element.isOpen = false;
-            update();
-          });
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getFoodHistory(
+            accessToken: accessToken, endDate: endDate, startDate: startDate);
+        print(_res.statusCode);
+        if (_res.statusCode == 200) {
+          FoodHistoryResponse _foodHistoryResponse =
+              FoodHistoryResponse.fromJson(_res.body as Map<String, dynamic>);
+          if (_foodHistoryResponse.statusCode == 200) {
+            listFoodHistory.value = _foodHistoryResponse.data!;
+            listFoodHistory.forEach((element) {
+              element.isOpen = false;
+              update();
+            });
+          }
         }
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingFoodHistory(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingFoodHistory(false);
+      }
+    });
   }
 
   Future<void> getNecessity() async {
     isLoadingNecessity(true);
-    await authController.getUsableToken();
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getNecessity(accessToken);
 
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getNecessity(accessToken);
+        if (_res.statusCode == 200) {
+          NecessityResponse _necessityResponse =
+              NecessityResponse.fromJson(_res.body as Map<String, dynamic>);
 
-      if (_res.statusCode == 200) {
-        NecessityResponse _necessityResponse =
-            NecessityResponse.fromJson(_res.body as Map<String, dynamic>);
-
-        if (_necessityResponse.statusCode == 200) {
-          necessity.value = _necessityResponse.data!;
+          if (_necessityResponse.statusCode == 200) {
+            necessity.value = _necessityResponse.data!;
+          }
         }
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingNecessity(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingNecessity(false);
+      }
+    });
   }
 
   //post method
@@ -508,48 +540,54 @@ class FoodController extends GetxController {
     if (foodHistoryRequest!.foodDate != null &&
         foodHistoryRequest.foodTime != null &&
         foodHistoryRequest.foods != null) {
-      await authController.getUsableToken();
-      informationController
-          .loadingDialog('Harap Menunggu, Sedang Menyimpan Makanan ke Server');
-      try {
-        String accessToken = data.read('dataUser')['accessToken'];
+      await authController.getAccessToken().then((accessToken) async {
+        try {
+          // String accessToken = data.read('dataUser')['accessToken'];
 
-        final Response _res =
-            await _provider.postFoodHistory(accessToken, foodHistoryRequest);
-        print(_res.statusCode.toString() + 'darifoodHistory');
-        if (_res.statusCode == 200) {
-          if (Get.isDialogOpen!) Get.back();
-          informationController.showSuccessSnackBar('Berhasil');
+          final Response _res =
+              await _provider.postFoodHistory(accessToken, foodHistoryRequest);
+          print(_res.statusCode.toString() + 'darifoodHistory');
+          if (_res.statusCode == 200) {
+            // if (Get.isDialogOpen!) Get.back();
 
-          if (session == 'Sarapan') {
-            sessionSarapanSucceed(true);
+            informationController.showSuccessSnackBar('Berhasil');
 
-            update();
-          } else if (session == 'Makan Siang') {
-            sessionMakanSiangSucceed(true);
+            if (session == 'Sarapan') {
+              sessionSarapanSucceed(true);
 
-            update();
+              update();
+            } else if (session == 'Makan Siang') {
+              sessionMakanSiangSucceed(true);
+
+              update();
+            } else {
+              sessionMakanMalamSucceed(true);
+
+              update();
+            }
           } else {
-            sessionMakanMalamSucceed(true);
-
-            update();
+            // if (Get.isDialogOpen!) Get.back();
+            informationController.showErrorSnackBar('Gagal');
+            print('error' + _res.statusCode.toString());
           }
-        } else {
-          if (Get.isDialogOpen!) Get.back();
-          informationController.showErrorSnackBar('Gagal');
-          print('error' + _res.statusCode.toString());
-        }
-      } catch (e) {
-        e.toString();
-        if (Get.isDialogOpen!) Get.back();
-        informationController
-            .showErrorSnackBar('terjadi masalah, harap ulangi');
+        } catch (e) {
+          e.toString();
+          // if (Get.isDialogOpen!) Get.back();
+          informationController
+              .showErrorSnackBar('terjadi masalah, harap ulangi');
 
-        print(e);
-      }
-    } else {
+          print(e);
+        }
+      });
       if (Get.isDialogOpen!) Get.back();
+
+      // informationController
+      //     .loadingDialog('Harap Menunggu, Sedang Menyimpan Makanan ke Server');
+
+    } else {
+      // if (Get.isDialogOpen!) Get.back();
     }
+
     if (session == 'Sarapan') {
       return sessionSarapanSucceed.value;
     } else if (session == 'Makan Siang') {

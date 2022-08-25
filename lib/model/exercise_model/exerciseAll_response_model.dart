@@ -55,7 +55,8 @@ class DataExerciseAllResponse {
     mets = json['mets'];
     difficulty = json['difficulty'];
     sportId = json['sportId'];
-    imageFilename = json['imageFilename'] != null ? json['imageFilename'] : '';
+    imageFilename =
+        json['image_filename'] != null ? json['image_filename'] : '';
     if (json['variations'] != null) {
       variations = <Variations>[];
       json['variations'].forEach((v) {

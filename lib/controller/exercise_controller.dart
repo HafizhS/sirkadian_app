@@ -273,7 +273,7 @@ class ExerciseController extends GetxController {
   final listExercise = <DataExerciseAllResponse>[].obs;
   Future<void> getAllExercise() async {
     isLoadingExerciseAll(true);
-    await authController.getUsableToken();
+    await authController.getAccessToken();
     try {
       String accessToken = data.read('dataUser')['accessToken'];
       var _res = await _provider.getAllExercise(accessToken);
@@ -284,6 +284,10 @@ class ExerciseController extends GetxController {
 
         if (_exerciseAllResponse.statusCode == 200) {
           listExercise.value = _exerciseAllResponse.data!;
+
+          listExercise.forEach((element) {
+            print(element.imageFilename);
+          });
         }
       }
 
@@ -295,7 +299,7 @@ class ExerciseController extends GetxController {
 
   Future<void> getExerciseItem(id) async {
     isLoadingExerciseItem(true);
-    await authController.getUsableToken();
+    await authController.getAccessToken();
     try {
       String accessToken = data.read('dataUser')['accessToken'];
       var _res = await _provider.getExerciseItem(accessToken, id);
@@ -317,7 +321,7 @@ class ExerciseController extends GetxController {
 
   Future<void> getExerciseHistory() async {
     isLoadingExerciseHistory(true);
-    await authController.getUsableToken();
+    await authController.getAccessToken();
     getDateTime();
 
     try {
@@ -349,7 +353,7 @@ class ExerciseController extends GetxController {
       {ExerciseHistoryRequest? exerciseHistoryRequest}) async {
     if (exerciseHistoryRequest!.sports!.isNotEmpty &&
         exerciseHistoryRequest.sportDate != '') {
-      await authController.getUsableToken();
+      await authController.getAccessToken();
       informationController.loadingDialog(
           'Harap Menunggu, Sedang Menyimpan sesi olahraga ke Server');
       try {

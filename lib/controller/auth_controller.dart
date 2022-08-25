@@ -183,7 +183,7 @@ class AuthController extends GetxController {
                 if (cekGetWebsocket.value == false) {
                   Future.delayed(Duration(seconds: 3), () {
                     // getWebsocket(getWebsocketUrl, _data['id'], 'register');
-                    Get.to(VerificationScreen(
+                    Get.to(() => VerificationScreen(
                         id: _data['id'],
                         websocketUrl: getWebsocketUrl,
                         purpose: 'register'));
@@ -242,11 +242,11 @@ class AuthController extends GetxController {
               informationController.showSuccessSnackBar('register berhasil');
               // getWebsocket(
               //     getWebsocketUrl, _registerResponse.data!.id, 'register');
-              Get.to(VerificationScreen(
-                purpose: 'register',
-                id: _registerResponse.data!.id!,
-                websocketUrl: getWebsocketUrl,
-              ));
+              Get.to(() => VerificationScreen(
+                    purpose: 'register',
+                    id: _registerResponse.data!.id!,
+                    websocketUrl: getWebsocketUrl,
+                  ));
             });
             // } else {
             //websocket udah true
@@ -479,37 +479,29 @@ class AuthController extends GetxController {
     }
   }
 
-  //refreshToken ------------------------------------------------------------------------------
-  Future<void> getAccessToken() async {
-    isLoadingAccessToken(true);
-    final refreshToken = data.read('dataUser')['refreshToken'];
-
+  Future<void> getLink(getLinkUrl) async {
     try {
-      final Response _res = await _provider.getUserAccessToken(refreshToken);
-
+      final Response _res = await _provider.getLink(getLinkUrl);
+      print(_res.statusCode);
       if (_res.statusCode == 200) {
-        RefreshTokenResponse _refreshTokenResponse =
-            RefreshTokenResponse.fromJson(_res.body as Map<String, dynamic>);
-        if (_refreshTokenResponse.data != null) {
-          rememberAcc(
-            username: data.read('dataUser')['username'],
-            password: data.read('dataUser')['password'],
-            accessToken: _refreshTokenResponse.data!.accessToken,
-            refreshToken: _refreshTokenResponse.data!.refreshToken,
-            id: _refreshTokenResponse.data!.id,
-          );
-          print('dataUser diperbarui');
-        } else {
-          print('tidak ada refreshTokenResponse');
-        }
-      }
-    } finally {
-      isLoadingAccessToken(false);
+        print('getLink: 200');
+      } else if (_res.statusCode == 500) {}
+    } catch (e) {
+      if (Get.isDialogOpen!) Get.back();
+      informationController.showErrorSnackBar(
+          'terjadi kesalahan pada sistem, tunggu beberapa saat lagi');
+      print('error websocket open:' + e.toString());
+      print(e);
     }
   }
 
-  Future<void> getUsableToken() async {
+  //refreshToken ------------------------------------------------------------------------------
+  Future<String> getAccessToken() async {
+    var newAccessToken = '';
+    // isLoadingAccessToken(true);
     final accessToken = data.read('dataUser')['accessToken'];
+    final refreshToken = data.read('dataUser')['refreshToken'];
+
     try {
       if (accessToken != null) {
         bool isTokenExpired = JwtDecoder.isExpired(accessToken);
@@ -520,17 +512,70 @@ class AuthController extends GetxController {
             expirationDate.toString());
 
         if (isTokenExpired) {
+          // if (expirationDate.isAfter(DateTime.now())) {
           print('token expired otw ganti token baru');
 
-          getAccessToken();
+          // getAccessToken();
+          final Response _res =
+              await _provider.getUserAccessToken(refreshToken);
+
+          if (_res.statusCode == 200) {
+            RefreshTokenResponse _refreshTokenResponse =
+                RefreshTokenResponse.fromJson(
+                    _res.body as Map<String, dynamic>);
+
+            if (_refreshTokenResponse.data != null) {
+              rememberAcc(
+                username: data.read('dataUser')['username'],
+                password: data.read('dataUser')['password'],
+                accessToken: _refreshTokenResponse.data!.accessToken,
+                refreshToken: _refreshTokenResponse.data!.refreshToken,
+                id: _refreshTokenResponse.data!.id,
+              );
+              newAccessToken = _refreshTokenResponse.data!.accessToken!;
+              print('dataUser diperbarui');
+              // return _refreshTokenResponse.data!.accessToken!;
+
+            } else {
+              print('tidak ada refreshTokenResponse');
+            }
+          }
         } else {
           print('/refreshToken_provider.dart | Token not Expired');
+          newAccessToken = accessToken;
         }
       } else {
         print('accesstokenbelomkeread');
       }
-    } catch (e) {
-      print(e);
+      return newAccessToken;
+    } finally {
+      // isLoadingAccessToken(false);
     }
   }
+
+//   Future<void> getUsableToken() async {
+//     final accessToken = data.read('dataUser')['accessToken'];
+//     try {
+//       if (accessToken != null) {
+//         bool isTokenExpired = JwtDecoder.isExpired(accessToken);
+//         /* getExpirationDate() - this method returns the expiration date of the token */
+//         DateTime expirationDate = JwtDecoder.getExpirationDate(accessToken);
+
+//         print('/refreshToken_provider.dart | Token Expiration date :' +
+//             expirationDate.toString());
+
+//         if (isTokenExpired) {
+//           print('token expired otw ganti token baru');
+
+//           getAccessToken();
+//         } else {
+//           print('/refreshToken_provider.dart | Token not Expired');
+//         }
+//       } else {
+//         print('accesstokenbelomkeread');
+//       }
+//     } catch (e) {
+//       print(e);
+//     }
+//   }
 }

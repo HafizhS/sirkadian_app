@@ -54,6 +54,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
     foodController.getFoodRecommendation(widget.session);
     foodController.getFoodRecommendationMenu(widget.session, checkBoxPokok,
         checkBoxLauk, checkBoxSayur, toggleExactFood);
+    foodController.getFoodAll();
 
     _scrollControllerRecommendation.addListener(_scrollListener);
     _scrollControllerRecommendationMenu.addListener(_scrollListenerMenu);
@@ -86,7 +87,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
       setState(() {});
     }
     if (text.isNotEmpty) {
-      foodController.listFood.forEach((food) {
+      foodController.listFoodAll.forEach((food) {
         if (food.foodName!.toUpperCase().contains(text.toUpperCase()))
           _searchResult.add(food);
       });
@@ -276,7 +277,8 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
   Widget tabBarItemSatuanMakanan() {
     return Container(
         child: Obx(() => foodController.isLoadingFoodRecommendation.isTrue ||
-                foodController.isLoadingFoodRecommendationMenu.isTrue
+                foodController.isLoadingFoodRecommendationMenu.isTrue ||
+                foodController.isLoadingFoodAll.isTrue
             ? Center(
                 child: CircularProgressIndicator(
                   color: color.secondaryColor,
@@ -461,6 +463,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                   margin: EdgeInsets.only(top: 12.h),
                   onPressed: () {
                     foodController.getFoodRecommendation(widget.session);
+
                     foodController.getFoodRecommendationMenu(
                         widget.session, true, true, false, false);
                     setState(() {
@@ -522,48 +525,48 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                     },
                     iconButton: () {
                       final food = Food(
-                        imageFileName:
-                            foodController.listFood[index].imageFilename,
-                        session: widget.session,
-                        date: foodController.selectedDay.toString(),
-                        name: foodController.listFood[index].foodName,
-                        calcium: foodController.listFood[index].calcium,
-                        carbohydrate:
-                            foodController.listFood[index].carbohydrate,
-                        copper: foodController.listFood[index].copper,
-                        difficulty: foodController.listFood[index].difficulty,
-                        duration: foodController.listFood[index].duration,
-                        energy: foodController.listFood[index].energy,
-                        fat: foodController.listFood[index].fat,
-                        fiber: foodController.listFood[index].fiber,
-                        foodId: foodController.listFood[index].foodId,
-                        foodTypes: foodController.listFood[index].foodTypes,
-                        iron: foodController.listFood[index].iron,
-                        phosphor: foodController.listFood[index].phosphor,
-                        potassium: foodController.listFood[index].potassium,
-                        protein: foodController.listFood[index].protein,
-                        retinol: foodController.listFood[index].retinol,
-                        serving: foodController.listFood[index].serving,
-                        sodium: foodController.listFood[index].sodium,
-                        tags: foodController.listFood[index].tags,
-                        vitaminB1: foodController.listFood[index].vitaminB1,
-                        vitaminB2: foodController.listFood[index].vitaminB2,
-                        vitaminB3: foodController.listFood[index].vitaminB3,
-                        vitaminC: foodController.listFood[index].vitaminC,
-                        water: foodController.listFood[index].water,
-                        zinc: foodController.listFood[index].zinc,
-                        // instruction: foodController
-                        //     .listFood[index]
-                        //     .foodInstructionInfo!
-                        //     .map((e) =>
-                        //         e.instruction!)
-                        //     .toList(),
+                          imageFileName:
+                              foodController.listFood[index].imageFilename,
+                          session: widget.session,
+                          date: foodController.selectedDay.toString(),
+                          name: foodController.listFood[index].foodName,
+                          calcium: foodController.listFood[index].calcium,
+                          carbohydrate:
+                              foodController.listFood[index].carbohydrate,
+                          copper: foodController.listFood[index].copper,
+                          difficulty: foodController.listFood[index].difficulty,
+                          duration: foodController.listFood[index].duration,
+                          energy: foodController.listFood[index].energy,
+                          fat: foodController.listFood[index].fat,
+                          fiber: foodController.listFood[index].fiber,
+                          foodId: foodController.listFood[index].foodId,
+                          foodTypes: foodController.listFood[index].foodTypes,
+                          iron: foodController.listFood[index].iron,
+                          phosphor: foodController.listFood[index].phosphor,
+                          potassium: foodController.listFood[index].potassium,
+                          protein: foodController.listFood[index].protein,
+                          retinol: foodController.listFood[index].retinol,
+                          serving: foodController.listFood[index].serving,
+                          sodium: foodController.listFood[index].sodium,
+                          tags: foodController.listFood[index].tags,
+                          vitaminB1: foodController.listFood[index].vitaminB1,
+                          vitaminB2: foodController.listFood[index].vitaminB2,
+                          vitaminB3: foodController.listFood[index].vitaminB3,
+                          vitaminC: foodController.listFood[index].vitaminC,
+                          water: foodController.listFood[index].water,
+                          zinc: foodController.listFood[index].zinc,
+                          // instruction: foodController
+                          //     .listFood[index]
+                          //     .foodInstructionInfo!
+                          //     .map((e) =>
+                          //         e.instruction!)
+                          //     .toList(),
 
-                        itemFood: '',
-                        recommendationScore: foodController
-                            .listFood[index].recommendationScore!
-                            .toStringAsFixed(2),
-                      );
+                          itemFood: '',
+                          // recommendationScore: foodController
+                          //     .listFood[index].recommendationScore!
+                          //     .toStringAsFixed(2),
+                          recommendationScore: '');
 
                       // if (foodController.listFoodMenu.isNotEmpty) {
                       if (foodController.listFoodName
@@ -749,10 +752,11 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                                           water: element.water,
                                           zinc: element.zinc,
                                           itemFood: '',
-                                          recommendationScore: foodController
-                                              .listFoodMenu[index]
-                                              .recommendationScore!
-                                              .toStringAsFixed(2));
+                                          // recommendationScore: foodController
+                                          //     .listFoodMenu[index]
+                                          //     .recommendationScore!
+                                          //     .toStringAsFixed(2)
+                                          recommendationScore: '');
 
                                       foodController.foodStore
                                           .box<Food>()
@@ -866,9 +870,7 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                               session: widget.session,
                               foodController: foodController,
                               color: color,
-                              recommendationScore: _searchResult[index]
-                                  .recommendationScore!
-                                  .toStringAsFixed(2),
+                              recommendationScore: 0.toStringAsFixed(2),
                               foodId: _searchResult[index].foodId!,
                             )));
               },
@@ -903,9 +905,12 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
                     water: _searchResult[index].water,
                     zinc: _searchResult[index].zinc,
                     itemFood: '',
-                    recommendationScore: _searchResult[index]
-                        .recommendationScore!
-                        .toStringAsFixed(2));
+                    recommendationScore:
+                        _searchResult[index].recommendationScore != null
+                            ? _searchResult[index]
+                                .recommendationScore!
+                                .toStringAsFixed(2)
+                            : '');
                 // foodController.foodStore.box<Food>().put(food);
 
                 if (foodController.listFoodName
@@ -927,8 +932,10 @@ class _FoodRecommendationScreenState extends State<FoodRecommendationScreen> {
               name: _searchResult[index].foodName!,
               necessity: (_searchResult[index].energy!).toStringAsFixed(0),
               serving: (_searchResult[index].serving!).toStringAsFixed(0),
-              recommendationScore:
-                  _searchResult[index].recommendationScore!.toStringAsFixed(2),
+              recommendationScore: _searchResult[index].recommendationScore !=
+                      null
+                  ? _searchResult[index].recommendationScore!.toStringAsFixed(2)
+                  : '',
               duration: _searchResult[index].duration!.toStringAsFixed(0),
             );
           }),

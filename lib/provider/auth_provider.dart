@@ -103,4 +103,10 @@ class AuthProvider extends GetConnect {
 
     return _response;
   }
+
+  Future<Response> getLink(getLinkUrl) async {
+    Response? _response = await get(getLinkUrl);
+
+    return _response;
+  }
 }

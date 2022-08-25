@@ -78,6 +78,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    authController.getAccessToken();
     _streamSubscription =
         InternetConnectionChecker().onStatusChange.listen((status) {
       final hasInternet = status == InternetConnectionStatus.connected;
@@ -88,7 +89,6 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     });
     notificationController.getToData();
 
-    authController.getUsableToken();
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -99,7 +99,6 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
         state == AppLifecycleState.detached) return;
     final isBackground = state == AppLifecycleState.paused;
     final isForeground = state == AppLifecycleState.resumed;
-    print(state);
 
     if (isBackground) {
       //stop service
@@ -107,6 +106,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
       _streamSubscription.cancel();
     } else {
       //start service
+      authController.getAccessToken();
       _streamSubscription =
           InternetConnectionChecker().onStatusChange.listen((status) {
         final hasInternet = status == InternetConnectionStatus.connected;
@@ -115,7 +115,6 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
           this.hasInternet = hasInternet;
         });
       });
-      print(isForeground);
     }
   }
 
