@@ -1089,7 +1089,7 @@ class _DrinkWatersState extends State<DrinkWaters> {
       child: Column(
         children: [
           Text(
-            'Minum air putih 8 gelas sehari',
+            'Minum air putih 8 kali sehari',
             style: GoogleFonts.inter(
               textStyle: TextStyle(
                   color: widget.color.secondaryTextColor,

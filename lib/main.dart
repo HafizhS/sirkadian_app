@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:sirkadian_app/screen/auth/verification_screen.dart';
-import 'package:sirkadian_app/screen/healthware/bluetooth.dart';
-import 'package:sirkadian_app/screen/healthware/healthware_device_screen.dart';
 import '../bindings/bindings.dart';
 import 'package:get_storage/get_storage.dart';
 import '../screen/root_screen.dart';
+import 'screen/auth/tutorial_screen.dart';
 import 'screen/list_screen.dart';
 
 void main() async {
@@ -40,7 +38,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.grey,
             ),
             home: const RootScreen(),
-            // home: HealthwareDeviceScreen(),
+            // home: TutorialScreen(),
             getPages: ListScreen.screens,
             initialBinding: ControllerBinding(),
           );

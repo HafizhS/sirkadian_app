@@ -1,5 +1,6 @@
 import 'package:get/route_manager.dart';
 import 'package:sirkadian_app/bindings/bindings.dart';
+import 'package:sirkadian_app/controller/integrated_controller.dart';
 import 'package:sirkadian_app/screen/auth/greeting_screen.dart';
 import 'package:sirkadian_app/screen/healthware/healthware_device_screen.dart';
 import 'package:sirkadian_app/screen/settings/settings_general_screen.dart';

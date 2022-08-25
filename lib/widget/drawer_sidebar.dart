@@ -108,11 +108,22 @@ class _DrawerSideBarState extends State<DrawerSideBar> {
                   children: [
                     Container(
                       margin: EdgeInsets.all(10.sp),
-                      child: CircleAvatar(
-                        backgroundImage:
-                            AssetImage('assets/images/user_male.jpg'),
-                        radius: 40.sp,
-                      ),
+                      child: widget.userController.userInformationResponse.value
+                                  .imageFilename !=
+                              null
+                          ? CircleAvatar(
+                              backgroundImage: NetworkImage(widget
+                                  .userController
+                                  .userInformationResponse
+                                  .value
+                                  .imageFilename!),
+                              radius: 40.sp,
+                            )
+                          : CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('assets/images/user_male.jpg'),
+                              radius: 40.sp,
+                            ),
                     ),
                     Text(
                       widget.userController.userInformationResponse.value

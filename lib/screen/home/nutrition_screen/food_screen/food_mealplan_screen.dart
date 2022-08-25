@@ -493,6 +493,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
   void getSaveSessionFunction(List<Food> food) {
     if (widget.session == "Sarapan") {
       if (data.read('dataSessionSarapan')['sessionSarapan'] == true) {
+        if (Get.isSnackbarOpen) Get.back();
         final foodHistoryRequest = FoodHistoryRequest(
             foodDate: foodController.date,
             foodTime: foodController.getSessions(widget.session),
@@ -509,6 +510,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
           });
         });
       } else {
+        if (Get.isSnackbarOpen) Get.back();
         listFoodSarapan.clear();
         food.forEach((element) {
           listFoodSarapan.add(Foods(foodId: element.foodId, portion: 1));
@@ -531,6 +533,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
       }
     } else if (widget.session == 'Makan Siang') {
       if (data.read('dataSessionMakanSiang')['sessionMakanSiang'] == true) {
+        if (Get.isSnackbarOpen) Get.back();
         final foodHistoryRequest = FoodHistoryRequest(
             foodDate: foodController.date,
             foodTime: foodController.getSessions(widget.session),
@@ -546,6 +549,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
           });
         });
       } else {
+        if (Get.isSnackbarOpen) Get.back();
         listFoodSarapan.clear();
         food.forEach((element) {
           listFoodMakanSiang.add(Foods(foodId: element.foodId, portion: 1));
@@ -567,6 +571,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
       }
     } else {
       if (data.read('dataSessionMakanMalam')['sessionMakanMalam'] == true) {
+        if (Get.isSnackbarOpen) Get.back();
         final foodHistoryRequest = FoodHistoryRequest(
             foodDate: foodController.date,
             foodTime: foodController.getSessions(widget.session),
@@ -582,6 +587,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
           });
         });
       } else {
+        if (Get.isSnackbarOpen) Get.back();
         listFoodSarapan.clear();
         food.forEach((element) {
           listFoodMakanMalam.add(Foods(foodId: element.foodId, portion: 1));

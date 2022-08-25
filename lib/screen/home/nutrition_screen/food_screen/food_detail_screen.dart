@@ -284,25 +284,32 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                   ),
                                   SizedBox(height: 10.h),
                                   Row(children: [
-                                    FaIcon(
-                                      FontAwesomeIcons.solidStar,
-                                      color: Colors.yellow.shade600,
-                                      size: 16.sp,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Text(
-                                      // widget.foodController.foodItemResponse.value.recommendationScore!
-                                      // .toStringAsFixed(2) ??,
-                                      widget.recommendationScore,
-                                      style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                            color:
-                                                widget.color.primaryTextColor,
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                    SizedBox(width: 20.w),
+                                    widget.recommendationScore == '0.00'
+                                        ? Container()
+                                        : Row(
+                                            children: [
+                                              FaIcon(
+                                                FontAwesomeIcons.solidStar,
+                                                color: Colors.yellow.shade600,
+                                                size: 16.sp,
+                                              ),
+                                              SizedBox(width: 5.w),
+                                              Text(
+                                                // widget.foodController.foodItemResponse.value.recommendationScore!
+                                                // .toStringAsFixed(2) ??,
+                                                widget.recommendationScore,
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                      color: widget.color
+                                                          .primaryTextColor,
+                                                      fontSize: 16.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
+                                              SizedBox(width: 20.w),
+                                            ],
+                                          ),
                                     Text(
                                       widget.foodController.foodItemResponse
                                               .value.creatorName ??
@@ -993,51 +1000,59 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                             ),
 
                             /// disini ditambahin other food recommendation
-                          !widget.isFromFoodMeal?  Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Rekomendasi Sejenis',
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                        color: widget.color.secondaryTextColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                                widget.foodController.listOtherFood.isNotEmpty
-                                    ? Container(
-                                        height: 200.h,
-                                        width: 360.w,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: widget.foodController
-                                              .listOtherFood.length,
-                                          itemBuilder: (context, index) {
-                                            return Container(
-                                              margin: EdgeInsets.all(10.sp),
-                                              child:
-                                                  OtherFoodRecommendationTile(
-                                                isFromFoodMeal:
-                                                    widget.isFromFoodMeal,
-                                                productOld: widget
-                                                    .foodController
-                                                    .foodItemResponse
-                                                    .value,
-                                                session: widget.session,
-                                                foodController:
-                                                    widget.foodController,
-                                                product: widget.foodController
-                                                    .listOtherFood[index],
-                                                color: widget.color,
-                                              ),
-                                            );
-                                          },
+                            !widget.isFromFoodMeal
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Rekomendasi Sejenis',
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              color: widget
+                                                  .color.secondaryTextColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600),
                                         ),
-                                      )
-                                    : Container(),
-                              ],
-                            ):Container(),
+                                      ),
+                                      widget.foodController.listOtherFood
+                                              .isNotEmpty
+                                          ? Container(
+                                              height: 200.h,
+                                              width: 360.w,
+                                              child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: widget.foodController
+                                                    .listOtherFood.length,
+                                                itemBuilder: (context, index) {
+                                                  return Container(
+                                                    margin:
+                                                        EdgeInsets.all(10.sp),
+                                                    child:
+                                                        OtherFoodRecommendationTile(
+                                                      isFromFoodMeal:
+                                                          widget.isFromFoodMeal,
+                                                      productOld: widget
+                                                          .foodController
+                                                          .foodItemResponse
+                                                          .value,
+                                                      session: widget.session,
+                                                      foodController:
+                                                          widget.foodController,
+                                                      product: widget
+                                                          .foodController
+                                                          .listOtherFood[index],
+                                                      color: widget.color,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                          : Container(),
+                                    ],
+                                  )
+                                : Container(),
 
                             isBahanOpen
                                 ? Neumorphic(
@@ -1706,8 +1721,9 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                     //     .map((e) =>
                                     //         e.instruction!)
                                     //     .toList(),
-                                    itemFood: 'widget.foodController.foodItemResponse.toJson()',
-                                    recommendationScore: widget.recommendationScore);
+                                    // itemFood: 'widget.foodController.foodItemResponse.toJson()',
+                                    itemFood: '',
+                                    recommendationScore: widget.foodController.foodItemResponse.value.recommendationScore != null ? widget.foodController.foodItemResponse.value.recommendationScore!.toStringAsFixed(2) : '');
                                 widget.foodController.foodStore
                                     .box<Food>()
                                     .put(food);

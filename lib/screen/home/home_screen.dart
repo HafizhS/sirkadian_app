@@ -8,6 +8,7 @@ import 'package:sirkadian_app/controller/article_controller.dart';
 import 'package:sirkadian_app/controller/fluid_controller.dart';
 import 'package:sirkadian_app/controller/food_controller.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
+import 'package:sirkadian_app/controller/integrated_controller.dart';
 import 'package:sirkadian_app/screen/home/article_screen/article_detail_screen.dart';
 import 'package:sirkadian_app/screen/list_screen.dart';
 import '../../constant/hex_color.dart';
@@ -41,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final fluidController = Get.find<FluidController>();
   final informationController = Get.find<InformationController>();
   final notificationController = Get.find<NotificationController>();
+  final integratedController = Get.find<IntegratedController>();
   final color = Get.find<ColorConstantController>();
   ScrollController scrollController = ScrollController();
   var closeTopContainer = false.obs;
@@ -54,10 +56,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    userController.getUserHealthHistoryLatest();
-    userController.getUserInformation();
-    articleController.getArticleAll();
-    foodController.getNecessity();
+    // userController.getUserHealthHistoryLatest();
+    // userController.getUserInformation();
+    integratedController.homeRequestApi();
+    // articleController.getArticleAll();
+    // foodController.getNecessity();
 
     getApplicationDocumentsDirectory().then((dir) {
       fluidController.fluidStore =
@@ -140,63 +143,60 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => userController
-                    .userHealthHistoryLatestResponse.value.height ==
-                null ||
-            userController.userInformationResponse.value.displayName == null ||
-            articleController.articleAll.isEmpty ||
-            foodController.necessity.value.energy!.breakfast == null
+    return Obx(() => integratedController.isLoadingHomeRequestApi.isTrue
         ? Scaffold(
             body: Container(
-              height: 800.h,
-              width: 360.w,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  userController.isLoadingUserInformation.isTrue ||
-                          userController
-                              .isLoadingUserHealthHistoryLatest.isTrue ||
-                          articleController.isLoadingArticleAll.isTrue ||
-                          foodController.isLoadingNecessity.isTrue
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color: color.secondaryColor,
-                          ),
-                        )
-                      : NeumorphicButton(
-                          margin: EdgeInsets.only(top: 28.h),
-                          onPressed: () {
-                            userController.getUserHealthHistoryLatest();
-                            userController.getUserInformation();
-                            articleController.getArticleAll();
-                            foodController.getNecessity();
-                          },
-                          style: NeumorphicStyle(
-                              color: color.secondaryColor,
-                              depth: 4,
-                              // shadowDarkColor: HexColor.fromHex('#C3C3C3'),
-                              // shadowLightColor: HexColor.fromHex('#FFFFFF'),
-                              shape: NeumorphicShape.flat,
-                              boxShape: NeumorphicBoxShape.roundRect(
-                                BorderRadius.circular(20),
-                              )
-                              //border: NeumorphicBorder()
-                              ),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 12.h, horizontal: 30.w),
-                          child: Text(
-                            "Refresh",
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: color.primaryColor,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                          )),
-                ],
-              ),
-            ),
+                height: 800.h,
+                width: 360.w,
+                child:
+                    // Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     userController.isLoadingUserInformation.isTrue ||
+                    //             userController
+                    //                 .isLoadingUserHealthHistoryLatest.isTrue ||
+                    //             articleController.isLoadingArticleAll.isTrue ||
+                    //     foodController.isLoadingNecessity.isTrue
+                    // ?
+                    Center(
+                  child: CircularProgressIndicator(
+                    color: color.secondaryColor,
+                  ),
+                )
+                //         : NeumorphicButton(
+                //             margin: EdgeInsets.only(top: 28.h),
+                //             onPressed: () {
+                //               userController.getUserHealthHistoryLatest();
+                //               userController.getUserInformation();
+                //               articleController.getArticleAll();
+                //               foodController.getNecessity();
+                //             },
+                //             style: NeumorphicStyle(
+                //                 color: color.secondaryColor,
+                //                 depth: 4,
+                //                 // shadowDarkColor: HexColor.fromHex('#C3C3C3'),
+                //                 // shadowLightColor: HexColor.fromHex('#FFFFFF'),
+                //                 shape: NeumorphicShape.flat,
+                //                 boxShape: NeumorphicBoxShape.roundRect(
+                //                   BorderRadius.circular(20),
+                //                 )
+                //                 //border: NeumorphicBorder()
+                //                 ),
+                //             padding: EdgeInsets.symmetric(
+                //                 vertical: 12.h, horizontal: 30.w),
+                //             child: Text(
+                //               "Refresh",
+                //               style: GoogleFonts.inter(
+                //                 textStyle: TextStyle(
+                //                     color: color.primaryColor,
+                //                     fontSize: 14.sp,
+                //                     fontWeight: FontWeight.normal),
+                //               ),
+                //             )),
+                //   ],
+                // ),
+                ),
           )
         : !hasBeenInitializedFood || !hasBeenInitializedFluid
             ? Center(
@@ -265,17 +265,32 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: color.primaryColor,
                       ),
                     ),
-                    Stack(alignment: Alignment.center, children: [
-                      CircleAvatar(
-                        backgroundColor: color.primaryColor,
-                        radius: 22.sp,
-                      ),
-                      CircleAvatar(
-                        backgroundImage:
-                            AssetImage('assets/images/user_male.jpg'),
-                        radius: 18.sp,
-                      ),
-                    ]),
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(RouteScreens.userInformation);
+                      },
+                      child: Stack(alignment: Alignment.center, children: [
+                        CircleAvatar(
+                          backgroundColor: color.primaryColor,
+                          radius: 22.sp,
+                        ),
+                        userController.userInformationResponse.value
+                                    .imageFilename !=
+                                null
+                            ? CircleAvatar(
+                                backgroundImage: NetworkImage(userController
+                                    .userInformationResponse
+                                    .value
+                                    .imageFilename!),
+                                radius: 18.sp,
+                              )
+                            : CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('assets/images/user_male.jpg'),
+                                radius: 18.sp,
+                              ),
+                      ]),
+                    ),
                   ],
                 ),
                 //
@@ -339,11 +354,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             backgroundColor: color.primaryColor,
                             radius: 22.sp,
                           ),
-                          CircleAvatar(
-                            backgroundImage:
-                                AssetImage('assets/images/user_male.jpg'),
-                            radius: 18.sp,
-                          ),
+                          userController.userInformationResponse.value
+                                      .imageFilename !=
+                                  null
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(userController
+                                      .userInformationResponse
+                                      .value
+                                      .imageFilename!),
+                                  radius: 18.sp,
+                                )
+                              : CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage('assets/images/user_male.jpg'),
+                                  radius: 18.sp,
+                                ),
                         ]),
                       ],
                     ),

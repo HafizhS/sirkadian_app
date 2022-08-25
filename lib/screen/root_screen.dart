@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sirkadian_app/model/auth_model/login_response_model.dart';
 import 'package:sirkadian_app/screen/main_screen.dart';
-
 import 'auth/welcome_screen.dart';
 
 class RootScreen extends StatefulWidget {
@@ -17,6 +16,7 @@ class _RootScreenState extends State<RootScreen> {
   final data = GetStorage('myData');
 
   var storedDataUser = DataLoginResponse().obs;
+
   void getData() {
     if (data.read('dataUser') != null) {
       print('ada data');
@@ -30,6 +30,7 @@ class _RootScreenState extends State<RootScreen> {
   @override
   void initState() {
     super.initState();
+    // _initURIHandler();
 
     getData();
   }

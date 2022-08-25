@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:sirkadian_app/controller/article_controller.dart';
+import 'package:sirkadian_app/controller/integrated_controller.dart';
 import 'package:sirkadian_app/controller/notification_controller.dart';
 import 'package:sirkadian_app/controller/user_controller.dart';
 import 'package:sirkadian_app/controller/hexcolor_controller.dart';
@@ -27,6 +28,7 @@ class ControllerBinding implements Bindings {
     Get.lazyPut<UserController>(() => UserController());
     Get.lazyPut<NotificationController>(() => NotificationController());
     Get.lazyPut<ArticleController>(() => ArticleController());
+    Get.lazyPut<IntegratedController>(() => IntegratedController());
   }
 }
 

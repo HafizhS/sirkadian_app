@@ -204,6 +204,9 @@ class _ExerciseRecommendationScreenState
                                               itemCount: exerciseController
                                                   .listExercise.length,
                                               itemBuilder: (context, index) {
+                                                print(exerciseController
+                                                    .listExercise[index]
+                                                    .imageFilename!);
                                                 return ExerciseTile(
                                                   depth: 4,
                                                   icon: FontAwesomeIcons.trash,

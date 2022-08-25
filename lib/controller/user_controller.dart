@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sirkadian_app/model/user_model/user_health_historyLatest_response_model.dart';
@@ -15,7 +17,7 @@ class UserController extends GetxController {
   final _provider = Get.put(UserProvider());
   final authController = Get.put(AuthController());
   final informationController = Get.put(InformationController());
-  final data = GetStorage('myData');
+  // final data = GetStorage('myData');
   var isLoadingUserHealthPreferenceLatest = false.obs;
   var isLoadingUserHealthHistoryLatest = false.obs;
   var isLoadingUserInformation = false.obs;
@@ -67,74 +69,76 @@ class UserController extends GetxController {
   //get method
   Future<void> getUserHealthPreferenceLatest() async {
     isLoadingUserHealthPreferenceLatest(true);
-    await authController.getUsableToken();
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getUserHealthPreferenceLatest(accessToken);
 
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getUserHealthPreferenceLatest(accessToken);
-
-      if (_res.statusCode == 200) {
-        UserHealthPreferenceLatestResponse _userHealthPreferenceLatestResponse =
-            UserHealthPreferenceLatestResponse.fromJson(
-                _res.body as Map<String, dynamic>);
-        if (_userHealthPreferenceLatestResponse.statusCode == 200) {
-          userHealthPreferenceLatestResponse.value =
-              _userHealthPreferenceLatestResponse.data!;
+        if (_res.statusCode == 200) {
+          UserHealthPreferenceLatestResponse
+              _userHealthPreferenceLatestResponse =
+              UserHealthPreferenceLatestResponse.fromJson(
+                  _res.body as Map<String, dynamic>);
+          if (_userHealthPreferenceLatestResponse.statusCode == 200) {
+            userHealthPreferenceLatestResponse.value =
+                _userHealthPreferenceLatestResponse.data!;
+          }
         }
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingUserHealthPreferenceLatest(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingUserHealthPreferenceLatest(false);
+      }
+    });
   }
 
   Future<void> getUserHealthHistoryLatest() async {
     isLoadingUserHealthHistoryLatest(true);
-    await authController.getUsableToken();
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getUserHealthHistoryLatest(accessToken);
 
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getUserHealthHistoryLatest(accessToken);
+        if (_res.statusCode == 200) {
+          UserHealthHistoryLatestResponse _userHealthHistoryLatestResponse =
+              UserHealthHistoryLatestResponse.fromJson(
+                  _res.body as Map<String, dynamic>);
 
-      if (_res.statusCode == 200) {
-        UserHealthHistoryLatestResponse _userHealthHistoryLatestResponse =
-            UserHealthHistoryLatestResponse.fromJson(
-                _res.body as Map<String, dynamic>);
-
-        if (_userHealthHistoryLatestResponse.statusCode == 200) {
-          userHealthHistoryLatestResponse.value =
-              _userHealthHistoryLatestResponse.data!;
+          if (_userHealthHistoryLatestResponse.statusCode == 200) {
+            userHealthHistoryLatestResponse.value =
+                _userHealthHistoryLatestResponse.data!;
+          }
         }
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingUserHealthHistoryLatest(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingUserHealthHistoryLatest(false);
+      }
+    });
   }
 
   Future<void> getUserInformation() async {
     isLoadingUserInformation(true);
-    await authController.getUsableToken();
+    await authController.getAccessToken().then((accessToken) async {
+      try {
+        // String accessToken = data.read('dataUser')['accessToken'];
+        var _res = await _provider.getUserInformation(accessToken);
 
-    try {
-      String accessToken = data.read('dataUser')['accessToken'];
-      var _res = await _provider.getUserInformation(accessToken);
-
-      if (_res.statusCode == 200) {
-        UserInformationResponse _userInformationResponse =
-            UserInformationResponse.fromJson(_res.body as Map<String, dynamic>);
-        if (_userInformationResponse.statusCode == 200) {
-          userInformationResponse.value = _userInformationResponse.data!;
+        if (_res.statusCode == 200) {
+          UserInformationResponse _userInformationResponse =
+              UserInformationResponse.fromJson(
+                  _res.body as Map<String, dynamic>);
+          if (_userInformationResponse.statusCode == 200) {
+            userInformationResponse.value = _userInformationResponse.data!;
+          }
+          print(userInformationResponse.value.displayName);
         }
-        print(userInformationResponse.value.displayName);
-      }
 
-      if (Get.isDialogOpen!) Get.back();
-    } finally {
-      isLoadingUserInformation(false);
-    }
+        if (Get.isDialogOpen!) Get.back();
+      } finally {
+        isLoadingUserInformation(false);
+      }
+    });
   }
 
   //post method
@@ -145,29 +149,30 @@ class UserController extends GetxController {
         postUserHealthPreferenceRequest.vegan != null &&
         postUserHealthPreferenceRequest.vegetarian != null &&
         postUserHealthPreferenceRequest.halal != null) {
-      await authController.getUsableToken();
       informationController
           .loadingDialog('Harap Menunggu, Sedang Memasukkan Data ke Server');
-      try {
-        String accessToken = data.read('dataUser')['accessToken'];
-        final Response _res = await _provider.postUserHealthPreference(
-            accessToken, postUserHealthPreferenceRequest);
-        if (_res.statusCode == 200) {
+      await authController.getAccessToken().then((accessToken) async {
+        try {
+          // String accessToken = data.read('dataUser')['accessToken'];
+          final Response _res = await _provider.postUserHealthPreference(
+              accessToken, postUserHealthPreferenceRequest);
+          if (_res.statusCode == 200) {
+            if (Get.isDialogOpen!) Get.back();
+            informationController.showSuccessSnackBar('berhasil');
+          } else {
+            if (Get.isDialogOpen!) Get.back();
+            informationController.showErrorSnackBar('gagal');
+            print('error' + _res.statusCode.toString());
+          }
+        } catch (e) {
+          e.toString();
           if (Get.isDialogOpen!) Get.back();
-          informationController.showSuccessSnackBar('berhasil');
-        } else {
-          if (Get.isDialogOpen!) Get.back();
-          informationController.showErrorSnackBar('gagal');
-          print('error' + _res.statusCode.toString());
-        }
-      } catch (e) {
-        e.toString();
-        if (Get.isDialogOpen!) Get.back();
-        informationController
-            .showErrorSnackBar('terjadi masalah, harap ulangi');
+          informationController
+              .showErrorSnackBar('terjadi masalah, harap ulangi');
 
-        print(e);
-      }
+          print(e);
+        }
+      });
     } else {
       if (Get.isDialogOpen!) Get.back();
       informationController.snackBarError("Data Tidak Lengkap",
@@ -179,29 +184,63 @@ class UserController extends GetxController {
       {UserHealthHistoryRequest? userHealthHistoryRequest}) async {
     if (userHealthHistoryRequest!.height != null &&
         userHealthHistoryRequest.weight != null) {
-      await authController.getUsableToken();
       informationController
           .loadingDialog('Harap Menunggu, Sedang Memasukkan Data ke Server');
-      try {
-        String accessToken = data.read('dataUser')['accessToken'];
-        final Response _res = await _provider.postUserHealthHistory(
-            accessToken, userHealthHistoryRequest);
-        if (_res.statusCode == 200) {
+      await authController.getAccessToken().then((accessToken) async {
+        try {
+          // String accessToken = data.read('dataUser')['accessToken'];
+          final Response _res = await _provider.postUserHealthHistory(
+              accessToken, userHealthHistoryRequest);
+          if (_res.statusCode == 200) {
+            if (Get.isDialogOpen!) Get.back();
+            informationController.showSuccessSnackBar('berhasil');
+          } else {
+            if (Get.isDialogOpen!) Get.back();
+            informationController.showErrorSnackBar('gagal');
+            print('error' + _res.statusCode.toString());
+          }
+        } catch (e) {
+          e.toString();
           if (Get.isDialogOpen!) Get.back();
-          informationController.showSuccessSnackBar('berhasil');
-        } else {
-          if (Get.isDialogOpen!) Get.back();
-          informationController.showErrorSnackBar('gagal');
-          print('error' + _res.statusCode.toString());
-        }
-      } catch (e) {
-        e.toString();
-        if (Get.isDialogOpen!) Get.back();
-        informationController
-            .showErrorSnackBar('terjadi masalah, harap ulangi');
+          informationController
+              .showErrorSnackBar('terjadi masalah, harap ulangi');
 
-        print(e);
-      }
+          print(e);
+        }
+      });
+    } else {
+      if (Get.isDialogOpen!) Get.back();
+      informationController.snackBarError("Data Tidak Lengkap",
+          "silakan isi semua data pribadi Anda terlebih dahulu");
+    }
+  }
+
+  Future<void> postUserImageProfile({File? imageFile}) async {
+    if (imageFile != null) {
+      informationController
+          .loadingDialog('Harap Menunggu, Sedang Memasukkan Data ke Server');
+      authController.getAccessToken().then((accessToken) async {
+        try {
+          // String accessToken = data.read('dataUser')['accessToken'];
+          var _res =
+              await _provider.postUserImageProfile(accessToken, imageFile);
+          if (_res == true) {
+            informationController
+                .showSuccessSnackBar('Berhasil ubah foto profile');
+            getUserInformation();
+          } else {
+            informationController
+                .showErrorSnackBar('Gagal ubah foto profile, harap ulangi');
+          }
+        } catch (e) {
+          e.toString();
+          if (Get.isDialogOpen!) Get.back();
+          informationController
+              .showErrorSnackBar('terjadi masalah, harap ulangi');
+
+          print(e);
+        }
+      });
     } else {
       if (Get.isDialogOpen!) Get.back();
       informationController.snackBarError("Data Tidak Lengkap",

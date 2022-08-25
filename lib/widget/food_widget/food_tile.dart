@@ -153,11 +153,13 @@ class FoodTile extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  FaIcon(
-                    FontAwesomeIcons.solidStar,
-                    color: color.yellowColor,
-                    size: 12,
-                  ),
+                  recommendationScore == ''
+                      ? Container()
+                      : FaIcon(
+                          FontAwesomeIcons.solidStar,
+                          color: color.yellowColor,
+                          size: 12,
+                        ),
                   Text(
                     ' ' + recommendationScore,
                     style: GoogleFonts.inter(
