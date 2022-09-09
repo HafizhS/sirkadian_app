@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:sirkadian_app/constant/error_code.dart';
 import 'package:sirkadian_app/screen/auth/verification_screen.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../screen/list_screen.dart';
 
 import '../model/auth_model/activation_request_model.dart';

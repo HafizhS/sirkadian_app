@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-// import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sirkadian_app/constant/hex_color.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
@@ -33,9 +33,10 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   final informationController = Get.find<InformationController>();
   final notificationController = Get.find<NotificationController>();
   final color = Get.find<ColorConstantController>();
-  late StreamSubscription<InternetConnectionStatus> _streamSubscription;
+  late StreamSubscription _streamSubscription;
   GlobalKey<TabNavigatorState> tabKey = GlobalKey();
-  bool hasInternet = true;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
   var _currentTab = "Home";
   final screenIndex = 0.obs;
   List<String> pageKeys = [
@@ -75,53 +76,69 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   //     _packageInfo = info;
   //   });
   // }
+  void getConnectivity() {
+    _streamSubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      // final hasInternet = result;
+      isDeviceConnected = await InternetConnectionChecker().hasConnection;
+      if (!isDeviceConnected && isAlertSet == false) {
+        showDialogBox();
+
+        setState(() {
+          isAlertSet = true;
+        });
+      }
+    });
+  }
 
   @override
   void initState() {
     authController.getAccessToken();
-    _streamSubscription =
-        InternetConnectionChecker().onStatusChange.listen((status) {
-      final hasInternet = status == InternetConnectionStatus.connected;
-      // _initPackageInfo();
-      setState(() {
-        this.hasInternet = hasInternet;
-      });
-    });
+    getConnectivity();
+    // _streamSubscription =
+    //     InternetConnectionChecker().onStatusChange.listen((status) {
+    //   final hasInternet = status == InternetConnectionStatus.connected;
+    // _initPackageInfo();
+    //   setState(() {
+    //     this.hasInternet = hasInternet;
+    //   });
+    // });
+
     notificationController.getToData();
 
-    WidgetsBinding.instance.addObserver(this);
+    // WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.inactive ||
-        state == AppLifecycleState.detached) return;
-    final isBackground = state == AppLifecycleState.paused;
-    final isForeground = state == AppLifecycleState.resumed;
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.inactive ||
+  //       state == AppLifecycleState.detached) return;
+  //   final isBackground = state == AppLifecycleState.paused;
+  //   final isForeground = state == AppLifecycleState.resumed;
 
-    if (isBackground) {
-      //stop service
+  //   if (isBackground) {
+  //     //stop service
 
-      _streamSubscription.cancel();
-    } else {
-      //start service
-      authController.getAccessToken();
-      _streamSubscription =
-          InternetConnectionChecker().onStatusChange.listen((status) {
-        final hasInternet = status == InternetConnectionStatus.connected;
-        // _initPackageInfo();
-        setState(() {
-          this.hasInternet = hasInternet;
-        });
-      });
-    }
-  }
+  //   } else {
+  //     //start service
+  //     authController.getAccessToken();
+  //     // _streamSubscription =
+  //     //     InternetConnectionChecker().onStatusChange.listen((status) {
+  //     //   final hasInternet = status == InternetConnectionStatus.connected;
+  //     //   // _initPackageInfo();
+  //     //   setState(() {
+  //     //     this.hasInternet = hasInternet;
+  //     //   });
+  //     // });
+  //   }
+  // }
 
   @override
   void dispose() {
     _streamSubscription.cancel();
-    WidgetsBinding.instance.removeObserver(this);
+    // WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -159,79 +176,92 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return hasInternet == false
-        ? Scaffold(
-            bottomNavigationBar: bottomNavBar(),
-            // drawer: Drawer(backgroundColor: color.tersierColor, width: 200.w),
-            body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Text(
-                      'Tidak ada koneksi, pastikan anda memiliki koneksi internet.',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
-                        textStyle: TextStyle(
-                            color: color.secondaryTextColor,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 28.h,
-                  ),
-                  NeumorphicButton(
-                      onPressed: () async {
-                        try {
-                          hasInternet =
-                              await InternetConnectionChecker().hasConnection;
+    return
+        // isAlertSet
+        // ? Scaffold(
+        //     bottomNavigationBar: bottomNavBar(),
+        //     // drawer: Drawer(backgroundColor: color.tersierColor, width: 200.w),
+        //     body: Column(
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         crossAxisAlignment: CrossAxisAlignment.center,
+        //         children: [
+        //           Center(
+        //             child: Text(
+        //               'Tidak ada koneksi, pastikan anda memiliki koneksi internet.',
+        //               textAlign: TextAlign.center,
+        //               style: GoogleFonts.inter(
+        //                 textStyle: TextStyle(
+        //                     color: color.secondaryTextColor,
+        //                     fontSize: 14.sp,
+        //                     fontWeight: FontWeight.normal),
+        //               ),
+        //             ),
+        //           ),
+        //           SizedBox(
+        //             height: 28.h,
+        //           ),
+        //           NeumorphicButton(
+        //               onPressed: () async {
+        //                 setState(() {
+        //                   isAlertSet = false;
+        //                 });
+        //                 isDeviceConnected =
+        //                     await InternetConnectionChecker().hasConnection;
+        //                 if (!isDeviceConnected) {
+        //                   // showDialogBox();
+        //                   setState(() {
+        //                     isAlertSet = true;
+        //                   });
+        //                 }
+        //                 // try {
+        //                 // hasInternet =
+        //                 //     await InternetConnectionChecker().hasConnection;
 
-                          if (hasInternet) {
-                            setState(() {
-                              this.hasInternet = hasInternet;
-                            });
+        //                 // if (hasInternet) {
+        //                 //   setState(() {
+        //                 //     this.hasInternet = hasInternet;
+        //                 //   });
 
-                            if (Get.isSnackbarOpen) {
-                              Get.back();
-                            } else {
-                              informationController.showSuccessSnackBar(
-                                  'Koneksi telah ditemukan');
-                            }
-                          } else {
-                            if (Get.isSnackbarOpen) {
-                              Get.back();
-                            } else {
-                              informationController.snackBarError(
-                                  'tidak ada koneksi',
-                                  'Pastikan Anda memiliki koneksi lalu ulangi');
-                            }
-                          }
-                        } finally {}
-                      },
-                      style: NeumorphicStyle(
-                          color: color.secondaryColor,
-                          shape: NeumorphicShape.flat,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(20),
-                          )
-                          //border: NeumorphicBorder()
-                          ),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 80.w),
-                      child: Text(
-                        "Coba lagi",
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                              color: color.primaryColor,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.normal),
-                        ),
-                      )),
-                ]),
-          )
-        : WillPopScope(
+        //                 //   if (Get.isSnackbarOpen) {
+        //                 //     Get.back();
+        //                 //   } else {
+        //                 //     informationController.showSuccessSnackBar(
+        //                 //         'Koneksi telah ditemukan');
+        //                 //   }
+        //                 // } else {
+        //                 //   if (Get.isSnackbarOpen) {
+        //                 //     Get.back();
+        //                 //   } else {
+        //                 //     informationController.snackBarError(
+        //                 //         'tidak ada koneksi',
+        //                 //         'Pastikan Anda memiliki koneksi lalu ulangi');
+        //                 //   }
+        //                 //   }
+        //                 // } finally {}
+        //               },
+        //               style: NeumorphicStyle(
+        //                   color: color.secondaryColor,
+        //                   shape: NeumorphicShape.flat,
+        //                   boxShape: NeumorphicBoxShape.roundRect(
+        //                     BorderRadius.circular(20),
+        //                   )
+        //                   //border: NeumorphicBorder()
+        //                   ),
+        //               padding:
+        //                   EdgeInsets.symmetric(vertical: 12, horizontal: 80.w),
+        //               child: Text(
+        //                 "Coba lagi",
+        //                 style: GoogleFonts.inter(
+        //                   textStyle: TextStyle(
+        //                       color: color.primaryColor,
+        //                       fontSize: 14.sp,
+        //                       fontWeight: FontWeight.normal),
+        //                 ),
+        //               )),
+        //         ]),
+        //   )
+        // :
+        WillPopScope(
             onWillPop: () async =>
                 !await _navigatorKeys[_currentTab]!.currentState!.maybePop(),
             child: Scaffold(
@@ -349,5 +379,127 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
         tabItem: tabItem,
       ),
     );
+  }
+
+  void showDialogBox() {
+    Get.dialog(Scaffold(
+      backgroundColor: color.secondaryTextColor.withOpacity(0.3),
+      body: Align(
+        alignment: Alignment.center,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 30.w),
+          padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 10.w),
+          height: 200.h,
+          width: 360.w,
+          decoration: BoxDecoration(
+            color: color.primaryColor,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: color.blackColor.withOpacity(0.2),
+                  blurRadius: 40,
+                  spreadRadius: 6)
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Tolong periksa koneksi Anda.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.inter(
+                  textStyle: TextStyle(
+                      color: HexColor.fromHex('#8CD15D'),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  NeumorphicButton(
+                      onPressed: () async {
+                        Get.back();
+                        setState(() {
+                          isAlertSet = false;
+                        });
+                        isDeviceConnected =
+                            await InternetConnectionChecker().hasConnection;
+                        if (!isDeviceConnected) {
+                          showDialogBox();
+                          setState(() {
+                            isAlertSet = true;
+                          });
+                        }
+                      },
+                      margin: EdgeInsets.only(top: 10.h),
+                      style: NeumorphicStyle(
+                          color: color.secondaryColor,
+                          depth: 4,
+                          shape: NeumorphicShape.flat,
+                          boxShape: NeumorphicBoxShape.roundRect(
+                            BorderRadius.circular(20),
+                          )),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 12.h, horizontal: 30.w),
+                      child: Text(
+                        "Kembali",
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                              color: color.primaryColor,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      )),
+                  // SizedBox(width: 20.w),
+                  // Container(),
+                  // NeumorphicButton(
+                  //     onPressed: () {
+                  //       FocusScopeNode currentFocus = FocusScope.of(context);
+
+                  //       if (!currentFocus.hasPrimaryFocus) {
+                  //         currentFocus.unfocus();
+                  //       }
+                  //       if (Get.isDialogOpen!) Get.back();
+
+                  //       subscriptionController
+                  //           .postSubscriptionClaimCoupon(
+                  //               couponCode: _couponTextController.text)
+                  //           .then((_) {
+                  //         subscriptionController.getSubscriptionActiveUser();
+                  //         subscriptionController.getSubscriptionHistoryUser();
+                  //       });
+                  //       _couponTextController.clear();
+                  //     },
+                  //     margin: EdgeInsets.only(top: 10.h),
+                  //     style: NeumorphicStyle(
+                  //         color: color.secondaryColor,
+                  //         depth: 4,
+                  //         shape: NeumorphicShape.flat,
+                  //         boxShape: NeumorphicBoxShape.roundRect(
+                  //           BorderRadius.circular(20),
+                  //         )),
+                  //     padding: EdgeInsets.symmetric(
+                  //         vertical: 12.h, horizontal: 30.w),
+                  //     child: Text(
+                  //       'Claim',
+                  //       style: GoogleFonts.inter(
+                  //         textStyle: TextStyle(
+                  //             color: color.primaryColor,
+                  //             fontSize: 14.sp,
+                  //             fontWeight: FontWeight.normal),
+                  //       ),
+                  //     )),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    ));
   }
 }

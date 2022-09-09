@@ -729,31 +729,31 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.normal),
                     ),
                   ),
-                  // NeumorphicButton(
-                  //     margin: EdgeInsets.only(top: 12.h),
-                  //     onPressed: () {
-                  //       articleController.getArticleAll();
-                  //     },
-                  //     style: NeumorphicStyle(
-                  //         color: color.secondaryColor,
-                  //         depth: 4,
-                  //         shape: NeumorphicShape.flat,
-                  //         boxShape: NeumorphicBoxShape.roundRect(
-                  //           BorderRadius.circular(20),
-                  //         )
-                  //         //border: NeumorphicBorder()
-                  //         ),
-                  //     padding: EdgeInsets.symmetric(
-                  //         vertical: 12.h, horizontal: 30.w),
-                  //     child: Text(
-                  //       "Refresh",
-                  //       style: GoogleFonts.inter(
-                  //         textStyle: TextStyle(
-                  //             color: color.primaryColor,
-                  //             fontSize: 14.sp,
-                  //             fontWeight: FontWeight.normal),
-                  //       ),
-                  //     )),
+                  NeumorphicButton(
+                      margin: EdgeInsets.only(top: 12.h),
+                      onPressed: () {
+                        articleController.getArticleAll();
+                      },
+                      style: NeumorphicStyle(
+                          color: color.secondaryColor,
+                          depth: 4,
+                          shape: NeumorphicShape.flat,
+                          boxShape: NeumorphicBoxShape.roundRect(
+                            BorderRadius.circular(20),
+                          )
+                          //border: NeumorphicBorder()
+                          ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 12.h, horizontal: 30.w),
+                      child: Text(
+                        "Refresh",
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                              color: color.primaryColor,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      )),
                 ]),
           )
         : Container(
