@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../bindings/bindings.dart';
 import 'package:get_storage/get_storage.dart';
 import '../screen/root_screen.dart';
+import 'constant/hex_color.dart';
 import 'screen/auth/tutorial_screen.dart';
 import 'screen/list_screen.dart';
 
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //   statusBarColor: Colors.transparent
+    // ));
     return ScreenUtilInit(
         designSize: const Size(360, 800),
         minTextAdapt: true,

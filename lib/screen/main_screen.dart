@@ -1,22 +1,23 @@
 import 'dart:async';
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+
 // import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sirkadian_app/constant/hex_color.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/controller/notification_controller.dart';
+
 import '../controller/auth_controller.dart';
 import '../controller/hexcolor_controller.dart';
 import '../controller/tabNavigator_controller.dart';
 import '../controller/user_controller.dart';
 import '../widget/drawer_sidebar.dart';
-import 'home/nutrition_screen/nutrition_screen.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -38,15 +39,28 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   bool hasInternet = true;
   var _currentTab = "Home";
   final screenIndex = 0.obs;
+
+  // old version
+  // List<String> pageKeys = [
+  //   "Home",
+  //   "Program",
+  //   'Healthware',
+  // ];
+  // final _navigatorKeys = {
+  //   "Home": GlobalKey<NavigatorState>(),
+  //   "Program": GlobalKey<NavigatorState>(),
+  //   'Healthware': GlobalKey<NavigatorState>(),
+  // };
+
   List<String> pageKeys = [
     "Home",
-    "Program",
-    'Healthware',
+    "Activities",
+    'Profile',
   ];
   final _navigatorKeys = {
     "Home": GlobalKey<NavigatorState>(),
-    "Program": GlobalKey<NavigatorState>(),
-    'Healthware': GlobalKey<NavigatorState>(),
+    "Activities": GlobalKey<NavigatorState>(),
+    'Profile': GlobalKey<NavigatorState>(),
   };
 
   void _selectTab(String tabItem, int index) {
@@ -161,7 +175,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return hasInternet == false
         ? Scaffold(
-            bottomNavigationBar: bottomNavBar(),
+            bottomNavigationBar: _buildBottomNavBar,
             // drawer: Drawer(backgroundColor: color.tersierColor, width: 200.w),
             body: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -245,8 +259,8 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                       )
                     : Stack(children: <Widget>[
                         _buildOffstageNavigator("Home"),
-                        _buildOffstageNavigator("Program"),
-                        _buildOffstageNavigator('Healthware'),
+                        _buildOffstageNavigator("Activities"),
+                        _buildOffstageNavigator('Profile'),
                       ]),
               ),
               drawer: DrawerSideBar(
@@ -269,11 +283,49 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               // floatingActionButtonLocation:
               //     FloatingActionButtonLocation.centerDocked,
               extendBody: true,
-              bottomNavigationBar: bottomNavBar(),
-            ));
+              bottomNavigationBar: _buildBottomNavBar,
+            ),
+          );
   }
 
-  BottomAppBar bottomNavBar() {
+  Container get _buildBottomNavBar {
+    return Container(
+      height: 75,
+      decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          boxShadow: [
+            BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10)
+          ]),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+        child: Obx(
+          () => BottomNavigationBar(
+            backgroundColor: HexColor.fromHex('#F8F9FB'),
+            onTap: (value) {
+              screenIndex.value = value;
+              _selectTab(pageKeys[screenIndex.value], screenIndex.value);
+            },
+            currentIndex: screenIndex.value,
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(FontAwesomeIcons.home), label: "Beranda"),
+              BottomNavigationBarItem(
+                  icon: Icon(FontAwesomeIcons.clock), label: "Aktivitas"),
+              BottomNavigationBarItem(
+                  icon: Icon(FontAwesomeIcons.userCircle), label: "Profile"),
+            ],
+            selectedItemColor: Colors.green,
+            unselectedItemColor: Colors.grey,
+            showUnselectedLabels: true,
+          ),
+        ),
+      ),
+    );
+  }
+
+  BottomAppBar _buildOldBottomNavBar() {
     return BottomAppBar(
       notchMargin: 6,
       color: HexColor.fromHex('#F8F9FB'),

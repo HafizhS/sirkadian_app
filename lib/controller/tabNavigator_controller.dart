@@ -1,11 +1,13 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:sirkadian_app/screen/Activities/activities_screen.dart';
 import 'package:sirkadian_app/screen/healthware/healthware_device_screen.dart';
 
 import 'package:sirkadian_app/screen/subscription/program_screen.dart';
 
 import '../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import '../screen/home/home_screen.dart';
+import '../screen/user/profile_screen.dart';
 
 // class Controller extends GetxController {
 //   var count = RxInt(0);
@@ -43,10 +45,10 @@ class TabNavigatorState extends State<TabNavigator> {
 
     if (widget.tabItem == "Home")
       child = HomeScreen();
-    else if (widget.tabItem == "Program")
-      child = ProgramScreen();
-    else if (widget.tabItem == 'Healthware')
-      child = Container();
+    else if (widget.tabItem == "Activities")
+      child = ActivitiesScreen();
+    else if (widget.tabItem == 'Profile')
+      child = ProfileScreen();
     else
       child = HomeScreen();
 

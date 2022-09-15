@@ -1,12 +1,15 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/controller/subscription_controller.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../controller/hexcolor_controller.dart';
 import '../../model/subscription_model/subscription_all_model.dart';
+import 'subscription_plan_screen.dart';
 
 class ProgramDetailScreen extends StatefulWidget {
   final SubscriptionPackages subscriptionItem;
@@ -37,10 +40,9 @@ class _ProgramDetailScreenState extends State<ProgramDetailScreen> {
     return Scaffold(
       backgroundColor: color.backgroundColor,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(130.h),
+        preferredSize: Size.fromHeight(145.h),
         child: Container(
-          padding:
-              EdgeInsets.only(top: 40.h, right: 20.w, left: 20.w, bottom: 20.h),
+          padding: EdgeInsets.only(right: 20.w, left: 20.w, bottom: 20.h),
           width: double.infinity,
           decoration:
               BoxDecoration(color: color.tersierColor, boxShadow: <BoxShadow>[
@@ -49,41 +51,43 @@ class _ProgramDetailScreenState extends State<ProgramDetailScreen> {
                 blurRadius: 20,
                 spreadRadius: 6)
           ]),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: FaIcon(
-                      FontAwesomeIcons.arrowLeft,
-                      color: color.primaryColor,
-                      size: 24.sp,
-                    )),
-                Text(
-                  widget.subscriptionItem.name!,
-                  style: GoogleFonts.poppins(
-                    textStyle: TextStyle(
+          child: SafeArea(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: FaIcon(
+                        FontAwesomeIcons.arrowLeft,
                         color: color.primaryColor,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600),
+                        size: 24.sp,
+                      )),
+                  Text(
+                    widget.subscriptionItem.name!,
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          color: color.primaryColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 3.h),
-            Text(
-              widget.subscriptionItem.description!,
-              style: GoogleFonts.inter(
-                textStyle: TextStyle(
-                    color: color.primaryColor,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold),
+                ],
               ),
-            ),
-          ]),
+              SizedBox(height: 3.h),
+              Text(
+                widget.subscriptionItem.description!,
+                style: GoogleFonts.inter(
+                  textStyle: TextStyle(
+                      color: color.primaryColor,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ]),
+          ),
         ),
       ),
       //
@@ -158,8 +162,10 @@ class _ProgramDetailScreenState extends State<ProgramDetailScreen> {
           NeumorphicButton(
               margin: EdgeInsets.only(bottom: 20.h),
               onPressed: () {
-                informationController.snackBarError('Fitur belum tersedia',
-                    'Anda bisa mulai berlangganan setelah dilakukan uji versi beta');
+                Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => SubscriptionPlanScreen()));
               },
               style: NeumorphicStyle(
                   color: color.secondaryColor,

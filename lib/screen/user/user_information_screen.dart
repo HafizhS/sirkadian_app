@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,11 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sirkadian_app/controller/auth_controller.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/screen/user/user_information_setting_screen.dart';
-import '../../controller/auth_controller.dart';
 import '../../controller/hexcolor_controller.dart';
 import '../../controller/text_controller.dart';
 import '../../controller/user_controller.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserInformationScreen extends StatefulWidget {
   const UserInformationScreen({Key? key}) : super(key: key);
@@ -470,6 +469,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
   }
 
   File? image;
+
   Future<void> pickImage(ImageSource imageSource) async {
     try {
       Get.back();
@@ -578,6 +578,7 @@ class IntegrateBarWidget extends StatelessWidget {
   }) : super(key: key);
 
   final String title;
+
   // final double kebutuhanHarian;
   final double kebutuhanDipenuhi;
   final Color color;
