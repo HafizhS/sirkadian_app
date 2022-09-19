@@ -52,41 +52,43 @@ class _ProgramDetailScreenState extends State<ProgramDetailScreen> {
                 spreadRadius: 6)
           ]),
           child: SafeArea(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: FaIcon(
-                        FontAwesomeIcons.arrowLeft,
-                        color: color.primaryColor,
-                        size: 24.sp,
-                      )),
-                  Text(
-                    widget.subscriptionItem.name!,
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: FaIcon(
+                          FontAwesomeIcons.arrowLeft,
                           color: color.primaryColor,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600),
+                          size: 24.sp,
+                        )),
+                    Text(
+                      widget.subscriptionItem.name!,
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            color: color.primaryColor,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 3.h),
-              Text(
-                widget.subscriptionItem.description!,
-                style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: color.primaryColor,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold),
+                  ],
                 ),
-              ),
-            ]),
+                SizedBox(height: 3.h),
+                Text(
+                  widget.subscriptionItem.description!,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        color: color.primaryColor,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
