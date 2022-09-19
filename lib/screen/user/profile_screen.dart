@@ -1,6 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +9,7 @@ import 'package:sirkadian_app/screen/subscription/program_screen.dart';
 import '../../constant/hex_color.dart';
 import '../../controller/user_controller.dart';
 import '../list_screen.dart';
-import '../settings/settings_general_screen.dart';
+import '../settings/settings_general_screen_2.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -28,7 +27,6 @@ class ProfileState extends State<ProfileScreen> {
     }
     var now = new DateTime.now();
     var age = now.year - DateTime.parse(dob).year;
-    var formatter = new DateFormat("yyyy-MM-dd");
 
     return "${age.toString()} Years old";
   }
@@ -78,7 +76,9 @@ class ProfileState extends State<ProfileScreen> {
                               child: Icon(Icons.settings,
                                   color: Colors.white, size: 30),
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsGeneralScreen()));
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        SettingsGeneralScreen2()));
                               },
                             )
                           ],
@@ -88,114 +88,111 @@ class ProfileState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-              body: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: SafeArea(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          const SizedBox(height: 20),
-                          _buildProfileCard(),
-                          const SizedBox(height: 20),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Card(
-                              elevation: 5,
-                              child: Container(
-                                height: 50,
-                                width: double.infinity,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.health_and_safety_outlined,
-                                          size: 34.h, color: Colors.green),
-                                      const SizedBox(width: 10),
-                                      Text("Health",
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w500)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ProgramScreen()));
-                            },
-                            child: Card(
-                              elevation: 5,
-                              child: Container(
-                                height: 50,
-                                width: double.infinity,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.list,
-                                          size: 34.h, color: Colors.green),
-                                      const SizedBox(width: 10),
-                                      Text("Program",
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w500)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                              authController.logout();
-                              Get.offNamed(RouteScreens.welcome);
-                            },
-                            child: Card(
-                              elevation: 5,
-                              child: Container(
-                                height: 50,
-                                width: double.infinity,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.logout,
-                                          size: 34.h, color: Colors.green),
-                                      const SizedBox(width: 10),
-                                      Text("Log out",
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w500)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+              body: _buildBody(context)),
+    );
+  }
 
-                          // ...List.filled(10, null)
-                          //     .map((e) => Text("Test"))
-                          //     .toList(),
-                        ],
+  SingleChildScrollView _buildBody(BuildContext context) {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                const SizedBox(height: 20),
+                _buildProfileCard(),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {},
+                  child: Card(
+                    elevation: 5,
+                    child: Container(
+                      height: 50,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          children: [
+                            Icon(Icons.health_and_safety_outlined,
+                                size: 34.h, color: Colors.green),
+                            const SizedBox(width: 10),
+                            Text("Health",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500)),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ProgramScreen()));
+                  },
+                  child: Card(
+                    elevation: 5,
+                    child: Container(
+                      height: 50,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          children: [
+                            Icon(Icons.list, size: 34.h, color: Colors.green),
+                            const SizedBox(width: 10),
+                            Text("Program",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    authController.logout();
+                    Get.offNamed(RouteScreens.welcome);
+                  },
+                  child: Card(
+                    elevation: 5,
+                    child: Container(
+                      height: 50,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          children: [
+                            Icon(Icons.logout, size: 34.h, color: Colors.green),
+                            const SizedBox(width: 10),
+                            Text("Log out",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                // ...List.filled(10, null)
+                //     .map((e) => Text("Test"))
+                //     .toList(),
+              ],
             ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -261,7 +258,17 @@ class ProfileState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                Icon(Icons.edit, color: Colors.green)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).push(
+                      PageRouteBuilder(
+                        opaque: false, // set to false
+                        pageBuilder: (_, __, ___) => _EditProfileWidget(),
+                      ),
+                    );
+                  },
+                  child: Icon(Icons.edit, color: Colors.green),
+                )
               ],
             ),
             const SizedBox(height: 10),
@@ -300,6 +307,171 @@ class ProfileState extends State<ProfileScreen> {
             const SizedBox(height: 13),
             const Divider(color: Colors.grey, height: 1, thickness: 1),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EditProfileWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black.withOpacity(0.5),
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width - 50.w,
+          height: 250.h,
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(15)),
+          child: Padding(
+            padding: const EdgeInsets.all(17),
+            child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Data diri",
+                    style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 35.h,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: TextFormField(
+                            maxLines: 1,
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color: HexColor.fromHex("8CD15D")),
+                                  borderRadius: BorderRadius.horizontal(
+                                      left: Radius.circular(50)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color: HexColor.fromHex("8CD15D")),
+                                  borderRadius: BorderRadius.horizontal(
+                                      left: Radius.circular(50)),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white70),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: TextFormField(
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color: HexColor.fromHex("8CD15D")),
+                                  borderRadius: BorderRadius.horizontal(
+                                      right: Radius.circular(50)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color: HexColor.fromHex("8CD15D")),
+                                  borderRadius: BorderRadius.horizontal(
+                                      right: Radius.circular(50)),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white70),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    height: 35.h,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: TextFormField(
+                            maxLines: 1,
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color: HexColor.fromHex("8CD15D")),
+                                  borderRadius: BorderRadius.horizontal(
+                                      left: Radius.circular(50)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color: HexColor.fromHex("8CD15D")),
+                                  borderRadius: BorderRadius.horizontal(
+                                      left: Radius.circular(50)),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white70),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: TextFormField(
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color: HexColor.fromHex("8CD15D")),
+                                  borderRadius: BorderRadius.horizontal(
+                                      right: Radius.circular(50)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color: HexColor.fromHex("8CD15D")),
+                                  borderRadius: BorderRadius.horizontal(
+                                      right: Radius.circular(50)),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white70),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("Cancel"),
+                            style: TextButton.styleFrom(
+                                foregroundColor: HexColor.fromHex("8CD15D"))),
+                        SizedBox(width: 15),
+                        ElevatedButton(
+                            onPressed: () {},
+                            child: Text("Simpan",
+                                style: TextStyle(color: Colors.white)),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: HexColor.fromHex("8CD15D"))),
+                      ],
+                    ),
+                  )
+                ]),
+          ),
         ),
       ),
     );
