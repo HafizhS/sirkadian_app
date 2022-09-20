@@ -159,6 +159,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
         .then((value) {
       if (authController.successGetWebsocket) {
         print(authController.successGetWebsocket);
+
+        // TODO Fix Future Still running after Screen Pop/Dispose
         Future.delayed(Duration(seconds: 1), () {
           channel = IOWebSocketChannel.connect(
               Uri.parse('$wssRoot/websocket/${widget.id}'));
@@ -331,21 +333,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 children: [
                                   Align(
                                     alignment: Alignment.centerLeft,
-                                    child: NeumorphicButton(
+                                    child: IconButton(
                                       onPressed: () {
                                         Get.back();
                                       },
-                                      style: NeumorphicStyle(
-                                        shape: NeumorphicShape.flat,
-                                        boxShape: NeumorphicBoxShape.circle(),
-                                        color: HexColor.fromHex('#F0F3EC'),
+                                      icon: FaIcon(
+                                        FontAwesomeIcons.arrowLeft,
+                                        size: 25.sp,
+                                        color: color.primaryTextColor,
                                       ),
-                                      padding: EdgeInsets.all(16.sp),
-                                      child: FaIcon(
-                                        FontAwesomeIcons.chevronLeft,
-                                        size: 16.sp,
-                                        color: HexColor.fromHex('#777B71'),
-                                      ),
+                                      padding: const EdgeInsets.all(10.0),
                                     ),
                                   ),
                                   Text(

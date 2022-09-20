@@ -4,8 +4,8 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../controller/hexcolor_controller.dart';
 import '../../constant/hex_color.dart';
+import '../../controller/hexcolor_controller.dart';
 import '../list_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -49,6 +49,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         images: 'assets/images/menuKonsultasi.png',
         color: Colors.green.shade900),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,82 +68,112 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 height: 800.h,
                 width: 360.w,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    NeumorphicButton(
-                        margin: EdgeInsets.only(top: 12.h),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ElevatedButton(
                         onPressed: () {
                           Get.toNamed(RouteScreens.login);
                         },
-                        style: NeumorphicStyle(
-                            color: color.secondaryColor,
-                            shape: NeumorphicShape.flat,
-                            boxShape: NeumorphicBoxShape.roundRect(
-                              BorderRadius.circular(20),
-                            )
-                            //border: NeumorphicBorder()
-                            ),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 12.h, horizontal: 120.w),
-                        child: Text(
-                          "Masuk",
-                          style: GoogleFonts.inter(
-                            textStyle: TextStyle(
-                                color: color.primaryColor,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        )),
-                    SizedBox(
-                      height: 18.h,
-                    ),
-                    TextButton(
-                      style: ButtonStyle(
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.transparent)),
-                      onPressed: () {
-                        Get.toNamed(RouteScreens.register);
-                      },
-                      child: RichText(
-                        text: TextSpan(
-                          text: 'Belum punya akun? ',
-                          style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                            color: color.primaryTextColor,
-                            fontSize: 14.sp,
-                          )),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'Daftar',
-                              style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                    color: color.primaryTextColor,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: Text("Masuk",
+                            style: GoogleFonts.inter(color: Colors.white)),
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            backgroundColor: HexColor.fromHex("73C639")),
                       ),
-                    )
-                  ],
+                      const SizedBox(height: 5),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.toNamed(RouteScreens.register);
+                        },
+                        child: Text("Daftar",
+                            style: GoogleFonts.inter(
+                                color: HexColor.fromHex("73C639"))),
+                        style: OutlinedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            side: BorderSide(
+                                color: HexColor.fromHex("73C639"), width: 1)),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // NeumorphicButton(
+                      //     margin: EdgeInsets.only(top: 12.h),
+                      //     onPressed: () {
+                      //       Get.toNamed(RouteScreens.login);
+                      //     },
+                      //     style: NeumorphicStyle(
+                      //         color: color.secondaryColor,
+                      //         shape: NeumorphicShape.flat,
+                      //         boxShape: NeumorphicBoxShape.roundRect(
+                      //           BorderRadius.circular(20),
+                      //         )
+                      //         //border: NeumorphicBorder()
+                      //         ),
+                      //     padding: EdgeInsets.symmetric(
+                      //         vertical: 12.h, horizontal: 120.w),
+                      //     child: Text(
+                      //       "Masuk",
+                      //       style: GoogleFonts.inter(
+                      //         textStyle: TextStyle(
+                      //             color: color.primaryColor,
+                      //             fontSize: 14.sp,
+                      //             fontWeight: FontWeight.normal),
+                      //       ),
+                      //     )),
+                      // SizedBox(
+                      //   height: 18.h,
+                      // ),
+                      // TextButton(
+                      //   style: ButtonStyle(
+                      //       overlayColor:
+                      //           MaterialStateProperty.all(Colors.transparent)),
+                      //   onPressed: () {
+                      //     Get.toNamed(RouteScreens.register);
+                      //   },
+                      //   child: RichText(
+                      //     text: TextSpan(
+                      //       text: 'Belum punya akun? ',
+                      //       style: GoogleFonts.inter(
+                      //           textStyle: TextStyle(
+                      //         color: color.primaryTextColor,
+                      //         fontSize: 14.sp,
+                      //       )),
+                      //       children: <TextSpan>[
+                      //         TextSpan(
+                      //           text: 'Daftar',
+                      //           style: GoogleFonts.inter(
+                      //             textStyle: TextStyle(
+                      //                 color: color.primaryTextColor,
+                      //                 fontSize: 14.sp,
+                      //                 fontWeight: FontWeight.bold),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // )
+                    ],
+                  ),
                 ),
               ),
               //
               Container(
                   decoration: BoxDecoration(
-                      color: color.backgroundColor,
+                      color: Colors.white,
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(40),
                           bottomRight: Radius.circular(40)),
                       boxShadow: <BoxShadow>[
                         BoxShadow(
                             color: HexColor.fromHex('#000000').withOpacity(0.2),
-                            blurRadius: 40,
+                            blurRadius: 10,
                             spreadRadius: 6)
                       ]),
-                  height: 500.h,
+                  height: 550.h,
                   child: Swiper(
                     // itemCount: data.length,
                     itemCount: 5,
@@ -153,7 +184,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             bottom: 50.h, left: 10.w, right: 10.w),
                         padding: EdgeInsets.symmetric(horizontal: 10.w),
                         decoration: BoxDecoration(
-                          color: color.backgroundColor,
+                          color: Colors.white,
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -221,6 +252,7 @@ class WelcomeDataModel {
   String? subtitle;
   String? images;
   Color? color;
+
   WelcomeDataModel({
     this.title,
     this.subtitle,
