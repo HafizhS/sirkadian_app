@@ -263,12 +263,12 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                         _buildOffstageNavigator('Profile'),
                       ]),
               ),
-              drawer: DrawerSideBar(
-                // packageInfo: _packageInfo,
-                authController: authController,
-                userController: userController,
-                color: color,
-              ),
+              // drawer: DrawerSideBar(
+              //   // packageInfo: _packageInfo,
+              //   authController: authController,
+              //   userController: userController,
+              //   color: color,
+              // ),
               // floatingActionButton: FloatingActionButton(
               //   backgroundColor: color.tersierColor,
               //   onPressed: () {
