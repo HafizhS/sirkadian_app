@@ -1,26 +1,29 @@
 import 'dart:async';
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:sirkadian_app/controller/notification_controller.dart';
+import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:sirkadian_app/screen/home/nutrition_screen/fluid_screen/fuild_general_screen.dart';
 import 'package:sirkadian_app/screen/home/nutrition_screen/food_screen/food_general_screen.dart';
-import 'package:multiple_stream_builder/multiple_stream_builder.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../controller/hexcolor_controller.dart';
+import 'package:sirkadian_app/widget/custom_widget/custom_calendar_bar_widget.dart';
+
+import '../../../constant/hex_color.dart';
 import '../../../controller/auth_controller.dart';
 import '../../../controller/food_controller.dart';
+import '../../../controller/hexcolor_controller.dart';
 import '../../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import '../../../objectbox.g.dart';
 import 'food_screen/food_future_mealPlan_screen.dart';
+import 'food_screen/food_history_screen.dart';
 
 class NutritionScreen extends StatefulWidget {
   const NutritionScreen({Key? key, required this.hasBeenInitializedFood})
       : super(key: key);
   final bool hasBeenInitializedFood;
+
   @override
   State<NutritionScreen> createState() => _NutritionScreenState();
 }
@@ -35,6 +38,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
   late Stream<List<Food>> _sarapanStream;
   late Stream<List<Food>> _makanSiangStream;
   late Stream<List<Food>> _makanMalamStream;
+
   // late Stream<List<Food>> _snackStream;
   // = controller.stream;
 
@@ -163,86 +167,138 @@ class _NutritionScreenState extends State<NutritionScreen> {
           snapshot) {
     return Scaffold(
         backgroundColor: color.bgColor,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(70.h),
-          child: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.only(top: 20.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 20.w),
-                    child: NeumorphicButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.flat,
-                        boxShape: NeumorphicBoxShape.circle(),
-                        color: color.bgColor,
-                      ),
-                      padding: EdgeInsets.all(16.sp),
-                      child: FaIcon(
-                        FontAwesomeIcons.chevronLeft,
-                        size: 16.sp,
-                        color: color.secondaryTextColor,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    isFood ? 'SirkaDiet' : 'SirkaFluid',
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                          color: color.primaryTextColor,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: 20.w),
-                    child: NeumorphicButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FutureMealPlanScreen(
-                                      listMealNecessity: snapshot.item1.data!,
-                                      hasBeenInitialized:
-                                          widget.hasBeenInitializedFood,
-                                      // hasBeenInitialized,
-                                    ))).then((_) {
-                          foodController.selectedDay = DateTime.utc(
-                              DateTime.now().year,
-                              DateTime.now().month,
-                              DateTime.now().day);
-
-                          print(foodController.selectedDay);
-                        });
-                      },
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.flat,
-                        boxShape: NeumorphicBoxShape.circle(),
-                        color: color.bgColor,
-                      ),
-                      padding: EdgeInsets.all(16.0.sp),
-                      child: FaIcon(
-                        FontAwesomeIcons.calendarAlt,
-                        size: 16.sp,
-                        color: color.secondaryTextColor,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+        // appBar: _buildOldAppBar(context, snapshot),
+        appBar: _buildAppBar(context, snapshot),
         body: nutritionChildWidget(
           context, snapshot.item1, snapshot.item2,
           snapshot.item3, snapshot.item4,
           // snapshot.item5
         ));
+  }
+
+  AppBar _buildAppBar(
+      BuildContext context,
+      Tuple4<AsyncSnapshot<List<Food>>, AsyncSnapshot<List<Food>>,
+              AsyncSnapshot<List<Food>>, AsyncSnapshot<List<Food>>>
+          snapshot) {
+    return AppBar(
+      leadingWidth: 65,
+      title: Text(
+        isFood ? 'SirkaDiet'.toUpperCase() : 'SirkaFluid'.toUpperCase(),
+        style: GoogleFonts.poppins(
+            fontSize: 20.sp,
+            letterSpacing: 3.sp,
+            color: Colors.white,
+            fontWeight: FontWeight.w700),
+      ),
+      centerTitle: true,
+      backgroundColor: HexColor.fromHex("73C639"),
+      actions: [
+        IconButton(
+          icon:
+              Icon(FontAwesomeIcons.history, size: 25.sp, color: Colors.white),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FoodHistoryScreen(),
+              ),
+            );
+          },
+        ),
+      ],
+      bottom:
+          PreferredSize(preferredSize: Size.fromHeight(10), child: Container()),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back, size: 35.sp, color: Colors.white),
+        onPressed: () {
+          Navigator.pop(context);
+          foodController.isOnFood(false);
+        },
+      ),
+      automaticallyImplyLeading: true,
+    );
+  }
+
+  PreferredSize _buildOldAppBar(
+      BuildContext context,
+      Tuple4<AsyncSnapshot<List<Food>>, AsyncSnapshot<List<Food>>,
+              AsyncSnapshot<List<Food>>, AsyncSnapshot<List<Food>>>
+          snapshot) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(70.h),
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.only(top: 20.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 20.w),
+                child: NeumorphicButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: NeumorphicStyle(
+                    shape: NeumorphicShape.flat,
+                    boxShape: NeumorphicBoxShape.circle(),
+                    color: color.bgColor,
+                  ),
+                  padding: EdgeInsets.all(16.sp),
+                  child: FaIcon(
+                    FontAwesomeIcons.chevronLeft,
+                    size: 16.sp,
+                    color: color.secondaryTextColor,
+                  ),
+                ),
+              ),
+              Text(
+                isFood ? 'SirkaDiet' : 'SirkaFluid',
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                      color: color.primaryTextColor,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(right: 20.w),
+                child: NeumorphicButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FutureMealPlanScreen(
+                                  listMealNecessity: snapshot.item1.data!,
+                                  hasBeenInitialized:
+                                      widget.hasBeenInitializedFood,
+                                  // hasBeenInitialized,
+                                ))).then((_) {
+                      foodController.selectedDay = DateTime.utc(
+                          DateTime.now().year,
+                          DateTime.now().month,
+                          DateTime.now().day);
+                      print(foodController.selectedDay);
+                    });
+                  },
+                  style: NeumorphicStyle(
+                    shape: NeumorphicShape.flat,
+                    boxShape: NeumorphicBoxShape.circle(),
+                    color: color.bgColor,
+                  ),
+                  padding: EdgeInsets.all(16.0.sp),
+                  child: FaIcon(
+                    FontAwesomeIcons.calendarAlt,
+                    size: 16.sp,
+                    color: color.secondaryTextColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget nutritionChildWidget(
@@ -253,100 +309,118 @@ class _NutritionScreenState extends State<NutritionScreen> {
     AsyncSnapshot<List<Food>> snapshotMakanMalam,
     // AsyncSnapshot<List<Food>> snapshotSnack,
   ) {
-    return Padding(
-      padding: EdgeInsets.only(top: 20.h),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            //segment 1
-            Container(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        NeumorphicButton(
-                            margin: EdgeInsets.only(top: 12.h),
-                            onPressed: () {
-                              setState(() {
-                                isFood = true;
-                              });
-                            },
-                            style: NeumorphicStyle(
-                                depth: isFood ? -4 : 4,
-                                color: color.bgColor,
-                                shape: NeumorphicShape.flat,
-                                boxShape: NeumorphicBoxShape.roundRect(
-                                    BorderRadius.only(
-                                        bottomLeft: Radius.circular(20),
-                                        topLeft: Radius.circular(20)))),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 12.h, horizontal: 30.w),
-                            child: Text(
-                              'Makan',
-                              style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                    color: isFood
-                                        ? color.secondaryColor
-                                        : color.secondaryTextColor,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            )),
-                        NeumorphicButton(
-                            margin: EdgeInsets.only(top: 12.h),
-                            onPressed: () {
-                              setState(() {
-                                isFood = false;
-                              });
-                            },
-                            style: NeumorphicStyle(
-                                depth: isFood ? 4 : -4,
-                                color: color.bgColor,
-                                shape: NeumorphicShape.flat,
-                                boxShape: NeumorphicBoxShape.roundRect(
-                                    BorderRadius.only(
-                                        bottomRight: Radius.circular(20),
-                                        topRight: Radius.circular(20)))),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 12.h, horizontal: 30.w),
-                            child: Text(
-                              'Minum',
-                              style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                    color: isFood
-                                        ? color.secondaryTextColor
-                                        : color.secondaryColor,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            )),
-                      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          //segment 1
+          Container(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     NeumorphicButton(
+              //         margin: EdgeInsets.only(top: 12.h),
+              //         onPressed: () {
+              //           setState(() {
+              //             isFood = true;
+              //           });
+              //         },
+              //         style: NeumorphicStyle(
+              //             depth: isFood ? -4 : 4,
+              //             color: color.bgColor,
+              //             shape: NeumorphicShape.flat,
+              //             boxShape: NeumorphicBoxShape.roundRect(
+              //                 BorderRadius.only(
+              //                     bottomLeft: Radius.circular(20),
+              //                     topLeft: Radius.circular(20)))),
+              //         padding: EdgeInsets.symmetric(
+              //             vertical: 12.h, horizontal: 30.w),
+              //         child: Text(
+              //           'Makan',
+              //           style: GoogleFonts.inter(
+              //             textStyle: TextStyle(
+              //                 color: isFood
+              //                     ? color.secondaryColor
+              //                     : color.secondaryTextColor,
+              //                 fontSize: 14.sp,
+              //                 fontWeight: FontWeight.normal),
+              //           ),
+              //         )),
+              //     NeumorphicButton(
+              //         margin: EdgeInsets.only(top: 12.h),
+              //         onPressed: () {
+              //           setState(() {
+              //             isFood = false;
+              //           });
+              //         },
+              //         style: NeumorphicStyle(
+              //             depth: isFood ? 4 : -4,
+              //             color: color.bgColor,
+              //             shape: NeumorphicShape.flat,
+              //             boxShape: NeumorphicBoxShape.roundRect(
+              //                 BorderRadius.only(
+              //                     bottomRight: Radius.circular(20),
+              //                     topRight: Radius.circular(20)))),
+              //         padding: EdgeInsets.symmetric(
+              //             vertical: 12.h, horizontal: 30.w),
+              //         child: Text(
+              //           'Minum',
+              //           style: GoogleFonts.inter(
+              //             textStyle: TextStyle(
+              //                 color: isFood
+              //                     ? color.secondaryTextColor
+              //                     : color.secondaryColor,
+              //                 fontSize: 14.sp,
+              //                 fontWeight: FontWeight.normal),
+              //           ),
+              //         )),
+              //   ],
+              // ),
+              CustomCalenderBarWidget(
+                centerWidget: Text("Hari ini",
+                    style: GoogleFonts.inter(
+                        color: Colors.white, fontWeight: FontWeight.w500)),
+                onCenterPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FutureMealPlanScreen(
+                        listMealNecessity: snapshotNecessity.data!,
+                        hasBeenInitialized: widget.hasBeenInitializedFood,
+                        // hasBeenInitialized,
+                      ),
                     ),
-                    SizedBox(
-                      height: 28.h,
-                    ),
-                  ]),
-            ),
-            //segment 2
-            AnimatedCrossFade(
-                duration: Duration(milliseconds: 200),
-                crossFadeState: isFood
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
-                firstChild: FoodGeneralScreen(
-                  hasBeenInitialized: widget.hasBeenInitializedFood,
-                  // hasBeenInitialized: hasBeenInitialized,
-                  listMealNecessity: snapshotNecessity.data!,
-                  listMealSarapan: snapshotSarapan.data!,
-                  listMealMakanSiang: snapshotMakanSiang.data!,
-                  listMealMakanMalam: snapshotMakanMalam.data!,
-                  // listMealSnack: snapshotSnack.data!,
-                ),
-                secondChild: FluidGeneralScreen())
-          ],
-        ),
+                  ).then((_) {
+                    foodController.selectedDay = DateTime.utc(
+                        DateTime.now().year,
+                        DateTime.now().month,
+                        DateTime.now().day);
+                    print(foodController.selectedDay);
+                  });
+                },
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+            ]),
+          ),
+          //segment 2
+          AnimatedCrossFade(
+              duration: Duration(milliseconds: 200),
+              crossFadeState:
+                  isFood ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+              firstChild: FoodGeneralScreen(
+                hasBeenInitialized: widget.hasBeenInitializedFood,
+                // hasBeenInitialized: hasBeenInitialized,
+                listMealNecessity: snapshotNecessity.data!,
+                listMealSarapan: snapshotSarapan.data!,
+                listMealMakanSiang: snapshotMakanSiang.data!,
+                listMealMakanMalam: snapshotMakanMalam.data!,
+                // listMealSnack: snapshotSnack.data!,
+              ),
+              secondChild: FluidGeneralScreen())
+        ],
       ),
     );
   }

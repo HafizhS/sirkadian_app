@@ -1,12 +1,14 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sirkadian_app/controller/subscription_controller.dart';
-import 'package:sirkadian_app/screen/subscription/program_detail_screen.dart';
+import 'package:sirkadian_app/model/subscription_model/subscription_all_model.dart';
+import 'package:sirkadian_app/screen/subscription/program_detail_screen_2.dart';
 
+import '../../constant/hex_color.dart';
 import '../../controller/auth_controller.dart';
 import '../../controller/hexcolor_controller.dart';
 import '../../controller/user_controller.dart';
@@ -29,6 +31,7 @@ class _ProgramScreenState extends State<ProgramScreen> {
   TextEditingController _couponTextController = TextEditingController();
   int pageActive = 0;
   final closeTopContainer = false.obs;
+
   @override
   void initState() {
     // subscriptionController.getSubscriptionAll();
@@ -51,12 +54,12 @@ class _ProgramScreenState extends State<ProgramScreen> {
         alignment: Alignment.center,
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 30.w),
-          padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 10.w),
+          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
           height: 300.h,
           width: 360.w,
           decoration: BoxDecoration(
             color: color.primaryColor,
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(20),
             boxShadow: <BoxShadow>[
               BoxShadow(
                   color: color.blackColor.withOpacity(0.2),
@@ -66,10 +69,10 @@ class _ProgramScreenState extends State<ProgramScreen> {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Claim Coupon',
+                'Kode Program',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   textStyle: TextStyle(
@@ -250,439 +253,118 @@ class _ProgramScreenState extends State<ProgramScreen> {
               : Scaffold(
                   backgroundColor: color.backgroundColor,
 
-                  appBar: PreferredSize(
-                      preferredSize: Size.fromHeight(
-                          !closeTopContainer.value ? 290.h : 80.h),
-                      child: AnimatedCrossFade(
-                        duration: const Duration(milliseconds: 200),
-                        crossFadeState: !closeTopContainer.value
-                            ? CrossFadeState.showFirst
-                            : CrossFadeState.showSecond,
-                        firstChild: Container(
-                          padding: EdgeInsets.only(
-                              top: 60.h, right: 20.w, left: 20.w),
-                          width: double.infinity,
-                          height: 290.h,
-                          decoration: BoxDecoration(
-                              color: color.secondaryColor,
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                    color: color.blackColor.withOpacity(0.2),
-                                    blurRadius: 20,
-                                    spreadRadius: 6)
-                              ]),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Scaffold.of(context).openDrawer();
-                                      },
-                                      child: FaIcon(
-                                        FontAwesomeIcons.bars,
-                                        color: color.primaryColor,
-                                      ),
-                                    ),
-                                    NeumorphicButton(
-                                      onPressed: () {
-                                        dialogClaimCoupon();
-                                      },
-                                      style: NeumorphicStyle(
-                                        depth: 0,
-                                        shape: NeumorphicShape.flat,
-                                        boxShape: NeumorphicBoxShape.circle(),
-                                        color: color.bgColor,
-                                      ),
-                                      padding: EdgeInsets.all(14.0.sp),
-                                      child: FaIcon(
-                                        FontAwesomeIcons.ticketAlt,
-                                        size: 16.sp,
-                                        color: color.secondaryColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                //
+                  // appBar: _buildOldAppBar(context),
+                  appBar: _buildAppBar(context),
 
-                                SizedBox(height: 12.h),
-
-                                Expanded(
-                                  child: Container(
-                                      margin: EdgeInsets.only(
-                                          top: 10.h, bottom: 10.h),
-                                      width: double.infinity,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: color.primaryColor,
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          boxShadow: <BoxShadow>[
-                                            BoxShadow(
-                                                color: color.blackColor
-                                                    .withOpacity(0.2),
-                                                blurRadius: 20,
-                                                spreadRadius: 6)
-                                          ]),
-                                      child: subscriptionController
-                                              .listSubscriptionActiveUser
-                                              .isEmpty
-                                          ? Text(
-                                              "Anda sedang mengikuti program default Sirkadian (Maintain Health)",
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.inter(
-                                                textStyle: TextStyle(
-                                                    color: color
-                                                        .secondaryTextColor,
-                                                    fontSize: 14.sp,
-                                                    fontWeight:
-                                                        FontWeight.normal),
-                                              ),
-                                            )
-                                          : PageView.builder(
-                                              itemCount: subscriptionController
-                                                  .listSubscriptionActiveUser
-                                                  .length,
-                                              itemBuilder: (context, index) {
-                                                return Container(
-                                                  padding: EdgeInsets.only(
-                                                      top: 10.h,
-                                                      left: 10.w,
-                                                      right: 10.w),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            "Program Kesehatan Anda",
-                                                            style: GoogleFonts
-                                                                .poppins(
-                                                              textStyle: TextStyle(
-                                                                  color: color
-                                                                      .primaryTextColor,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                          ),
-                                                          NeumorphicButton(
-                                                            onPressed: () {},
-                                                            style:
-                                                                NeumorphicStyle(
-                                                              depth: 4,
-                                                              shape:
-                                                                  NeumorphicShape
-                                                                      .flat,
-                                                              boxShape:
-                                                                  NeumorphicBoxShape
-                                                                      .circle(),
-                                                              color: Colors
-                                                                  .transparent,
-                                                            ),
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0.sp),
-                                                            child: Center(
-                                                              child: FaIcon(
-                                                                FontAwesomeIcons
-                                                                    .history,
-                                                                size: 18.sp,
-                                                                color: color
-                                                                    .primaryTextColor,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Text(
-                                                        subscriptionController
-                                                                .listSubscriptionActiveUser[
-                                                                    index]
-                                                                .subscriptionPackageName! +
-                                                            ' (' +
-                                                            subscriptionController
-                                                                .listSubscriptionActiveUser[
-                                                                    index]
-                                                                .subscriptionTypeName! +
-                                                            ')',
-                                                        style:
-                                                            GoogleFonts.inter(
-                                                          textStyle: TextStyle(
-                                                              color: color
-                                                                  .secondaryTextColor,
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      ),
-                                                      // Text(
-                                                      //   "Status Kesehatan User (BMI) dan target",
-                                                      //   style: GoogleFonts.inter(
-                                                      //     textStyle: TextStyle(
-                                                      //         color: color
-                                                      //             .secondaryTextColor,
-                                                      //         fontSize: 14.sp,
-                                                      //         fontWeight:
-                                                      //             FontWeight.normal),
-                                                      //   ),
-                                                      // ),
-                                                      Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: List<
-                                                                  Widget>.generate(
-                                                              subscriptionController
-                                                                  .listSubscriptionActiveUser
-                                                                  .length,
-                                                              (int index) {
-                                                            print(index);
-                                                            return AnimatedContainer(
-                                                                duration: Duration(
-                                                                    milliseconds:
-                                                                        300),
-                                                                height: 8.h,
-                                                                width: 6.w,
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        left: 5
-                                                                            .w,
-                                                                        right:
-                                                                            5.w,
-                                                                        bottom: 10
-                                                                            .h),
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                5),
-                                                                    color: (subscriptionController.listSubscriptionActiveUser[index] ==
-                                                                            pageActive)
-                                                                        ? color
-                                                                            .tersierColor
-                                                                        : color
-                                                                            .secondaryColor
-                                                                            .withOpacity(0.4)));
-                                                          })),
-                                                    ],
-                                                  ),
-                                                );
-                                              })),
-                                ),
-                              ]),
-                        ),
-                        secondChild: Container(
-                            padding: EdgeInsets.only(
-                                top: 60.h, right: 20.w, left: 20.w),
-                            width: 360.w,
-                            decoration: BoxDecoration(
-                                color: color.secondaryColor,
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      color: color.blackColor.withOpacity(0.2),
-                                      blurRadius: 20,
-                                      spreadRadius: 6)
-                                ]),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Scaffold.of(context).openDrawer();
-                                        },
-                                        child: FaIcon(
-                                          FontAwesomeIcons.bars,
-                                          color: color.primaryColor,
-                                        ),
-                                      ),
-                                      NeumorphicButton(
-                                        onPressed: () {
-                                          dialogClaimCoupon();
-                                        },
-                                        style: NeumorphicStyle(
-                                          depth: 0,
-                                          shape: NeumorphicShape.flat,
-                                          boxShape: NeumorphicBoxShape.circle(),
-                                          color: color.bgColor,
-                                        ),
-                                        padding: EdgeInsets.all(14.0.sp),
-                                        child: FaIcon(
-                                          FontAwesomeIcons.ticketAlt,
-                                          size: 16.sp,
-                                          color: color.secondaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ])),
-                      )),
-
-                  //
                   body: Container(
                       margin: EdgeInsets.only(top: 10.h),
                       child: SingleChildScrollView(
                         physics: BouncingScrollPhysics(),
                         controller: scrollController,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            SizedBox(height: 8.h),
                             Text(
-                              "Pilihan Program Tersedia",
+                              "Program Aktif",
+                              textAlign: TextAlign.center,
                               style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                     color: color.secondaryTextColor,
                                     fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.w600),
                               ),
                             ),
-                            SizedBox(height: 18.h),
+                            const SizedBox(height: 10),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              height: 175,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                color: HexColor.fromHex("73C639"),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 0,
+                                    blurRadius: 6,
+                                    offset: Offset(
+                                        4, 2), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/testImage1.jpg",
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        gradient: LinearGradient(
+                                          begin: FractionalOffset.topCenter,
+                                          end: FractionalOffset.bottomCenter,
+                                          colors: [
+                                            Colors.black.withOpacity(.0),
+                                            Colors.black.withOpacity(.7),
+                                          ],
+                                          stops: [0.0, 1],
+                                        ),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Text("Program Default",
+                                                style: GoogleFonts.poppins(
+                                                    height: 1,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14.sp)),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              "Maintain Health",
+                                              style: GoogleFonts.poppins(
+                                                  height: 1,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 18.sp),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 15.h),
+                            Text(
+                              "Pilihan Program Tersedia",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    color: color.secondaryTextColor,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
                             Column(
                               children: subscriptionController.listSubscription
-                                  .map((listSubscription) => Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 10.w),
-                                            child: Text(
-                                              listSubscription
-                                                  .subscriptionType!,
-                                              style: GoogleFonts.poppins(
-                                                textStyle: TextStyle(
-                                                    color:
-                                                        color.tersierTextColor,
-                                                    fontSize: 14.sp,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: 200.h,
-                                            width: 360.w,
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: 10.h,
-                                                horizontal: 10.w),
-                                            child: ListView.builder(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                physics:
-                                                    BouncingScrollPhysics(),
-                                                itemCount: listSubscription
-                                                    .subscriptionPackages!
-                                                    .length,
-                                                itemBuilder: (context, idx) {
-                                                  return GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ProgramDetailScreen(
-                                                                    subscriptionItem:
-                                                                        listSubscription
-                                                                            .subscriptionPackages![idx],
-                                                                  )));
-                                                    },
-                                                    child: Container(
-                                                      width: 240.w,
-                                                      padding:
-                                                          EdgeInsets.all(10.sp),
-                                                      margin:
-                                                          EdgeInsets.all(10.sp),
-                                                      alignment:
-                                                          Alignment.bottomLeft,
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            listSubscription
-                                                                .subscriptionPackages![
-                                                                    idx]
-                                                                .name!,
-                                                            style: GoogleFonts
-                                                                .inter(
-                                                              textStyle: TextStyle(
-                                                                  color: color
-                                                                      .primaryColor,
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal),
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            listSubscription
-                                                                .subscriptionPackages![
-                                                                    idx]
-                                                                .subscriptionTypeName!,
-                                                            style: GoogleFonts
-                                                                .inter(
-                                                              textStyle: TextStyle(
-                                                                  color: color
-                                                                      .primaryColor,
-                                                                  fontSize:
-                                                                      20.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal),
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            listSubscription
-                                                                .subscriptionPackages![
-                                                                    idx]
-                                                                .description!,
-                                                            style: GoogleFonts
-                                                                .inter(
-                                                              textStyle: TextStyle(
-                                                                  color: color
-                                                                      .primaryColor,
-                                                                  fontSize:
-                                                                      10.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            color.tersierColor,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                      ),
-                                                    ),
-                                                  );
-                                                }),
-                                          )
-                                        ],
-                                      ))
+                                  .map((listSubscription) =>
+                                      _buildProgramList(listSubscription))
                                   .toList(),
                             ),
                             SizedBox(height: 200.h),
@@ -691,5 +373,442 @@ class _ProgramScreenState extends State<ProgramScreen> {
                       )),
                 ),
     );
+  }
+
+  Column _buildProgramList(DataSubscriptionAllResponse listSubscription) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 10.w),
+          child: Text(
+            listSubscription.subscriptionType!,
+            style: GoogleFonts.poppins(
+              textStyle: TextStyle(
+                  color: color.tersierTextColor,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
+        Container(
+          height: 150.h,
+          margin: EdgeInsets.symmetric(vertical: 10.h),
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            physics: BouncingScrollPhysics(),
+            itemCount: listSubscription.subscriptionPackages!.length,
+            itemBuilder: (context, idx) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProgramDetailScreen2(
+                        subscriptionItem:
+                            listSubscription.subscriptionPackages![idx],
+                      ),
+                    ),
+                  );
+                },
+                child: _buildProgramItem(listSubscription, idx),
+              );
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Container _buildProgramItem(
+      DataSubscriptionAllResponse listSubscription, int idx) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      width: 240.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        color: HexColor.fromHex("73C639"),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 0,
+            blurRadius: 6,
+            offset: Offset(4, 2), // changes position of shadow
+          ),
+        ],
+      ),
+      alignment: Alignment.bottomLeft,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset(
+              "assets/images/testImage1.jpg",
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                gradient: LinearGradient(
+                  begin: FractionalOffset.topCenter,
+                  end: FractionalOffset.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(.0),
+                    Colors.black.withOpacity(.7),
+                  ],
+                  stops: [0.0, 1],
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // TODO Is it supposed to be 3 text??
+                    Text(listSubscription.subscriptionPackages![idx].name!,
+                        style: GoogleFonts.poppins(
+                            height: 1,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 17.sp)),
+                    const SizedBox(height: 5),
+                    Text(
+                      listSubscription
+                          .subscriptionPackages![idx].subscriptionTypeName!,
+                      style: GoogleFonts.poppins(
+                          height: 1,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12.sp),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // Column(
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     Text(
+            //       listSubscription.subscriptionPackages![idx].name!,
+            //       style: GoogleFonts.inter(
+            //         textStyle: TextStyle(
+            //             color: color.primaryColor,
+            //             fontSize: 14.sp,
+            //             fontWeight: FontWeight.normal),
+            //       ),
+            //     ),
+            //     Text(
+            //       listSubscription.subscriptionPackages![idx].subscriptionTypeName!,
+            //       style: GoogleFonts.inter(
+            //         textStyle: TextStyle(
+            //             color: color.primaryColor,
+            //             fontSize: 20.sp,
+            //             fontWeight: FontWeight.normal),
+            //       ),
+            //     ),
+            //     Text(
+            //       listSubscription.subscriptionPackages![idx].description!,
+            //       style: GoogleFonts.inter(
+            //         textStyle: TextStyle(
+            //             color: color.primaryColor,
+            //             fontSize: 10.sp,
+            //             fontWeight: FontWeight.normal),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      leadingWidth: 65,
+      title: Text(
+        "Program\nKesehatan".toUpperCase(),
+        textAlign: TextAlign.center,
+        maxLines: 2,
+        style: GoogleFonts.poppins(
+            height: 1.1,
+            fontSize: 18.sp,
+            letterSpacing: 3.sp,
+            color: Colors.white,
+            fontWeight: FontWeight.w700),
+      ),
+      actions: [
+        IconButton(
+            padding: const EdgeInsets.only(right: 10),
+            onPressed: () {
+              dialogClaimCoupon();
+            },
+            icon: Icon(FontAwesomeIcons.ticketAlt, color: Colors.white))
+      ],
+      centerTitle: true,
+      backgroundColor: HexColor.fromHex("73C639"),
+      bottom:
+          PreferredSize(preferredSize: Size.fromHeight(10), child: Container()),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back, size: 35.sp, color: Colors.white),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      automaticallyImplyLeading: true,
+    );
+  }
+
+  PreferredSize _buildOldAppBar(BuildContext context) {
+    return PreferredSize(
+        preferredSize: Size.fromHeight(!closeTopContainer.value ? 290.h : 80.h),
+        child: AnimatedCrossFade(
+          duration: const Duration(milliseconds: 200),
+          crossFadeState: !closeTopContainer.value
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          firstChild: Container(
+            padding: EdgeInsets.only(top: 60.h, right: 20.w, left: 20.w),
+            width: double.infinity,
+            height: 290.h,
+            decoration: BoxDecoration(
+                color: color.secondaryColor,
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: color.blackColor.withOpacity(0.2),
+                      blurRadius: 20,
+                      spreadRadius: 6)
+                ]),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        child: FaIcon(
+                          FontAwesomeIcons.bars,
+                          color: color.primaryColor,
+                        ),
+                      ),
+                      NeumorphicButton(
+                        onPressed: () {
+                          dialogClaimCoupon();
+                        },
+                        style: NeumorphicStyle(
+                          depth: 0,
+                          shape: NeumorphicShape.flat,
+                          boxShape: NeumorphicBoxShape.circle(),
+                          color: color.bgColor,
+                        ),
+                        padding: EdgeInsets.all(14.0.sp),
+                        child: FaIcon(
+                          FontAwesomeIcons.ticketAlt,
+                          size: 16.sp,
+                          color: color.secondaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  //
+
+                  SizedBox(height: 12.h),
+
+                  Expanded(
+                    child: Container(
+                        margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: color.primaryColor,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: color.blackColor.withOpacity(0.2),
+                                  blurRadius: 20,
+                                  spreadRadius: 6)
+                            ]),
+                        child: subscriptionController
+                                .listSubscriptionActiveUser.isEmpty
+                            ? Text(
+                                "Anda sedang mengikuti program default Sirkadian (Maintain Health)",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      color: color.secondaryTextColor,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              )
+                            : PageView.builder(
+                                itemCount: subscriptionController
+                                    .listSubscriptionActiveUser.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    padding: EdgeInsets.only(
+                                        top: 10.h, left: 10.w, right: 10.w),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Program Kesehatan Anda",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                    color:
+                                                        color.primaryTextColor,
+                                                    fontSize: 16.sp,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                            NeumorphicButton(
+                                              onPressed: () {},
+                                              style: NeumorphicStyle(
+                                                depth: 4,
+                                                shape: NeumorphicShape.flat,
+                                                boxShape:
+                                                    NeumorphicBoxShape.circle(),
+                                                color: Colors.transparent,
+                                              ),
+                                              padding: EdgeInsets.all(8.0.sp),
+                                              child: Center(
+                                                child: FaIcon(
+                                                  FontAwesomeIcons.history,
+                                                  size: 18.sp,
+                                                  color: color.primaryTextColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          subscriptionController
+                                                  .listSubscriptionActiveUser[
+                                                      index]
+                                                  .subscriptionPackageName! +
+                                              ' (' +
+                                              subscriptionController
+                                                  .listSubscriptionActiveUser[
+                                                      index]
+                                                  .subscriptionTypeName! +
+                                              ')',
+                                          style: GoogleFonts.inter(
+                                            textStyle: TextStyle(
+                                                color: color.secondaryTextColor,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                        // Text(
+                                        //   "Status Kesehatan User (BMI) dan target",
+                                        //   style: GoogleFonts.inter(
+                                        //     textStyle: TextStyle(
+                                        //         color: color
+                                        //             .secondaryTextColor,
+                                        //         fontSize: 14.sp,
+                                        //         fontWeight:
+                                        //             FontWeight.normal),
+                                        //   ),
+                                        // ),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: List<Widget>.generate(
+                                                subscriptionController
+                                                    .listSubscriptionActiveUser
+                                                    .length, (int index) {
+                                              print(index);
+                                              return AnimatedContainer(
+                                                  duration: Duration(
+                                                      milliseconds: 300),
+                                                  height: 8.h,
+                                                  width: 6.w,
+                                                  margin: EdgeInsets.only(
+                                                      left: 5.w,
+                                                      right: 5.w,
+                                                      bottom: 10.h),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      color: (subscriptionController
+                                                                      .listSubscriptionActiveUser[
+                                                                  index] ==
+                                                              pageActive)
+                                                          ? color.tersierColor
+                                                          : color.secondaryColor
+                                                              .withOpacity(
+                                                                  0.4)));
+                                            })),
+                                      ],
+                                    ),
+                                  );
+                                })),
+                  ),
+                ]),
+          ),
+          secondChild: Container(
+              padding: EdgeInsets.only(top: 60.h, right: 20.w, left: 20.w),
+              width: 360.w,
+              decoration: BoxDecoration(
+                  color: color.secondaryColor,
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: color.blackColor.withOpacity(0.2),
+                        blurRadius: 20,
+                        spreadRadius: 6)
+                  ]),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          child: FaIcon(
+                            FontAwesomeIcons.bars,
+                            color: color.primaryColor,
+                          ),
+                        ),
+                        NeumorphicButton(
+                          onPressed: () {
+                            dialogClaimCoupon();
+                          },
+                          style: NeumorphicStyle(
+                            depth: 0,
+                            shape: NeumorphicShape.flat,
+                            boxShape: NeumorphicBoxShape.circle(),
+                            color: color.bgColor,
+                          ),
+                          padding: EdgeInsets.all(14.0.sp),
+                          child: FaIcon(
+                            FontAwesomeIcons.ticketAlt,
+                            size: 16.sp,
+                            color: color.secondaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ])),
+        ));
   }
 }

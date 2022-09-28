@@ -1,7 +1,9 @@
 import 'dart:math' as Math;
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sirkadian_app/constant/hex_color.dart';
 import 'package:sirkadian_app/controller/hexcolor_controller.dart';
 
 class NecessityGauge extends StatelessWidget {
@@ -28,74 +30,81 @@ class NecessityGauge extends StatelessWidget {
   Widget build(BuildContext context) {
     final backgroundColor = this.backgroundColor;
     final foregroundColor = this.foregroundColor;
-    return NeumorphicButton(
-        onPressed: onpress,
-        style: NeumorphicStyle(
-          depth: 4,
-          color: color.bgColor,
-          shape: NeumorphicShape.flat,
-          boxShape: NeumorphicBoxShape.roundRect(
-            BorderRadius.circular(20),
+    return Container(
+      height: size.height,
+      width: size.width,
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: color.bgColor,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 0,
+            blurRadius: 6,
+            offset: Offset(4, 2), // changes position of shadow
           ),
-        ),
-        margin: const EdgeInsets.all(12),
-        child: Container(
-          height: size.height,
-          width: size.width,
-
-          child: Column(
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: onpress,
+          child: Stack(
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    top: size.height * 0.05, bottom: size.height * 0.1),
-                child: Text(
-                  text,
-                  style: GoogleFonts.inter(
-                    textStyle: TextStyle(
-                        color: color.secondaryTextColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ),
-              ),
-              CustomPaint(
-                child: Container(
-                  width: size.width * 0.7,
-                  height: size.height * 0.7,
-                  child: Center(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: size.height * 0.05, bottom: size.height * 0.1),
                     child: Text(
-                      '${((value) * 100).round().toString()}%',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline3
-                          ?.copyWith(color: foregroundColor, fontSize: 25),
+                      text,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            color: color.secondaryTextColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal),
+                      ),
                     ),
                   ),
-                ),
-                foregroundPainter: CircleProgressBarPainter(
-                  sizeContainer: size,
-                  backgroundColor: backgroundColor,
-                  foregroundColor: foregroundColor,
-                  percentage: this.value,
-                ),
+                  CustomPaint(
+                    child: Container(
+                      width: size.width * 0.7,
+                      height: size.height * 0.7,
+                      child: Center(
+                        child: Text('${((value) * 100).round().toString()}%',
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600,
+                                color: HexColor.fromHex("#4E5749"),
+                                fontSize: 25)),
+                      ),
+                    ),
+                    foregroundPainter: CircleProgressBarPainter(
+                      sizeContainer: size*1.1,
+                      backgroundColor: backgroundColor,
+                      foregroundColor: foregroundColor,
+                      percentage: this.value,
+                    ),
+                  ),
+                ],
               ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child:
+                      Icon(FontAwesomeIcons.ellipsisH, color: foregroundColor),
+                ),
+              )
             ],
           ),
-          // decoration: BoxDecoration(
-          //   boxShadow: [
-          //     BoxShadow(
-          //       color: Colors.grey.withOpacity(0.3),
-          //       spreadRadius: 2,
-          //       blurRadius: 7,
-          //       offset: Offset(0, 3), // changes position of shadow
-          //     ),
-          //   ],
-          //   color: Colors.white,
-          //   borderRadius: BorderRadius.all(
-          //     Radius.circular(30),
-          //   ),
-          // ),
-        ));
+        ),
+      ),
+    );
   }
 }
 

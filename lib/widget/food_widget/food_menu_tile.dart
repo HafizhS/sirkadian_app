@@ -76,18 +76,18 @@ class FoodMenuTile extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 18.h,
+                height: 5.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      FaIcon(
-                        FontAwesomeIcons.fire,
-                        color: color.redColor,
-                        size: 12.sp,
-                      ),
+                      // FaIcon(
+                      //   FontAwesomeIcons.fire,
+                      //   color: color.redColor,
+                      //   size: 12.sp,
+                      // ),
                       Text(
                         ' ' + necessity + ' kkal',
                         style: GoogleFonts.inter(
@@ -102,11 +102,11 @@ class FoodMenuTile extends StatelessWidget {
                   Text(' | '),
                   Row(
                     children: [
-                      FaIcon(
-                        FontAwesomeIcons.clock,
-                        color: color.blueColor,
-                        size: 12,
-                      ),
+                      // FaIcon(
+                      //   FontAwesomeIcons.clock,
+                      //   color: color.blueColor,
+                      //   size: 12,
+                      // ),
                       Text(
                         ' ' +
                             (int.parse(duration) / 60).toStringAsFixed(0) +

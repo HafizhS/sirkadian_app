@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sirkadian_app/constant/hex_color.dart';
 import 'package:sirkadian_app/controller/auth_controller.dart';
 import 'package:sirkadian_app/controller/food_controller.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
@@ -15,8 +16,10 @@ import '../../../../controller/user_controller.dart';
 import '../../../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import '../../../../objectbox.g.dart';
 import '../../../../widget/food_widget/food_tile.dart';
+import '../../../../widget/food_widget/food_tile2.dart';
 import 'food_detail_screen.dart';
 import 'food_recommendation_screen.dart';
+import 'food_recommendation_screen2.dart';
 
 class FoodMealScreen extends StatefulWidget {
   const FoodMealScreen(
@@ -120,267 +123,332 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
           }
           return Scaffold(
             backgroundColor: color.bgColor,
+            appBar: AppBar(
+              leadingWidth: 65,
+              title: Text(
+                "Sarapan".toUpperCase(),
+                style: GoogleFonts.poppins(
+                    fontSize: 20.sp,
+                    letterSpacing: 3.sp,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700),
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    getNavigationRecomFunction();
+                  },
+                  icon: Icon(Icons.add_rounded, color: Colors.white, size: 35),
+                  padding: EdgeInsets.only(right: 10),
+                )
+              ],
+              centerTitle: true,
+              backgroundColor: HexColor.fromHex("73C639"),
+              bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(10), child: Container()),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back, size: 35.sp, color: Colors.white),
+                onPressed: () {
+                  Navigator.pop(context);
+                  foodController.isOnFood(false);
+                },
+              ),
+              automaticallyImplyLeading: true,
+            ),
             body: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.only(top: 20.h),
-                child: Stack(alignment: Alignment.bottomRight, children: [
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+              child: Stack(
+                children: [
+                  // Positioned(
+                  //   bottom: 30,
+                  //   right: 30,
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       getNavigationRecomFunction();
+                  //     },
+                  //     child: Icon(Icons.add_rounded,
+                  //         color: HexColor.fromHex("73C639"), size: 30),
+                  //     style: ButtonStyle(
+                  //       elevation: MaterialStatePropertyAll(5),
+                  //       shape: MaterialStateProperty.all(CircleBorder()),
+                  //       padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                  //       backgroundColor: MaterialStateProperty.all(
+                  //           Colors.white), // <-- Button color
+                  //     ),
+                  //   ),
+                  // ),
+
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.h),
+                    child: Stack(alignment: Alignment.bottomRight, children: [
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 20.w),
-                              child: NeumorphicButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-
-                                  foodController.isOnFood(false);
-                                },
-                                style: NeumorphicStyle(
-                                    shape: NeumorphicShape.flat,
-                                    boxShape: NeumorphicBoxShape.circle(),
-                                    color: color.bgColor),
-                                padding: EdgeInsets.all(16.sp),
-                                child: FaIcon(
-                                  FontAwesomeIcons.chevronLeft,
-                                  size: 16.sp,
-                                  color: color.secondaryTextColor,
+                            Expanded(
+                                // height: 600.h,
+                                child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 30.w),
+                                  child: Text(
+                                    snapshot.data!.length.toString() + ' item',
+                                    style: GoogleFonts.inter(
+                                      textStyle: TextStyle(
+                                          color: color.secondaryTextColor,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Text(
-                              widget.session,
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    color: color.primaryTextColor,
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(right: 20.w),
-                              child: NeumorphicButton(
-                                onPressed: () {
-                                  getNavigationRecomFunction();
-                                },
-                                style: NeumorphicStyle(
-                                    depth: getDepth(),
-                                    shape: NeumorphicShape.flat,
-                                    boxShape: NeumorphicBoxShape.circle(),
-                                    color: color.bgColor),
-                                padding: EdgeInsets.all(16.sp),
-                                child: FaIcon(
-                                  getIconPlus(),
-                                  size: 16.sp,
-                                  color: color.secondaryColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 28.h,
-                        ),
-                        Expanded(
-                            // height: 600.h,
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(right: 30.w),
-                              child: Text(
-                                snapshot.data!.length.toString() + ' item',
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                      color: color.secondaryTextColor,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ),
-                            ),
-                            (snapshot.data!.isEmpty)
-                                ? Column(
-                                    children: [
-                                      SizedBox(height: 220.h),
-                                      Center(
-                                        child: Text(
-                                          'Belum ada makanan yang kamu pilih',
-                                          style: GoogleFonts.inter(
-                                            textStyle: TextStyle(
-                                                color: color.secondaryTextColor,
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.normal),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : Expanded(
-                                    child: ListView.builder(
-                                        keyboardDismissBehavior:
-                                            ScrollViewKeyboardDismissBehavior
-                                                .onDrag,
-                                        itemCount: snapshot.data!.length,
-                                        itemBuilder: (context, index) {
-                                          return Slidable(
-                                              closeOnScroll: true,
-                                              key: UniqueKey(),
-                                              endActionPane: ActionPane(
-                                                motion: DrawerMotion(),
-                                                children: [
-                                                  SlidableAction(
-                                                    flex: 1,
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            bottomLeft: Radius
-                                                                .circular(30),
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    30)),
-                                                    onPressed:
-                                                        (BuildContext context) {
-                                                      setState(() {
-                                                        isGanti = true;
-                                                      });
-                                                      getSlidableSession(
-                                                          snapshot.data!,
-                                                          index);
-                                                    },
-                                                    backgroundColor:
-                                                        color.secondaryColor,
-                                                    foregroundColor:
-                                                        color.primaryColor,
-                                                    icon: FontAwesomeIcons
-                                                        .solidEdit,
-                                                    label: 'Ganti',
-                                                  ),
-                                                  SlidableAction(
-                                                    flex: 1,
-                                                    onPressed:
-                                                        (BuildContext context) {
-                                                      setState(() {
-                                                        isGanti = false;
-                                                      });
-                                                      getSlidableSession(
-                                                          snapshot.data!,
-                                                          index);
-                                                    },
-                                                    backgroundColor:
-                                                        color.tersierColor,
-                                                    foregroundColor:
-                                                        color.primaryColor,
-                                                    icon: FontAwesomeIcons.plus,
-                                                    label: 'Tambah',
-                                                  ),
-                                                ],
+                                (snapshot.data!.isEmpty)
+                                    ? Column(
+                                        children: [
+                                          SizedBox(height: 220.h),
+                                          Center(
+                                            child: Text(
+                                              'Belum ada makanan yang kamu pilih',
+                                              style: GoogleFonts.inter(
+                                                textStyle: TextStyle(
+                                                    color: color
+                                                        .secondaryTextColor,
+                                                    fontSize: 14.sp,
+                                                    fontWeight:
+                                                        FontWeight.normal),
                                               ),
-                                              child: FoodTile(
-                                                containerButton: () {
-                                                  foodController
-                                                      .getOtherFoodRecommendation(
-                                                          snapshot.data![index]
-                                                              .foodId,
-                                                          widget.session);
-                                                  foodController.getFoodItem(
-                                                      snapshot
-                                                          .data![index].foodId);
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              FoodDetailScreen(
-                                                                isFromFoodMeal:
-                                                                    true,
-                                                                session: widget
-                                                                    .session,
-                                                                foodController:
-                                                                    foodController,
-                                                                color: color,
-                                                                recommendationScore:
-                                                                    snapshot
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Expanded(
+                                        child: ListView.builder(
+                                            keyboardDismissBehavior:
+                                                ScrollViewKeyboardDismissBehavior
+                                                    .onDrag,
+                                            itemCount: snapshot.data!.length,
+                                            itemBuilder: (context, index) {
+                                              return Slidable(
+                                                  closeOnScroll: true,
+                                                  key: UniqueKey(),
+                                                  endActionPane: ActionPane(
+                                                    motion: DrawerMotion(),
+                                                    children: [
+                                                      SlidableAction(
+                                                        flex: 1,
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                        30),
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        30)),
+                                                        onPressed: (BuildContext
+                                                            context) {
+                                                          setState(() {
+                                                            isGanti = true;
+                                                          });
+                                                          getSlidableSession(
+                                                              snapshot.data!,
+                                                              index);
+                                                        },
+                                                        backgroundColor: color
+                                                            .secondaryColor,
+                                                        foregroundColor:
+                                                            color.primaryColor,
+                                                        icon: FontAwesomeIcons
+                                                            .solidEdit,
+                                                        label: 'Ganti',
+                                                      ),
+                                                      SlidableAction(
+                                                        flex: 1,
+                                                        onPressed: (BuildContext
+                                                            context) {
+                                                          setState(() {
+                                                            isGanti = false;
+                                                          });
+                                                          getSlidableSession(
+                                                              snapshot.data!,
+                                                              index);
+                                                        },
+                                                        backgroundColor:
+                                                            color.tersierColor,
+                                                        foregroundColor:
+                                                            color.primaryColor,
+                                                        icon: FontAwesomeIcons
+                                                            .plus,
+                                                        label: 'Tambah',
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: FoodTile2(
+                                                    containerButton: () {
+                                                      foodController
+                                                          .getOtherFoodRecommendation(
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .foodId,
+                                                              widget.session);
+                                                      foodController
+                                                          .getFoodItem(snapshot
+                                                              .data![index]
+                                                              .foodId);
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  FoodDetailScreen(
+                                                                    isFromFoodMeal:
+                                                                        true,
+                                                                    session: widget
+                                                                        .session,
+                                                                    foodController:
+                                                                        foodController,
+                                                                    color:
+                                                                        color,
+                                                                    recommendationScore: snapshot
                                                                         .data![
                                                                             index]
                                                                         .recommendationScore!,
-                                                                foodId: snapshot
-                                                                    .data![
-                                                                        index]
-                                                                    .foodId!,
-                                                              )));
-                                                },
-                                                iconButton: () {
-                                                  getDeleteFunction(
-                                                      snapshot.data!, index);
-                                                },
-                                                icon: getIconDelete(),
-                                                depth: getDepth(),
-                                                color: color,
-                                                imageFilename: snapshot
-                                                    .data![index]
-                                                    .imageFileName!,
-                                                name:
-                                                    snapshot.data![index].name!,
-                                                necessity: (snapshot
-                                                            .data![index]
-                                                            .energy! /
-                                                        snapshot.data![index]
-                                                            .serving!)
-                                                    .toStringAsFixed(0),
-                                                serving: (snapshot.data![index]
-                                                            .serving! /
-                                                        snapshot.data![index]
-                                                            .serving!)
-                                                    .toStringAsFixed(0),
-                                                recommendationScore: snapshot
-                                                    .data![index]
-                                                    .recommendationScore!,
-                                                duration: snapshot
-                                                    .data![index].duration!
-                                                    .toStringAsFixed(0),
-                                              ));
-                                        }),
-                                  ),
-                          ],
-                        ))
-                      ]),
-                  snapshot.data!.isNotEmpty &&
-                          widget.isFromFutureMealplan == false
-                      ? Container(
-                          margin: EdgeInsets.only(right: 20.w, bottom: 20.h),
-                          child: NeumorphicButton(
-                              margin: EdgeInsets.only(top: 12.h),
-                              onPressed: () {
-                                getSaveSessionFunction(snapshot.data!);
-                              },
-                              style: NeumorphicStyle(
-                                  color: getColor(),
-                                  shape: NeumorphicShape.flat,
-                                  boxShape: NeumorphicBoxShape.roundRect(
-                                    BorderRadius.circular(20),
-                                  )
-                                  //border: NeumorphicBorder()
-                                  ),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 12.h, horizontal: 15.w),
-                              child: Text(
-                                getText(),
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                      color: color.primaryColor,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              )),
-                        )
-                      : Container(),
-                ]),
+                                                                    foodId: snapshot
+                                                                        .data![
+                                                                            index]
+                                                                        .foodId!,
+                                                                  )));
+                                                    },
+                                                    iconButton: () {
+                                                      getDeleteFunction(
+                                                          snapshot.data!,
+                                                          index);
+                                                    },
+                                                    icon: getIconDelete(),
+                                                    depth: getDepth(),
+                                                    color: color,
+                                                    imageFilename: snapshot
+                                                        .data![index]
+                                                        .imageFileName!,
+                                                    name: snapshot
+                                                        .data![index].name!,
+                                                    necessity: (snapshot
+                                                                .data![index]
+                                                                .energy! /
+                                                            snapshot
+                                                                .data![index]
+                                                                .serving!)
+                                                        .toStringAsFixed(0),
+                                                    serving: (snapshot
+                                                                .data![index]
+                                                                .serving! /
+                                                            snapshot
+                                                                .data![index]
+                                                                .serving!)
+                                                        .toStringAsFixed(0),
+                                                    recommendationScore: snapshot
+                                                        .data![index]
+                                                        .recommendationScore!,
+                                                    duration: snapshot
+                                                        .data![index].duration!
+                                                        .toStringAsFixed(0), isFromMealPlan: true,
+                                                  ));
+                                            }),
+                                      ),
+                              ],
+                            ))
+                          ]),
+                      snapshot.data!.isNotEmpty &&
+                              widget.isFromFutureMealplan == false
+                          ? Container(
+                              margin:
+                                  EdgeInsets.only(right: 20.w, bottom: 20.h),
+                              child: NeumorphicButton(
+                                  margin: EdgeInsets.only(top: 12.h),
+                                  onPressed: () {
+                                    getSaveSessionFunction(snapshot.data!);
+                                  },
+                                  style: NeumorphicStyle(
+                                      color: getColor(),
+                                      shape: NeumorphicShape.flat,
+                                      boxShape: NeumorphicBoxShape.roundRect(
+                                        BorderRadius.circular(20),
+                                      )
+                                      //border: NeumorphicBorder()
+                                      ),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 12.h, horizontal: 15.w),
+                                  child: Text(
+                                    getText(),
+                                    style: GoogleFonts.inter(
+                                      textStyle: TextStyle(
+                                          color: color.primaryColor,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  )),
+                            )
+                          : Container(),
+                    ]),
+                  ),
+                ],
               ),
             ),
           );
         });
+  }
+
+  Row _buildOldAppBar(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 20.w),
+          child: NeumorphicButton(
+            onPressed: () {
+              Navigator.pop(context);
+              foodController.isOnFood(false);
+            },
+            style: NeumorphicStyle(
+                shape: NeumorphicShape.flat,
+                boxShape: NeumorphicBoxShape.circle(),
+                color: color.bgColor),
+            padding: EdgeInsets.all(16.sp),
+            child: FaIcon(
+              FontAwesomeIcons.chevronLeft,
+              size: 16.sp,
+              color: color.secondaryTextColor,
+            ),
+          ),
+        ),
+        Text(
+          widget.session,
+          style: GoogleFonts.poppins(
+            textStyle: TextStyle(
+                color: color.primaryTextColor,
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(right: 20.w),
+          child: NeumorphicButton(
+            onPressed: () {
+              getNavigationRecomFunction();
+            },
+            style: NeumorphicStyle(
+                depth: getDepth(),
+                shape: NeumorphicShape.flat,
+                boxShape: NeumorphicBoxShape.circle(),
+                color: color.bgColor),
+            padding: EdgeInsets.all(16.sp),
+            child: FaIcon(
+              getIconPlus(),
+              size: 16.sp,
+              color: color.secondaryColor,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   void getSlidableSession(List<Food> foods, index) {
@@ -639,7 +707,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        FoodRecommendationScreen(session: widget.session)))
+                        FoodRecommendationScreen2(session: widget.session)))
             .then((_) {
           setState(() {
             foodController.isStopFoodMenu = false;
@@ -656,7 +724,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        FoodRecommendationScreen(session: widget.session)))
+                        FoodRecommendationScreen2(session: widget.session)))
             .then((_) {
           setState(() {
             foodController.isStopFoodMenu = false;
@@ -673,7 +741,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        FoodRecommendationScreen(session: widget.session)))
+                        FoodRecommendationScreen2(session: widget.session)))
             .then((_) {
           setState(() {
             foodController.isStopFoodMenu = false;
@@ -696,7 +764,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemCount: foodController.listFoodByFood.length,
           itemBuilder: (context, idx) {
-            return FoodTile(
+            return FoodTile2(
               depth: 4,
               containerButton: () {
                 foodController.getOtherFoodRecommendation(
@@ -776,7 +844,7 @@ class _FoodMealScreenState extends State<FoodMealScreen> {
                   .listFoodByFood[idx].recommendationScore!
                   .toStringAsFixed(2),
               duration: foodController.listFoodByFood[idx].duration!
-                  .toStringAsFixed(0),
+                  .toStringAsFixed(0), isFromMealPlan: true,
             );
           }),
     ));

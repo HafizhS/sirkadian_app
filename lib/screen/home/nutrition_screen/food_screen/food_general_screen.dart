@@ -3,6 +3,7 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sirkadian_app/constant/hex_color.dart';
 import 'package:sirkadian_app/controller/user_controller.dart';
 import 'package:sirkadian_app/screen/home/nutrition_screen/food_screen/food_history_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -84,27 +85,27 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                       ],
                     ),
                   ),
-                  NeumorphicButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FoodHistoryScreen()));
-                    },
-                    padding: EdgeInsets.all(5.sp),
-                    style: NeumorphicStyle(
-                      depth: 2,
-                      color: color.bgColor,
-                      boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(5)),
-                    ),
-                    margin: EdgeInsets.only(right: 20.w),
-                    child: FaIcon(
-                      FontAwesomeIcons.history,
-                      size: 20.sp,
-                      color: color.secondaryTextColor,
-                    ),
-                  ),
+                  // NeumorphicButton(
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => FoodHistoryScreen()));
+                  //   },
+                  //   padding: EdgeInsets.all(5.sp),
+                  //   style: NeumorphicStyle(
+                  //     depth: 2,
+                  //     color: color.bgColor,
+                  //     boxShape: NeumorphicBoxShape.roundRect(
+                  //         BorderRadius.circular(5)),
+                  //   ),
+                  //   margin: EdgeInsets.only(right: 20.w),
+                  //   child: FaIcon(
+                  //     FontAwesomeIcons.history,
+                  //     size: 20.sp,
+                  //     color: color.secondaryTextColor,
+                  //   ),
+                  // ),
                 ],
               ),
               Container(
@@ -112,6 +113,7 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                 height: 150.h,
                 width: 360.w,
                 child: Swiper(
+                  loop: false,
                   itemCount: foodController.sessions.length,
                   itemWidth: 300.w,
                   index: 0,
@@ -387,22 +389,29 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
                     },
                     padding: EdgeInsets.all(5.sp),
                     style: NeumorphicStyle(
-                      depth: 2,
+                      depth: 3,
                       color: color.bgColor,
                       boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(5)),
+                          BorderRadius.circular(10)),
                     ),
                     margin: EdgeInsets.only(right: 20.w),
-                    child: FaIcon(
-                      FontAwesomeIcons.ellipsisH,
-                      size: 20.sp,
-                      color: color.secondaryTextColor,
+                    child: Row(
+                      children: [
+                        Text("Nutrisi Lainnya"),
+                        SizedBox(width: 5),
+                        FaIcon(
+                          FontAwesomeIcons.ellipsisH,
+                          size: 20.sp,
+                          color: HexColor.fromHex("73C639"),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ],
           ),
+          const SizedBox(height: 5),
           !widget.hasBeenInitialized
               ? Container()
               : NecessityDisplayWidget(
@@ -461,19 +470,11 @@ class _FoodGeneralScreenState extends State<FoodGeneralScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Neumorphic(
-            style: NeumorphicStyle(
-              color: color.bgColor,
-              shape: NeumorphicShape.flat,
-              depth: 4,
-              boxShape: NeumorphicBoxShape.circle(),
-            ),
-            padding: EdgeInsets.all(12.0.sp),
-            child: FaIcon(
-              FontAwesomeIcons.plus,
-              size: 16,
-              color: color.secondaryColor,
-            )),
+        FaIcon(
+          FontAwesomeIcons.plus,
+          size: 45,
+          color: color.secondaryColor,
+        ),
         SizedBox(height: 18.h),
         Text(
           foodController.sessions[index],

@@ -1,11 +1,13 @@
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:sirkadian_app/model/food_model/food_history_response_model.dart';
+
+import '../../../../constant/hex_color.dart';
 import '../../../../controller/food_controller.dart';
 import '../../../../controller/hexcolor_controller.dart';
 import '../../../../controller/information_controller.dart';
@@ -23,6 +25,7 @@ class _FoodHistoryScreenState extends State<FoodHistoryScreen> {
   final color = Get.find<ColorConstantController>();
   List<DataFoodHistoryResponse> _searchResult = [];
   String selectedDate = '0000-00-00';
+
   String convertDate(DateTime dateTime) {
     return selectedDate = DateFormat('yyyy-MM-dd').format(dateTime);
   }
@@ -37,115 +40,11 @@ class _FoodHistoryScreenState extends State<FoodHistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: color.bgColor,
+      appBar: _buildAppBar(context),
       body: SafeArea(
           child: Column(children: [
         //segment 1
-        Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                margin: EdgeInsets.only(left: 20),
-                child: NeumorphicButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.flat,
-                    boxShape: NeumorphicBoxShape.circle(),
-                    color: color.bgColor,
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  child: FaIcon(
-                    FontAwesomeIcons.chevronLeft,
-                    size: 16,
-                    color: color.secondaryTextColor,
-                  ),
-                ),
-              ),
-              Text(
-                'Riwayat Makan',
-                style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
-                      color: color.primaryTextColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(right: 20),
-                child: NeumorphicButton(
-                  onPressed: () {
-                    if (_searchResult.isNotEmpty) {
-                      setState(() {
-                        _searchResult.elementAt(0).isOpen = false;
-                        _searchResult.clear();
-                      });
-                    } else {
-                      DatePicker.showDatePicker(context,
-                          showTitleActions: true,
-                          theme: DatePickerTheme(
-                            headerColor: color.secondaryColor,
-                            cancelStyle: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  color: color.primaryColor,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                            itemStyle: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: color.secondaryTextColor,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                            doneStyle: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  color: color.primaryColor,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                          ),
-                          minTime: DateTime(2020, 1, 1),
-                          maxTime: DateTime(DateTime.now().year,
-                              DateTime.now().month, DateTime.now().day),
-                          onChanged: (date) {}, onConfirm: (date) {
-                        setState(() {
-                          convertDate(date);
-                        });
-                        foodController.listFoodHistory.forEach((element) {
-                          if (element.foodDate == convertDate(date)) {
-                            _searchResult.add(element);
-                            element.isOpen = true;
-                          }
-                        });
-                        if (_searchResult.isEmpty) {
-                          informationController.snackBarError(
-                              'Data Tidak Ditemukan',
-                              'Tidak ada riwayat makan pada tanggal tersebut.');
-                        }
-                      }, currentTime: DateTime.now(), locale: LocaleType.id);
-                    }
-                  },
-                  style: NeumorphicStyle(
-                    depth: _searchResult.isNotEmpty ? -4 : 4,
-                    shape: NeumorphicShape.flat,
-                    boxShape: NeumorphicBoxShape.circle(),
-                    color: color.bgColor,
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  child: FaIcon(
-                    FontAwesomeIcons.search,
-                    size: 16,
-                    color: _searchResult.isNotEmpty
-                        ? color.secondaryColor
-                        : color.secondaryTextColor,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        // _buildOldAppBar(context),
         SizedBox(height: 18.h),
         //segment 2
         Obx(() => foodController.isLoadingFoodHistory.isTrue
@@ -160,6 +59,197 @@ class _FoodHistoryScreenState extends State<FoodHistoryScreen> {
                 ? historyListWidget(sourceList: _searchResult)
                 : historyListWidget(sourceList: foodController.listFoodHistory))
       ])),
+    );
+  }
+
+  Padding _buildOldAppBar(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 20),
+              child: NeumorphicButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: NeumorphicStyle(
+                  shape: NeumorphicShape.flat,
+                  boxShape: NeumorphicBoxShape.circle(),
+                  color: color.bgColor,
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: FaIcon(
+                  FontAwesomeIcons.chevronLeft,
+                  size: 16,
+                  color: color.secondaryTextColor,
+                ),
+              ),
+            ),
+            Text(
+              'Riwayat Makan',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    color: color.primaryTextColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(right: 20),
+              child: NeumorphicButton(
+                onPressed: () {
+                  if (_searchResult.isNotEmpty) {
+                    setState(() {
+                      _searchResult.elementAt(0).isOpen = false;
+                      _searchResult.clear();
+                    });
+                  } else {
+                    DatePicker.showDatePicker(context,
+                        showTitleActions: true,
+                        theme: DatePickerTheme(
+                          headerColor: color.secondaryColor,
+                          cancelStyle: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                                color: color.primaryColor,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.normal),
+                          ),
+                          itemStyle: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                color: color.secondaryTextColor,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.normal),
+                          ),
+                          doneStyle: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                                color: color.primaryColor,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ),
+                        minTime: DateTime(2020, 1, 1),
+                        maxTime: DateTime(DateTime.now().year,
+                            DateTime.now().month, DateTime.now().day),
+                        onChanged: (date) {}, onConfirm: (date) {
+                      setState(() {
+                        convertDate(date);
+                      });
+                      foodController.listFoodHistory.forEach((element) {
+                        if (element.foodDate == convertDate(date)) {
+                          _searchResult.add(element);
+                          element.isOpen = true;
+                        }
+                      });
+                      if (_searchResult.isEmpty) {
+                        informationController.snackBarError(
+                            'Data Tidak Ditemukan',
+                            'Tidak ada riwayat makan pada tanggal tersebut.');
+                      }
+                    }, currentTime: DateTime.now(), locale: LocaleType.id);
+                  }
+                },
+                style: NeumorphicStyle(
+                  depth: _searchResult.isNotEmpty ? -4 : 4,
+                  shape: NeumorphicShape.flat,
+                  boxShape: NeumorphicBoxShape.circle(),
+                  color: color.bgColor,
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: FaIcon(
+                  FontAwesomeIcons.search,
+                  size: 16,
+                  color: _searchResult.isNotEmpty
+                      ? color.secondaryColor
+                      : color.secondaryTextColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      leadingWidth: 65,
+      title: Text(
+        "Riwayat Makan".toUpperCase(),
+        style: GoogleFonts.poppins(
+            fontSize: 20.sp,
+            letterSpacing: 3.sp,
+            color: Colors.white,
+            fontWeight: FontWeight.w700),
+      ),
+      centerTitle: true,
+      backgroundColor: HexColor.fromHex("73C639"),
+      actions: [
+        IconButton(
+          icon:
+              Icon(FontAwesomeIcons.calendar, size: 25.sp, color: Colors.white),
+          onPressed: () {
+            if (_searchResult.isNotEmpty) {
+              setState(() {
+                _searchResult.elementAt(0).isOpen = false;
+                _searchResult.clear();
+              });
+            } else {
+              DatePicker.showDatePicker(context,
+                  showTitleActions: true,
+                  theme: DatePickerTheme(
+                    headerColor: color.secondaryColor,
+                    cancelStyle: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          color: color.primaryColor,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.normal),
+                    ),
+                    itemStyle: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                          color: color.secondaryTextColor,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.normal),
+                    ),
+                    doneStyle: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          color: color.primaryColor,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                  minTime: DateTime(2020, 1, 1),
+                  maxTime: DateTime(DateTime.now().year, DateTime.now().month,
+                      DateTime.now().day),
+                  onChanged: (date) {}, onConfirm: (date) {
+                setState(() {
+                  convertDate(date);
+                });
+                foodController.listFoodHistory.forEach((element) {
+                  if (element.foodDate == convertDate(date)) {
+                    _searchResult.add(element);
+                    element.isOpen = true;
+                  }
+                });
+                if (_searchResult.isEmpty) {
+                  informationController.snackBarError('Data Tidak Ditemukan',
+                      'Tidak ada riwayat makan pada tanggal tersebut.');
+                }
+              }, currentTime: DateTime.now(), locale: LocaleType.id);
+            }
+          },
+        ),
+      ],
+      bottom:
+          PreferredSize(preferredSize: Size.fromHeight(10), child: Container()),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back, size: 35.sp, color: Colors.white),
+        onPressed: () {
+          Navigator.pop(context);
+          foodController.isOnFood(false);
+        },
+      ),
+      automaticallyImplyLeading: true,
     );
   }
 
