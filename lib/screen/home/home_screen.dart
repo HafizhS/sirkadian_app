@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -13,6 +14,7 @@ import 'package:sirkadian_app/controller/food_controller.dart';
 import 'package:sirkadian_app/controller/information_controller.dart';
 import 'package:sirkadian_app/controller/integrated_controller.dart';
 import 'package:sirkadian_app/screen/home/article_screen/article_detail_screen.dart';
+import 'package:sirkadian_app/screen/home/nutrition_screen/new_screen/sirkafluid_screen.dart';
 import 'package:sirkadian_app/screen/list_screen.dart';
 
 import '../../constant/hex_color.dart';
@@ -23,7 +25,6 @@ import '../../controller/user_controller.dart';
 import '../../model/obejctbox_model.dart/food_fluid_exercise_model.dart';
 import '../../objectbox.g.dart';
 import '../../widget/food_widget/necessity_gauge.dart';
-import 'exercise_screen/exercise_general_screen.dart';
 import 'nutrition_screen/nutrition_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -248,114 +249,42 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  NeumorphicButton(
+                  _SirkaHomeWidget(
+                      color: color,
+                      context: context,
+                      title: "Sirkadiet",
+                      icon: Icon(
+                        FontAwesomeIcons.utensils,
+                        size: 35,
+                        color: HexColor.fromHex("73C639"),
+                      ),
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => NutritionScreen(
-                                      hasBeenInitializedFood:
-                                          hasBeenInitializedFood,
-                                    ))).then((_) {
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NutritionScreen(
+                              hasBeenInitializedFood: hasBeenInitializedFood,
+                            ),
+                          ),
+                        ).then((_) {
                           setState(() {});
                         });
-                      },
-                      style: NeumorphicStyle(
-                          color: color.primaryColor,
-                          shape: NeumorphicShape.flat,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(20),
-                          )),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Neumorphic(
-                            style: NeumorphicStyle(
-                                color: color.primaryColor,
-                                shape: NeumorphicShape.flat,
-                                depth: 4,
-                                boxShape: NeumorphicBoxShape.circle(),
-                                shadowLightColor: HexColor.fromHex('#CCDBD9'),
-                                shadowDarkColor: HexColor.fromHex('#CCDBD9')),
-                            padding: const EdgeInsets.all(12.0),
-                            child: FaIcon(
-                              FontAwesomeIcons.utensils,
-                              size: 16,
-                              color: color.secondaryColor,
-                            ),
-                          ),
-                          Container(
-                            height: 50.h,
-                            width: 100.w,
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              "Penuhi Nutrisi",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    color: color.secondaryTextColor,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
-                  NeumorphicButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ExerciseGeneralScreen()));
-                        // if (Get.isSnackbarOpen) {
-                        //   Get.back();
-                        // } else {
-                        //   informationController.snackBarError(
-                        //       'Fitur Belum Tersedia',
-                        //       'Fitur akan segera diujicoba');
-                        // }
-                      },
-                      style: NeumorphicStyle(
-                          color: color.primaryColor,
-                          shape: NeumorphicShape.flat,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(20),
-                          )
-                          //border: NeumorphicBorder()
-                          ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Neumorphic(
-                            style: NeumorphicStyle(
-                                color: color.primaryColor,
-                                shape: NeumorphicShape.flat,
-                                depth: 4,
-                                boxShape: NeumorphicBoxShape.circle(),
-                                shadowLightColor: HexColor.fromHex('#CCDBD9'),
-                                shadowDarkColor: HexColor.fromHex('#CCDBD9')),
-                            padding: EdgeInsets.all(12.sp),
-                            child: FaIcon(
-                              FontAwesomeIcons.dumbbell,
-                              size: 16.sp,
-                              color: color.secondaryColor,
-                            ),
-                          ),
-                          Container(
-                            height: 50.h,
-                            width: 100.w,
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              "Olahraga",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    color: color.secondaryTextColor,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
+                      }),
+                  _SirkaHomeWidget(
+                    color: color,
+                    context: context,
+                    title: "Sirkafluid",
+                    icon: SvgPicture.asset("assets/icons/glass.svg",
+                        color: HexColor.fromHex("73C639")),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SirkafluidScreen(),
+                        ),
+                      );
+                    },
+                  )
                 ],
               ),
               SizedBox(height: 28.h),
@@ -865,7 +794,7 @@ class _HomeScreenState extends State<HomeScreen> {
       preferredSize: Size.fromHeight(300),
       child: Container(
         decoration: BoxDecoration(
-            color: HexColor.fromHex("8CD15D"),
+            color: HexColor.fromHex("73C639"),
             borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(15),
                 bottomRight: Radius.circular(15)),
@@ -891,7 +820,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 3)),
-                        Text("Welcome, ${userController.userInformationResponse.value.displayName ?? authController.data.read('dataUser')['username']}",
+                        Text(
+                            "Welcome, ${userController.userInformationResponse.value.displayName ?? authController.data.read('dataUser')['username']}",
                             style: GoogleFonts.poppins(
                                 color: Colors.white.withOpacity(0.6),
                                 fontSize: 14,
@@ -1054,6 +984,59 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _SirkaHomeWidget extends StatelessWidget {
+  const _SirkaHomeWidget({
+    Key? key,
+    required this.color,
+    required this.context,
+    required this.title,
+    required this.icon,
+    required this.onPressed,
+  }) : super(key: key);
+
+  final ColorConstantController color;
+  final BuildContext context;
+  final String title;
+  final Widget icon;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 150.w,
+      height: 110.h,
+      child: NeumorphicButton(
+          onPressed: () {
+            onPressed();
+          },
+          style: NeumorphicStyle(
+              color: color.primaryColor,
+              shape: NeumorphicShape.flat,
+              boxShape: NeumorphicBoxShape.roundRect(
+                BorderRadius.circular(20),
+              )),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Padding(padding: const EdgeInsets.only(bottom: 8.0), child: icon),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Text(
+                  title,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        color: color.secondaryTextColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+            ],
+          )),
     );
   }
 }

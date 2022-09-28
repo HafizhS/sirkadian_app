@@ -48,7 +48,7 @@ class ProfileState extends State<ProfileScreen> {
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: HexColor.fromHex("8CD15D"),
+                      color: HexColor.fromHex("#73C639"),
                       borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(25),
                           bottomRight: Radius.circular(25)),
